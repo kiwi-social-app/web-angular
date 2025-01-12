@@ -5,7 +5,6 @@ import { CommentService } from 'src/app/services/comment.service';
 import { Comment } from '../../models/comment.model';
 import { Post } from '../../models/post.model';
 import { AuthService } from '../../services/auth.service';
-import { FirestoreService } from '../../services/firestore.service';
 
 @Component({
   selector: 'app-new-comment',
@@ -25,13 +24,7 @@ export class NewCommentComponent implements OnInit {
   success: boolean = false;
   userData!: any;
 
-  constructor(
-    private firestoreService: FirestoreService,
-    private commentService: CommentService,
-    private fb: FormBuilder,
-    public auth: AuthService,
-    private route: ActivatedRoute
-  ) {
+  constructor(private commentService: CommentService, private fb: FormBuilder, public auth: AuthService, private route: ActivatedRoute) {
     this.postID = String(this.route.snapshot.paramMap.get('id'));
     this.currentUser = this.auth.getCurrentUser();
   }
@@ -53,8 +46,7 @@ export class NewCommentComponent implements OnInit {
 
   createComment() {
     this.newComment = this.newCommentForm.getRawValue();
-    this.commentService
-      .createComment(this.newComment, this.postID)
-      .subscribe((response) => response);
+    this.commentService.createComment(this.newComment, this.postID).subscribe((response) => this.onNewComment.emit(response));
+    this.newCommentForm.reset();
   }
 }

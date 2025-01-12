@@ -26,16 +26,18 @@ export class CommentService {
   }
 
   public fetchCommentsByPostID(postID: string): Observable<Comment[]> {
-    return this.http.get<Comment[]>(`${this.commentsUrl}?postID=${postID}`);
+    return this.http.get<Comment[]>(`${this.commentsUrl}?postID=${postID}`).pipe(
+      map((response) => {
+        return response;
+      })
+    );
   }
 
   public createComment(comment: Comment, postID: string): Observable<any> {
     comment.userID = this.auth.currentUser.uid;
     comment.createdAt = new Date();
     comment.postID = postID;
-    return this.http
-      .post(this.commentsUrl, comment)
-      .pipe(map((response) => response));
+    return this.http.post(this.commentsUrl, comment).pipe(map((response) => response));
   }
 
   public deleteComment(id: string): Observable<any> {
@@ -53,5 +55,4 @@ export class CommentService {
       catchError((error) => error)
     );
   }
-
 }

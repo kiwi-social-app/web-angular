@@ -1,6 +1,6 @@
 import { Component, EventEmitter, OnInit, Output } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { Subscription } from 'rxjs';
+import { Observable, Subscription } from 'rxjs';
 import { Post } from 'src/app/models/post.model';
 import { PostService } from 'src/app/services/post.service';
 import { UserService } from 'src/app/services/user.service';
@@ -14,7 +14,7 @@ import { AuthService } from '../../services/auth.service';
 })
 export class DashboardComponent implements OnInit {
   @Output() onUpdateProfile: EventEmitter<User> = new EventEmitter();
-
+  public userPosts$!: Observable<Post[]>;
   editProfileForm!: FormGroup;
   users: User[] = [];
   posts: Post[] = [];
@@ -24,15 +24,11 @@ export class DashboardComponent implements OnInit {
   editMode: boolean = false;
   subscription!: Subscription;
 
-  constructor(
-    public auth: AuthService,
-    private fb: FormBuilder,
-    private postService: PostService,
-    private userService: UserService
-  ) {}
+  constructor(public auth: AuthService, private fb: FormBuilder, private postService: PostService, private userService: UserService) {}
 
   ngOnInit(): void {
     this.getUser();
+    this.getUserPosts();
   }
   ngOnDestroy() {
     this.subscription.unsubscribe();
@@ -50,28 +46,30 @@ export class DashboardComponent implements OnInit {
   getUser() {
     this.subscription = this.auth.afAuth.authState.subscribe((user) => {
       if (user) {
-        this.currentUser = this.userService
-          .getUserByID(user.uid)
-          .subscribe((userData: any) => {
-            this.currentUser = userData;
-            this.initialiseForm();
+        this.currentUser = this.userService.getUserByID(user.uid).subscribe((userData: any) => {
+          this.currentUser = userData;
+          this.initialiseForm();
 
-            this.postService.fetchPosts()
-            .subscribe((response) => {
-              response.forEach((post) => {
-                this.buildPosts(post);
-              });
+          this.postService.fetchPosts().subscribe((response) => {
+            response.forEach((post) => {
+              this.buildPosts(post);
             });
           });
+        });
+      }
+    });
+  }
+
+  getUserPosts() {
+    this.auth.afAuth.authState.subscribe((user) => {
+      if (user) {
+        this.userPosts$ = this.postService.fetchPostsByUserID(user.uid);
       }
     });
   }
 
   async buildPosts(response: any) {
-    if (
-      response.userID === this.currentUser.id &&
-      !this.posts.some((e) => e.id === response.id)
-    ) {
+    if (response.userID === this.currentUser.id && !this.posts.some((e) => e.id === response.id)) {
       this.posts.push({
         ...response,
       });
@@ -80,9 +78,7 @@ export class DashboardComponent implements OnInit {
 
   updateProfile() {
     this.updatedUser = this.editProfileForm.getRawValue();
-    this.userService
-      .updateUser(this.currentUser.id, this.updatedUser)
-      .subscribe((response: any) => response);
+    this.userService.updateUser(this.currentUser.id, this.updatedUser).subscribe((response: any) => response);
   }
 
   editBtn() {

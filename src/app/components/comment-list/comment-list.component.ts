@@ -1,7 +1,8 @@
-import { Component, OnInit } from '@angular/core';
+import { ChangeDetectorRef, Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
-import { Subscription } from 'rxjs';
+import { Observable, Subscription } from 'rxjs';
 import { CommentService } from 'src/app/services/comment.service';
+import { Comment } from '../../models/comment.model';
 
 @Component({
   selector: 'app-comment-list',
@@ -9,14 +10,10 @@ import { CommentService } from 'src/app/services/comment.service';
   styleUrls: ['./comment-list.component.scss'],
 })
 export class CommentListComponent implements OnInit {
-  comments: any[] = [];
+  public comments$!: Observable<Comment[]>;
   public postID: string;
-  subscription!: Subscription;
 
-  constructor(
-    private commentService: CommentService,
-    private route: ActivatedRoute
-  ) {
+  constructor(private commentService: CommentService, private route: ActivatedRoute) {
     this.postID = String(this.route.snapshot.paramMap.get('id'));
   }
 
@@ -25,11 +22,6 @@ export class CommentListComponent implements OnInit {
   }
 
   getComments() {
-    this.commentService
-      .fetchCommentsByPostID(this.postID)
-      .subscribe((response) => {
-        this.comments = response;
-      });
+    this.comments$ = this.commentService.fetchCommentsByPostID(this.postID);
   }
-
 }

@@ -22,11 +22,7 @@ export class PostService {
   constructor(private http: HttpClient, private auth: AuthService) {}
 
   public checkImage(imageData: any) {
-    if (
-      imageData === null ||
-      imageData === undefined ||
-      imageData.length === 0
-    ) {
+    if (imageData === null || imageData === undefined || imageData.length === 0) {
       return '../../assets/placeholder.png';
     } else {
       return imageData;
@@ -39,6 +35,11 @@ export class PostService {
 
   public fetchPostByID(id: string): Observable<Post> {
     return this.http.get<Post>(`${this.postsUrl}${id}`, httpOptions);
+  }
+
+  public fetchPostsByUserID(userID: string): Observable<Post[]> {
+    const url = `${this.postsUrl}?userID=${userID}`;
+    return this.http.get<Post[]>(url);
   }
 
   public createPost(post: Post): Observable<any> {
