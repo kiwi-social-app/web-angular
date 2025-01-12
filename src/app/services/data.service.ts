@@ -16,6 +16,18 @@ export class DataService {
     this.currentUser = this.auth.getCurrentUser();
   }
 
+  public checkImage(imageData: any) {
+    if (
+      imageData === null ||
+      imageData === undefined ||
+      imageData.length === 0
+    ) {
+      return '../../assets/placeholder.png';
+    } else {
+      return imageData;
+    }
+  }
+
   public getAllPosts(): Observable<any> {
     return this.fireStore.collection('posts').snapshotChanges();
   }
@@ -39,10 +51,16 @@ export class DataService {
 
   public createPost(post: Post) {
     post.userID = this.auth.currentUser.uid;
+    post.createdAt = new Date();
+    post.image = this.checkImage(post.image);
+    console.log(post.image);
     return this.fireStore.collection('posts').add(post);
   }
 
   public updatePost(postID: string, post: Post) {
+    post.image = this.checkImage(post.image);
+    console.log(post.image);
+
     return this.fireStore.collection('posts').doc(postID).update(post);
   }
 
@@ -53,6 +71,7 @@ export class DataService {
   public createComment(comment: Comment, postID: string) {
     comment.userID = this.auth.currentUser.uid;
     comment.postID = postID;
+    comment.createdAt = new Date();
 
     return this.fireStore.collection('comments').add(comment);
   }

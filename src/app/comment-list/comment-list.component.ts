@@ -31,6 +31,7 @@ export class CommentListComponent implements OnInit {
             ...element.payload.doc.data(),
             author: this.author,
           });
+          this.sortComments();
         }
       });
     });
@@ -39,5 +40,11 @@ export class CommentListComponent implements OnInit {
   async getAuthor(userID: string): Promise<string> {
     this.authorData = await this.dataService.getCommentAuthor(userID);
     return this.authorData.username;
+  }
+
+  sortComments() {
+    this.comments.sort((a: any, b: any) => {
+      return b.createdAt.valueOf() - a.createdAt.valueOf();
+    });
   }
 }

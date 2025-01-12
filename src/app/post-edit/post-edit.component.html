@@ -16,6 +16,17 @@
         value="{{ post.title }}"
         [(ngModel)]="post.title"
       />
+      <div
+      *ngIf="
+        updatePostForm.controls['title'].invalid &&
+        (updatePostForm.controls['title'].dirty ||
+          updatePostForm.controls['title'].touched)
+      "
+    >
+      <div *ngIf="updatePostForm.controls['title'].invalid">
+        Please enter title
+      </div>
+    </div>
     </div>
     <div class="form-block">
       <label for="body">Body:</label>
@@ -27,6 +38,17 @@
         value="{{ post.body }}"
         [(ngModel)]="post.body"
       ></textarea>
+      <div
+      *ngIf="
+        updatePostForm.controls['body'].invalid &&
+        (updatePostForm.controls['body'].dirty ||
+          updatePostForm.controls['body'].touched)
+      "
+    >
+      <div *ngIf="updatePostForm.controls['body'].invalid">
+        Please enter post body
+      </div>
+    </div>
     </div>
     <div class="form-block">
       <label for="image">Image link:</label>
@@ -37,10 +59,11 @@
         value="{{ post.image }}"
         [(ngModel)]="post.image"
       />
+      <div *ngIf="imageValidation === false">Please enter valid image url</div>
     </div>
 
     <div class="buttons">
-      <button class="update-btn" type="submit">Update post</button>
+      <button class="update-btn" type="submit" [disabled]="!updatePostForm.valid">Update post</button>
       <button class="delete-btn" (click)="deletePost(post.id)">
         Delete post
       </button>

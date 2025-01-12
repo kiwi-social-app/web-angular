@@ -44,6 +44,12 @@
       background-color:skyblue;
       border: none;
       border-radius: 0.5rem;
+      cursor: pointer;
+
+      &:disabled{
+       opacity: 50%;
+        cursor: default;
+      }
     }
   }
 }

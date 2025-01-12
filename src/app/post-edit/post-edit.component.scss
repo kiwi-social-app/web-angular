@@ -59,6 +59,11 @@
         margin: auto 0 auto 0;
         background-color: green;
         cursor: pointer;
+
+        &:disabled{
+          opacity: 50%;
+           cursor: default;
+         }
       }
       .delete-btn {
         height: 2rem;

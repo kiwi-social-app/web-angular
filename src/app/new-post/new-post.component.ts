@@ -19,6 +19,7 @@ export class NewPostComponent implements OnInit {
   newPost!: Post;
   loading: boolean = false;
   success: boolean = false;
+  imageValidation: boolean = true;
 
   constructor(
     private dataService: DataService,
@@ -35,15 +36,38 @@ export class NewPostComponent implements OnInit {
 
   initialiseForm(): void {
     this.newPostForm = this.fb.group({
-      title: [null, [Validators.required]],
-      body: [null, [Validators.required]],
-      image: null,
+      title: ['', [Validators.required]],
+      body: ['', [Validators.required]],
+      image: '',
     });
   }
 
   createPost() {
     this.newPost = this.newPostForm.getRawValue();
-    this.dataService.createPost(this.newPost);
-    this.router.navigate(['/']);
+    if (
+      this.checkImageUrl(this.newPost.image) === true ||
+      this.newPostForm?.get('image')?.getRawValue().length === 0
+    ) {
+      this.imageValidation = true;
+      this.dataService.createPost(this.newPost);
+      this.router.navigate(['/']);
+    } else {
+      this.imageValidation = false;
+    }
+  }
+
+  checkImageUrl(url: any): any {
+    var request = new XMLHttpRequest();
+    request.open('GET', url, true);
+    request.send();
+    request.onload = function () {
+      if (request.status == 200) {
+        console.log(`image exists`);
+        return true;
+      } else {
+        console.log(`image doesn't exist`);
+        return false;
+      }
+    };
   }
 }

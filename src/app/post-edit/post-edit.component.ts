@@ -16,6 +16,7 @@ export class PostEditComponent implements OnInit {
   updatedPost!: any;
   public post!: Post;
   public postID!: string | null;
+  imageValidation: boolean = true;
 
   constructor(
     private route: ActivatedRoute,
@@ -41,6 +42,8 @@ export class PostEditComponent implements OnInit {
     if (this.postID != null) {
       this.dataService.getPostByID(this.postID).then((data: any) => {
         this.post = data;
+        console.log(this.post)
+        console.log(this.post.image?.length)
         this.initialiseForm();
       });
     }
@@ -49,12 +52,36 @@ export class PostEditComponent implements OnInit {
   updatePost() {
     if (this.postID != null) {
       this.updatedPost = this.updatePostForm.getRawValue();
-      this.dataService.updatePost(this.postID, this.updatedPost);
+
+      if (
+        this.checkImageUrl(this.updatedPost.image) === true ||
+        this.updatePostForm?.get('image')?.getRawValue().length === 0
+      ) {
+        this.imageValidation = true;
+        this.dataService.updatePost(this.postID, this.updatedPost);
+        // this.router.navigate(['/']);
+      } else {
+        this.imageValidation = false;
+      }
     }
   }
 
-
   deletePost(postID: string) {
     this.dataService.deletePost(postID);
+  }
+
+  checkImageUrl(url: any): any {
+    var request = new XMLHttpRequest();
+    request.open('GET', url, true);
+    request.send();
+    request.onload = function () {
+      if (request.status == 200) {
+        console.log(`image exists`);
+        return true;
+      } else {
+        console.log(`image doesn't exist`);
+        return false;
+      }
+    };
   }
 }

@@ -50,13 +50,16 @@ export class DashboardComponent implements OnInit {
 
             this.dataService.getAllPosts().subscribe((data) => {
               data.forEach(async (element: any) => {
-                if (element.payload.doc.data().userID === this.currentUser.uid) {
+                if (
+                  element.payload.doc.data().userID === this.currentUser.uid
+                ) {
                   this.posts.push({
                     id: element.payload.doc.id,
                     ...element.payload.doc.data(),
                   });
                 }
               });
+              this.sortPosts();
             });
           });
       }
@@ -74,5 +77,11 @@ export class DashboardComponent implements OnInit {
     } else {
       this.editMode = false;
     }
+  }
+
+  sortPosts() {
+    this.posts.sort((a: any, b: any) => {
+      return b.createdAt.valueOf() - a.createdAt.valueOf();
+    });
   }
 }
