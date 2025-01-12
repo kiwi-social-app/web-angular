@@ -5,18 +5,45 @@
   margin: auto;
   max-width: 45rem;
 
-  .message-list{
-    padding: 2rem;
-    margin: auto;
+  .message-list {
+    display: flex;
+    flex-direction: column;
+    gap: 2rem;
 
-    .message{
-      display:flex;
+    .message-card {
+      display: flex;
       flex-direction: column;
+      border: 1px solid lightgrey;
+      box-shadow: none;
+
+      .message-header {
+        width: 100%;
+        background-color: #355591;
+        color: white;
+        font-size: 0.8rem;
+        display: flex;
+        flex-direction: row;
+        justify-content: space-between;
+
+        .header-content {
+          padding-left: 1rem;
+          padding-right: 1rem;
+        }
+      }
+      .message-text {
+        padding: 1rem;
+      }
+    }
+    .message-card:first-of-type {
+      border-radius: 0.5rem 0.5rem 0rem 0rem;
+
+      .message-header {
+        border-radius: 0.5rem 0.5rem 0rem 0rem;
+      }
     }
   }
 
-  .chat-input{
+  .chat-input {
     margin: auto;
-
   }
 }

@@ -1,17 +1,22 @@
 <div class="chat-component">
+  <h2>Chat</h2>
   <div class="message-list">
-    <div class="message" *ngFor="let message of messageList">
-      <div>
-        {{ message.author.username }}
-      </div>
-      <div>
-        {{ message.body }}
+    <div *ngIf="messageList.length > 0">
+      <div class="message-card" *ngFor="let message of messageList">
+        <div class="message-header">
+          <p class="header-content">
+            {{ message.author?.username ?? "Anonymous" }}
+          </p>
+        </div>
+        <p class="message-text">
+          {{ message.body }}
+        </p>
       </div>
     </div>
   </div>
 
   <div class="chat-input">
-    <form [formGroup]="form" (submit)="sendMessage()">
+    <form [formGroup]="form" (submit)="sendMessage(currentUserInfo)">
       <input formControlName="messageBody" />
       <button type="submit">Send Message</button>
     </form>
