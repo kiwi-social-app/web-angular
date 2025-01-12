@@ -1,17 +1,9 @@
 import { Injectable } from '@angular/core';
 
-import {HttpClient, HttpHeaders, HttpParams} from '@angular/common/http';
-import { catchError, map, Observable, of, tap, throwError } from 'rxjs';
-import { Post } from '../models/post.model';
-import { User } from '../models/user.model';
+import {HttpClient, HttpParams} from '@angular/common/http';
+import { catchError, map, Observable, of} from 'rxjs';
 import { Comment } from '../models/comment.model';
 import { AuthService } from './auth.service';
-
-const httpOptions = {
-  headers: new HttpHeaders({
-    'Content-Type': 'application/json',
-  }),
-};
 
 @Injectable({
   providedIn: 'root',

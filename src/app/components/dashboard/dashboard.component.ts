@@ -70,11 +70,7 @@ export class DashboardComponent implements OnInit {
   }
 
   editBtn() {
-    if (!this.editMode) {
-      this.editMode = true;
-    } else {
-      this.editMode = false;
-    }
+    this.editMode = !this.editMode;
   }
 
   sortPosts() {
