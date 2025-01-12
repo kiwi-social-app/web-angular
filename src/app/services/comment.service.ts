@@ -26,7 +26,7 @@ export class CommentService {
   }
 
   public fetchCommentsByPostID(postID: string): Observable<Comment[]> {
-    return this.http.get<Comment[]>(`${this.commentsUrl}?postID=${postID}`).pipe(
+    return this.http.get<Comment[]>(`${this.commentsUrl}${postID}`).pipe(
       map((response) => {
         return response;
       })
