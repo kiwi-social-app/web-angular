@@ -4,9 +4,12 @@
     <div *ngIf="comments.length > 0; else noComments">
       <div class="comment-card" *ngFor="let comment of comments">
         <div class="comment-header">
-          <div class="header-content">{{ comment.author }}</div>
+            <p class="header-content">{{ comment.author }}</p>
+            <p class="header-content">
+              {{ comment?.createdAt?.toDate() | date : "medium" }}
+            </p>
         </div>
-        <p>{{ comment.body }}</p>
+        <p class="comment-text">{{ comment.body }}</p>
       </div>
     </div>
     <ng-template #noComments>
