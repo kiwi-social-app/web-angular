@@ -25,13 +25,13 @@ export class NewPostComponent implements OnInit {
     this.newPostForm = this.fb.group({
       id: [{ value: uuidv4(), disabled: true }],
       title: [null, [Validators.required]],
-      content: [null, [Validators.required]],
+      body: [null, [Validators.required]],
       image: null,
     });
   }
 
   createPost() {
-    this.dataService.createPost(this.newPostForm.getRawValue()).subscribe((response) => response);
+    this.dataService.createPost(this.newPostForm.getRawValue());
   }
 
 }

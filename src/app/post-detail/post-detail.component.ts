@@ -13,25 +13,25 @@ import { DataService, Post } from '../services/data.service';
 export class PostDetailComponent implements OnInit {
   public post!: Post | undefined;
   public posts: Post[] | undefined;
-
+  public id!: string | null;
   constructor(
     private route: ActivatedRoute,
     private location: Location,
     private dataService: DataService
-  ) {}
+  ) {
+    this.id = this.route.snapshot.paramMap.get('id');
+  }
 
   ngOnInit(): void {
     this.getPost();
   }
 
   getPost() {
-    return this.dataService
-      .getAllPosts()
-      .pipe(map((res) => res))
-      .subscribe((posts: any) => {
-        const id = String(this.route.snapshot.paramMap.get('id'));
-        this.post = posts.find((post: any) => post.id === id);
+    if (this.id != null) {
+      this.dataService.getPostByID(this.id).then((data: any) => {
+        console.log(data);
       });
+    }
   }
 
   goBack(): void {

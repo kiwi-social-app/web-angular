@@ -14,6 +14,7 @@ import { PostCardComponent } from './post-card/post-card.component';
 import { environment } from '../environments/environment';
 import { AngularFireModule } from '@angular/fire/compat';
 import { AngularFirestoreModule } from '@angular/fire/compat/firestore';
+import { AngularFireDatabaseModule } from '@angular/fire/compat/database';
 import { SignupComponent } from './signup/signup.component';
 import { LoginComponent } from './login/login.component';
 @NgModule({
@@ -35,7 +36,8 @@ import { LoginComponent } from './login/login.component';
     FormsModule,
     ReactiveFormsModule,
     AngularFireModule.initializeApp(environment.firebaseConfig),
-    AngularFirestoreModule
+    AngularFirestoreModule,
+    AngularFireDatabaseModule
 
   ],
   providers: [],

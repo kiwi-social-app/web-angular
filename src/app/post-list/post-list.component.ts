@@ -5,22 +5,22 @@ import { DataService, Post } from '../services/data.service';
   selector: 'app-post-list',
   templateUrl: './post-list.component.html',
   styleUrls: ['./post-list.component.scss'],
-  providers: [DataService]
+  providers: [DataService],
 })
 export class PostListComponent implements OnInit {
-posts: Post[] = [];
+  posts: Post[] = [];
 
-  constructor(private dataService: DataService) { }
+  constructor(private dataService: DataService) {}
 
   ngOnInit(): void {
     this.fetchPosts();
   }
 
-fetchPosts() {
-  this.dataService.getAllPosts().subscribe(res => {
-    this.posts = res;
-  });
-}
-
-
+  fetchPosts() {
+    this.dataService.getAllPosts().subscribe((data) => {
+      data.forEach((element: any) => {
+        this.posts.push(element.payload.doc.data());
+      });
+    });
+  }
 }
