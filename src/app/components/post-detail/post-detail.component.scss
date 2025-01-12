@@ -2,22 +2,34 @@
   display: flex;
   flex-direction: column;
   padding: 6rem 2rem;
+  max-width: 64rem;
+  margin: auto;
 
-  .image {
-    margin: auto;
-    height: 10rem;
-    width: 20rem;
-  }
-
-  .text-content {
+  .post-container {
+    display: flex;
+    flex-direction: column;
     margin: auto;
     max-width: 40rem;
-    padding: 2rem;
-    .post-title {
+
+    .image {
+      margin: auto;
+      width: 100%;
     }
 
-    .post-body {
-      width: auto;
+    .text-content {
+      display:flex;
+      flex-direction: column;
+      gap:0.8rem;
+      width: 100%;
+      margin: auto;
+      background-color: white;
+
+      & > * {
+        padding-left: 2rem;
+        padding-right: 2rem;
+      }
+
     }
   }
+
 }
