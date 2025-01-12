@@ -93,26 +93,26 @@ export class AuthService {
     return userRef.set(data, { merge: true });
   }
 
-  signupUser(user: any): Promise<any> {
-    return this.afAuth
-      .createUserWithEmailAndPassword(user.email, user.password)
-      .then((result) => {
-        result.user?.sendEmailVerification();
-        this.updateUserData(result.user);
-        if (result.additionalUserInfo?.isNewUser) {
-          this.userService
-            .addUser(result.user)
-            .subscribe((response) => response);
-        }
-      })
-      .catch((error) => {
-        console.log('Auth Service: signup error', error);
-        if (error.code) {
-          return { isValid: false, message: error.message };
-        } else {
-          return;
-        }
-      });
+  async signupUser(user: any): Promise<any> {
+    try{
+    let result = await this.afAuth.createUserWithEmailAndPassword(user.email, user.password);
+    console.log(result);
+    if(result.user){
+      await result.user?.sendEmailVerification();
+      if (result.additionalUserInfo?.isNewUser) {
+        return this.userService
+          .addUser(result.user)
+          .subscribe((response) => response);
+      }
+    }
+    } catch (error){
+      console.log('Auth Service: signup error', error);
+      if (error) {
+        return { isValid: false, message: error };
+      } else {
+        return;
+      }
+    }
   }
 
   loginUser(email: string, password: string): Promise<any> {

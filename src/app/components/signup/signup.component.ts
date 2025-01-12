@@ -38,6 +38,8 @@ export class SignupComponent implements OnInit {
           this.router.navigate(['/signup']);
         } else if (result.isValid == false) {
           this.firebaseErrorMessage = result.message;
+        } else {
+          this.router.navigate(['/dashboard']);
         }
       })
       .catch(() => {});
