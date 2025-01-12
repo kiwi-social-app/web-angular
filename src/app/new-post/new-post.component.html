@@ -1,18 +1,36 @@
 <div class="new-post-component">
   <h1 class="title">New Post</h1>
-<form class="new-post-form">
-  <div class="form-block">
-    <label>Title:</label>
-    <input type="text" required />
-  </div>
-  <div class="form-block">
-    <label>Content:</label>
-    <input type="text" required />
-  </div>
-  <div class="form-block">
-    <label>Image:</label>
-    <input type="text" required />
-  </div>
-  <button type="submit">Publish</button>
-</form>
+  <form class="new-post-form" [formGroup]="newPostForm" (ngSubmit)="createPost()">
+    Value: {{ newPostForm.value | json }}
+    <div class="form-block">
+      <label for="title">Title:</label>
+      <input
+        id="title"
+        type="text"
+        placeholder="title"
+        formControlName="title"
+      />
+    </div>
+    <div class="form-block">
+      <label for="content">Content:</label>
+      <input
+        id="content"
+        type="text"
+        placeholder="content"
+        formControlName="content"
+      />
+    </div>
+    <div class="form-block">
+      <label for="image">Image:</label>
+      <input
+        id="image"
+        type="text"
+        placeholder="image"
+        formControlName="image"
+      />
+    </div>
+    <button type="submit">Publish</button>
+  </form>
+
+  <div *ngIf="success"> Successfully submitted post.</div>
 </div>

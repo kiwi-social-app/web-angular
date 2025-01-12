@@ -12,7 +12,7 @@ const routes: Routes = [
   { path: 'dashboard', component: DashboardComponent },
   { path: 'new-post', component: NewPostComponent },
   { path: 'post-list', component: PostListComponent },
-  { path: 'post-detail/:id', component: PostDetailComponent },
+  { path: 'posts/:id', pathMatch: 'full', component: PostDetailComponent },
   { path: 'signup', component: SignupComponent },
   { path: 'login', component: LoginComponent },
 ];
