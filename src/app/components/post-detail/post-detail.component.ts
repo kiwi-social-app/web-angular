@@ -27,7 +27,7 @@ export class PostDetailComponent implements OnInit {
   getPost() {
     if (this.postID != null) {
       this.postService.fetchPostByID(this.postID)
-      .subscribe((data: any) => {
+      .subscribe((data: Post) => {
         this.post = data;
       });
     }

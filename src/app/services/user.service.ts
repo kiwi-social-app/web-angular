@@ -15,7 +15,6 @@ const httpOptions = {
 })
 export class UserService {
   private usersUrl: string = 'http://localhost:8080/users/';
-  // private usersUrl: string = 'http://localhost:8080/user';
 
   constructor(private http: HttpClient) {}
 
@@ -45,8 +44,6 @@ export class UserService {
 
   public getUserByID(userID: any) {
     const url = `${this.usersUrl}${userID}`;
-
-    // const url = `${this.usersUrl}/${userID}`;
     return this.http.get(url, httpOptions).pipe(
       tap((response) => {
         console.log(response);
@@ -60,7 +57,5 @@ export class UserService {
 
   public fetchUsers(): Observable<User[]> {
    return this.http.get<User[]>(this.usersUrl);
-
-    // return this.http.get<User[]>(`${this.usersUrl}/all`);
   }
 }

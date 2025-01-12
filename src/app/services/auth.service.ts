@@ -7,7 +7,6 @@ import {
 import { Router } from '@angular/router';
 import firebase from 'firebase/compat/app';
 import { map, Observable, of, switchMap } from 'rxjs';
-import { User } from '../models/user.model';
 import { UserService } from './user.service';
 
 @Injectable({
@@ -15,7 +14,7 @@ import { UserService } from './user.service';
 })
 export class AuthService {
   userLoggedIn!: boolean;
-  user$: Observable<User | null | undefined>;
+  user$: Observable<any | null | undefined>;
   currentUser!: any;
   constructor(
     public afAuth: AngularFireAuth,
@@ -26,7 +25,7 @@ export class AuthService {
     this.user$ = this.afAuth.authState.pipe(
       switchMap((user) => {
         if (user) {
-          return this.afs.doc<User>(`users/${user.uid}`).valueChanges();
+          return this.afs.doc<any>(`users/${user.uid}`).valueChanges();
         } else {
           return of(null);
         }
@@ -34,11 +33,7 @@ export class AuthService {
     );
     this.userLoggedIn = false;
     this.afAuth.onAuthStateChanged((user) => {
-      if (user) {
-        this.userLoggedIn = true;
-      } else {
-        this.userLoggedIn = false;
-      }
+      this.userLoggedIn = !!user;
     });
   }
 
@@ -77,7 +72,7 @@ export class AuthService {
     firstname,
     lastname,
   }: any) {
-    const userRef: AngularFirestoreDocument<User> = this.afs.doc(`user/${uid}`);
+    const userRef: AngularFirestoreDocument<any> = this.afs.doc(`user/${uid}`);
     if (displayname === undefined) {
       displayname = '';
     }

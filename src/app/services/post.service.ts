@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 
 import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
-import { catchError, map, Observable, of, tap } from 'rxjs';
+import {catchError, map, Observable, of, tap} from 'rxjs';
 import { Post } from '../models/post.model';
 import { AuthService } from './auth.service';
 
@@ -36,22 +36,27 @@ export class PostService {
   }
 
   public fetchPostByID(id: string): Observable<Post> {
-    return this.http.get<Post>(`${this.postsUrl}${id}`, httpOptions);
+    return this.http.get<Post>(`${this.postsUrl}${id}`, httpOptions)
   }
 
   public createPost(post: Post): Observable<any> {
     const userID = this.auth.currentUser.uid;
-    post.created_at = new Date();
+    post.createdAt = new Date();
     post.image = this.checkImage(post.image);
 
     const url = `${this.postsUrl}`;
 
     const params = new HttpParams()
-    .set('userID', userID)
+    .set('user_id', userID)
 
     return this.http
       .post(url, post, {params})
-      .pipe(map((response) => response));
+      .pipe(map((response) => response),
+        catchError((error) => {
+          console.log(error);
+          return of(error);
+        })
+        );
   }
 
   public deletePost(id: string): Observable<any> {
@@ -65,7 +70,7 @@ export class PostService {
 
   public updatePost(post: Post) {
     const url = `${this.postsUrl}${post.id}`;
-    post.updated_at = new Date();
+    post.updatedAt = new Date();
     post.image = this.checkImage(post.image);
 
     return this.http.put(url, post, httpOptions).pipe(
