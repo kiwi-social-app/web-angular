@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
-import { FirestoreService } from '../../services/firestore.service';
 import { Subscription } from 'rxjs';
+import { CommentService } from 'src/app/services/comment.service';
 
 @Component({
   selector: 'app-comment-list',
@@ -15,7 +15,10 @@ export class CommentListComponent implements OnInit {
   authorData!: any;
   subscription!: Subscription;
 
-  constructor(private firestoreService: FirestoreService, private route: ActivatedRoute) {
+  constructor(
+    private commentService: CommentService,
+    private route: ActivatedRoute
+  ) {
     this.postID = String(this.route.snapshot.paramMap.get('id'));
   }
 
@@ -23,31 +26,25 @@ export class CommentListComponent implements OnInit {
     this.getComments();
   }
 
-  ngOnDestroy() {
-    this.subscription.unsubscribe();
-  }
-
   getComments() {
-    this.subscription = this.firestoreService
-      .fetchComments()
+    this.commentService
+      .fetchCommentsByPostID(this.postID)
       .subscribe((response) => {
-        return this.buildComments(response);
+        return response.forEach((comment) => this.buildComments(comment));
       });
   }
 
-  async buildComments(response: any) {
+  async buildComments(comment: any) {
     if (
-      response.postID === this.postID &&
-      !this.comments.some((e) => e.id === response.id)
+      comment.postID === this.postID &&
+      !this.comments.some((e) => e.id === comment.id)
     ) {
-      const author = await this.getAuthor(response.userID);
-      const data = response;
-      this.comments.push({ author, ...data });
+      await this.commentService
+        .getCommentAuthor(comment.userID)
+        .subscribe((response) => {
+          this.author = response.username;
+          this.comments.push({ author: this.author, ...comment });
+        });
     }
-  }
-
-  async getAuthor(userID: string): Promise<string> {
-    this.authorData = await this.firestoreService.getCommentAuthor(userID);
-    return this.authorData.username;
   }
 }

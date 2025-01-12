@@ -20,7 +20,10 @@ export class PostListComponent implements OnInit {
   searchResults: Post[] = [];
   subscription!: Subscription;
 
-  constructor(private postService: PostService, private firestoreService: FirestoreService) {}
+  constructor(
+    private postService: PostService,
+    private firestoreService: FirestoreService
+  ) {}
 
   ngOnInit(): void {
     this.getPosts();
@@ -30,27 +33,26 @@ export class PostListComponent implements OnInit {
     this.subscription.unsubscribe();
   }
 
-  getPosts(){
-   this.subscription = this.postService.fetchPosts().subscribe((response: Post[]) => {
-      console.log(response)
-      this.posts = response;
-    })
-  }
-
-  async buildPosts(response: any) {
-    if (!this.posts.some((e) => e.id === response.id)) {
-      this.author = await this.getAuthor(response.userID);
-
-      this.posts.push({
-        ...response,
-        author: this.author,
+  getPosts() {
+    this.subscription = this.postService
+      .fetchPosts()
+      .subscribe((response: Post[]) => {
+        return response.forEach((post) => this.buildPosts(post));
       });
-    }
   }
 
-  async getAuthor(userID: string): Promise<string> {
-    this.authorData = await this.firestoreService.getPostAuthor(userID);
-    return this.authorData.username;
+  async buildPosts(post: any) {
+    if (!this.posts.some((e) => e.id === post.id)) {
+      await this.postService
+        .getPostAuthor(post.userID)
+        .subscribe((response) => {
+          this.author = response.username;
+          this.posts.push({
+            ...post,
+            author: this.author,
+          });
+        });
+    }
   }
 
   searchBar() {

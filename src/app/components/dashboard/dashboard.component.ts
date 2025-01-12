@@ -54,13 +54,11 @@ export class DashboardComponent implements OnInit {
           .getUserByID(user.uid)
           .subscribe((userData: any) => {
             this.currentUser = userData;
-            console.log(this.currentUser);
             this.initialiseForm();
 
             this.postService.fetchPosts()
             .subscribe((response) => {
               response.forEach((post) => {
-                console.log(post)
                 this.buildPosts(post);
               });
             });

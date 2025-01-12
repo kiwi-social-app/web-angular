@@ -1,6 +1,7 @@
 import { Component, EventEmitter, OnInit, Output } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute } from '@angular/router';
+import { CommentService } from 'src/app/services/comment.service';
 import { Comment } from '../../models/comment.model';
 import { Post } from '../../models/post.model';
 import { AuthService } from '../../services/auth.service';
@@ -26,6 +27,7 @@ export class NewCommentComponent implements OnInit {
 
   constructor(
     private firestoreService: FirestoreService,
+    private commentService: CommentService,
     private fb: FormBuilder,
     public auth: AuthService,
     private route: ActivatedRoute
@@ -51,6 +53,8 @@ export class NewCommentComponent implements OnInit {
 
   createComment() {
     this.newComment = this.newCommentForm.getRawValue();
-    this.firestoreService.createComment(this.newComment, this.postID);
+    this.commentService
+      .createComment(this.newComment, this.postID)
+      .subscribe((response) => response);
   }
 }

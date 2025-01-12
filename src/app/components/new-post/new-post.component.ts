@@ -49,7 +49,6 @@ export class NewPostComponent implements OnInit {
       this.newPostForm?.get('image')?.getRawValue().length === 0
     ) {
       this.postService.createPost(this.newPost).subscribe((response) => {
-        console.log(response);
         this.router.navigate(['/']);
       });
     } else {

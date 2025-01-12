@@ -65,7 +65,7 @@ export class PostEditComponent implements OnInit {
       ) {
         this.imageValidation = true;
         this.postService
-          .updatePost(this.postID, this.updatedPost)
+          .updatePost(this.updatedPost)
           .subscribe((response: any) => response);
 
         // this.router.navigate(['/']);
@@ -76,9 +76,7 @@ export class PostEditComponent implements OnInit {
   }
 
   deletePost(postID: string) {
-    console.log(postID);
     this.postService.deletePost(postID).subscribe((response: any) => {
-      console.log(response);
       this.router.navigate(['/']);
     });
   }

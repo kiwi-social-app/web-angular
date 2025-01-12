@@ -15,9 +15,9 @@ export class UserPostsComponent implements OnInit {
   ngOnInit(): void {}
 
   deletePost(postID: string) {
-    console.log(postID);
-    this.postService.deletePost(postID).subscribe((response: any) => {
-      console.log(response);
+    this.postService.deletePost(postID)
+    .subscribe((response: any) => {
+      response;
     });
   }
   editPost(postID: string) {

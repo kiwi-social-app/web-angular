@@ -35,7 +35,8 @@ export class PostDetailComponent implements OnInit {
 
   getPost() {
     if (this.postID != null) {
-      this.postService.fetchPostByID(this.postID).subscribe((data: any) => {
+      this.postService.fetchPostByID(this.postID)
+      .subscribe((data: any) => {
         this.post = data;
         this.getAuthor(this.post.userID);
       });
@@ -44,7 +45,8 @@ export class PostDetailComponent implements OnInit {
 
   getAuthor(userID: string) {
     if (this.postID != null) {
-      this.postService.getPostAuthor(userID).subscribe((authorData: any) => {
+      this.postService.getPostAuthor(userID)
+      .subscribe((authorData: any) => {
         this.author = authorData.username;
       });
     }

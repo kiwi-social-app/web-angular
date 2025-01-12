@@ -18,7 +18,6 @@ const httpOptions = {
 export class PostService {
   private postsUrl: string = 'http://localhost:4000/posts/';
   private usersUrl: string = 'http://localhost:4000/users/';
-  private loginUrl: string = 'http://localhost:4000/login/';
 
   constructor(private http: HttpClient, private auth: AuthService) {}
 
@@ -60,12 +59,11 @@ export class PostService {
     );
   }
 
-  public updatePost(postID: string, post: Post) {
-    const url = `${this.postsUrl}${postID}`;
+  public updatePost(post: Post) {
+    const url = `${this.postsUrl}${post.id}`;
     post.updatedAt = new Date();
     post.image = this.checkImage(post.image);
-    console.log(post);
-    console.log(url);
+
     return this.http.put(url, post, httpOptions).pipe(
       tap((response) => {
         console.log(response);
@@ -80,8 +78,4 @@ export class PostService {
   public getPostAuthor(userID: string): Observable<any> {
     return this.http.get<User>(`${this.usersUrl}${userID}`, httpOptions);
   }
-
-  // public logIn(login: { username: string; password: string }): Observable<any> {
-  //   return this.http.post(this.loginUrl, login, httpOptions);
-  // }
 }
