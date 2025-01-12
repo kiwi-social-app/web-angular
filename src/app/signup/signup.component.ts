@@ -31,10 +31,9 @@ export class SignupComponent implements OnInit {
       email: [null, [Validators.required]],
       password: [null, [Validators.required]],
     });
-
   }
 
   signUp() {
-    this.dataService.signUp(this.signUpForm.getRawValue()).subscribe((response) => console.log(response))
+    this.dataService.signUp(this.signUpForm.getRawValue());
   }
 }

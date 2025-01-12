@@ -1,7 +1,6 @@
 <div class="sign-up-component">
   <h1 class="form-title">Sign Up</h1>
   <form [formGroup]="signUpForm" (ngSubmit)="signUp()">
-    Value: {{ signUpForm.value | json }}
     <div class="form-block">
       <label for="username">Username:</label>
       <input
