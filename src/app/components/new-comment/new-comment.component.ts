@@ -1,10 +1,9 @@
 import { Component, EventEmitter, OnInit, Output } from '@angular/core';
-import { Router } from '@angular/router';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
-import { DataService } from '../services/data.service';
-import { AuthService } from '../services/auth.service';
-import { Post } from '../services/post.model';
-import { Comment } from '../services/comment.model';
+import { DataService } from '../../services/data.service';
+import { AuthService } from '../../services/auth.service';
+import { Post } from '../../models/post.model';
+import { Comment } from '../../models/comment.model';
 import { ActivatedRoute } from '@angular/router';
 
 @Component({

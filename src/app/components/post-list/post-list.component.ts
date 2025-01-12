@@ -1,7 +1,6 @@
 import { Component, Input, OnInit } from '@angular/core';
-import { DataService } from '../services/data.service';
-import { Post } from '../services/post.model';
-import { ɵisAnalyticsSupportedFactory } from '@angular/fire';
+import { DataService } from '../../services/data.service';
+import { Post } from '../../models/post.model';
 
 @Component({
   selector: 'app-post-list',
@@ -62,17 +61,4 @@ export class PostListComponent implements OnInit {
     });
   }
 
-  checkImageUrl(url: any) {
-    var request = new XMLHttpRequest();
-    request.open('GET', url, true);
-    request.send();
-    request.onload = function () {
-      if (request.status == 200) {
-        //if(statusText == OK)
-        console.log('image exists');
-      } else {
-        console.log("image doesn't exist");
-      }
-    };
-  }
 }

@@ -2,9 +2,9 @@ import { Injectable } from '@angular/core';
 import { AngularFirestore } from '@angular/fire/compat/firestore';
 import { Observable } from 'rxjs';
 import { AuthService } from './auth.service';
-import { Comment } from './comment.model';
-import { Post } from './post.model';
-import { User } from './user.model';
+import { Comment } from '../models/comment.model';
+import { Post } from '../models/post.model';
+import { User } from '../models/user.model';
 
 @Injectable({
   providedIn: 'root',
@@ -12,9 +12,7 @@ import { User } from './user.model';
 export class DataService {
   currentUser!: any;
 
-  constructor(private auth: AuthService, private fireStore: AngularFirestore) {
-    this.currentUser = this.auth.getCurrentUser();
-  }
+  constructor(private auth: AuthService, private afs: AngularFirestore) {}
 
   public checkImage(imageData: any) {
     if (
@@ -29,11 +27,11 @@ export class DataService {
   }
 
   public getAllPosts(): Observable<any> {
-    return this.fireStore.collection('posts').snapshotChanges();
+    return this.afs.collection('posts').snapshotChanges();
   }
 
   public getPostByID(id: string): any {
-    return this.fireStore
+    return this.afs
       .collection('posts')
       .doc(id)
       .ref.get()
@@ -53,19 +51,16 @@ export class DataService {
     post.userID = this.auth.currentUser.uid;
     post.createdAt = new Date();
     post.image = this.checkImage(post.image);
-    console.log(post.image);
-    return this.fireStore.collection('posts').add(post);
+    return this.afs.collection('posts').add(post);
   }
 
   public updatePost(postID: string, post: Post) {
     post.image = this.checkImage(post.image);
-    console.log(post.image);
-
-    return this.fireStore.collection('posts').doc(postID).update(post);
+    return this.afs.collection('posts').doc(postID).update(post);
   }
 
   public deletePost(id: string) {
-    return this.fireStore.collection('posts').doc(id).delete();
+    return this.afs.collection('posts').doc(id).delete();
   }
 
   public createComment(comment: Comment, postID: string) {
@@ -73,11 +68,11 @@ export class DataService {
     comment.postID = postID;
     comment.createdAt = new Date();
 
-    return this.fireStore.collection('comments').add(comment);
+    return this.afs.collection('comments').add(comment);
   }
 
   public getPostAuthor(userID: string) {
-    return this.fireStore
+    return this.afs
       .collection('user')
       .doc(userID)
       .ref.get()
@@ -95,7 +90,7 @@ export class DataService {
   }
 
   public getCommentAuthor(userID: string) {
-    return this.fireStore
+    return this.afs
       .collection('user')
       .doc(userID)
       .ref.get()
@@ -113,7 +108,7 @@ export class DataService {
   }
 
   public getAuthor(userID: string, collection: string) {
-    return this.fireStore
+    return this.afs
       .collection(collection)
       .doc(userID)
       .ref.get()
@@ -130,12 +125,12 @@ export class DataService {
       });
   }
 
-  public getAllComments(): any {
-    return this.fireStore.collection('comments').snapshotChanges();
+  public getAllComments(): Observable<any> {
+    return this.afs.collection('comments').snapshotChanges();
   }
 
   public getUserData(userID: any): any {
-    return this.fireStore
+    return this.afs
       .collection('user')
       .doc(userID)
       .ref.get()
@@ -152,6 +147,6 @@ export class DataService {
   }
 
   public updateUser(userID: string, user: User) {
-    return this.fireStore.collection('user').doc(userID).update(user);
+    return this.afs.collection('user').doc(userID).update(user);
   }
 }
