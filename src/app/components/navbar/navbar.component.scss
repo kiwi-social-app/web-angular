@@ -87,10 +87,10 @@ a {
     gap: 2rem;
   }
   &.collapsed {
-    display: none;
+    right: -100%;
+
   }
 }
-///
 
 @media (max-width: 991px) {
   .nav-links {
