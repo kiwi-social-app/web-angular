@@ -1,11 +1,82 @@
 <div class="dashboard-component">
-  <h2>Dashboard</h2>
+  <div class="dashboard-header">
+    <h2>Dashboard</h2>
+    <div class="buttons">
+      <button class="edit-btn" (click)="editBtn()">Edit Profile</button>
+      <button class="signout-btn" (click)="auth.signOut()">Sign Out</button>
+    </div>
+
+
+  </div>
 
   <div *ngIf="currentUser as user">
-    <p>{{ user.uid }}</p>
-    <p>{{ user.email }}</p>
-    <p>{{ user.username }}</p>
-    <hr />
-    <button (click)="auth.signOut()">Sign Out</button>
+    <div class="profile-data-block">
+      <div class="profile-read" *ngIf="!editMode; else editForm">
+        <p>{{ user.username }}</p>
+        <p>{{ user.email }}</p>
+        <p>{{ user.firstname }}</p>
+        <p>{{ user.lastname }}</p>
+      </div>
+
+      <ng-template #editForm>
+        <form
+          class="edit-profile-form"
+          [formGroup]="editProfileForm"
+          (ngSubmit)="updateProfile()"
+        >
+          <div class="form-block">
+            <label for="username">Username:</label>
+            <input
+              class="edit-input"
+              id="username"
+              type="text"
+              formControlName="username"
+              value="{{ user.username }}"
+              required
+              [(ngModel)]="user.username"
+            />
+          </div>
+
+          <div class="form-block">
+            <label for="email">Email:</label>
+            <input
+              class="edit-input"
+              id="email"
+              type="text"
+              formControlName="email"
+              value="{{ user.email }}"
+              [(ngModel)]="user.email"
+            />
+          </div>
+
+          <div class="form-block">
+            <label for="firstname">Firstname:</label>
+            <input
+              class="edit-input"
+              id="firstname"
+              type="text"
+              formControlName="firstname"
+              value="{{ user.firstname }}"
+              [(ngModel)]="user.firstname"
+            />
+          </div>
+
+          <div class="form-block">
+            <label for="lastname">lastname:</label>
+            <input
+              class="edit-input"
+              id="lastname"
+              type="text"
+              formControlName="lastname"
+              value="{{ user.lastname }}"
+              [(ngModel)]="user.lastname"
+            />
+          </div>
+
+          <button class="publish-btn" type="submit">Update Profile</button>
+        </form>
+      </ng-template>
+    </div>
+
   </div>
 </div>

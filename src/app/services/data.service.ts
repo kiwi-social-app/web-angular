@@ -1,10 +1,10 @@
-import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { AngularFirestore } from '@angular/fire/compat/firestore';
 import { Observable } from 'rxjs';
 import { AuthService } from './auth.service';
 import { Comment } from './comment.model';
 import { Post } from './post.model';
+import { User } from './user.model';
 
 @Injectable({
   providedIn: 'root',
@@ -126,5 +126,9 @@ export class DataService {
       .catch(function (error) {
         console.log('Error getting document:', error);
       });
+  }
+
+  public updateUser(userID: string, user: User) {
+    return this.fireStore.collection('user').doc(userID).update(user);
   }
 }
