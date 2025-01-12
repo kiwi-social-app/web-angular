@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { AngularFirestore } from '@angular/fire/compat/firestore';
-import { Observable } from 'rxjs';
+import { Observable, map } from 'rxjs';
 import { AuthService } from './auth.service';
 import { Comment } from '../models/comment.model';
 import { Post } from '../models/post.model';
@@ -27,7 +27,9 @@ export class DataService {
   }
 
   public getAllPosts(): Observable<any> {
-    return this.afs.collection('posts', ref => ref.orderBy('createdAt', 'desc')).snapshotChanges();
+    return this.afs
+      .collection('posts', (ref) => ref.orderBy('createdAt', 'desc'))
+      .snapshotChanges();
   }
 
   public getPostByID(id: string): any {
@@ -125,8 +127,19 @@ export class DataService {
       });
   }
 
-  public getAllComments(): Observable<any> {
-    return this.afs.collection('comments', ref => ref.orderBy('createdAt', 'desc')).snapshotChanges();
+  public fetchComments(): Observable<any> {
+    return this.afs
+      .collection('comments', (ref) => ref.orderBy('createdAt', 'desc'))
+      .snapshotChanges()
+      .pipe(
+        map((snapshots) => {
+          return snapshots.map((snapshot) => {
+            const data: any = snapshot.payload.doc.data();
+            const id = snapshot.payload.doc.id;
+            return { id, ...data };
+          });
+        })
+      );
   }
 
   public getUserData(userID: any): any {

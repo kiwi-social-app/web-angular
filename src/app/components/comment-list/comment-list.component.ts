@@ -21,18 +21,19 @@ export class CommentListComponent implements OnInit {
     this.getComments();
   }
 
-  getComments() {
-    this.dataService.getAllComments().subscribe((data: any) => {
-      data.forEach(async (element: any) => {
-        if (element.payload.doc.data().postID === this.postID) {
-          this.author = await this.getAuthor(element.payload.doc.data().userID);
-          this.comments.push({
-            id: element.payload.doc.id,
-            ...element.payload.doc.data(),
-            author: this.author,
-          });
-        }
-      });
+  async getComments() {
+    await this.dataService
+      .fetchComments()
+      .subscribe((data) => this.buildComments(data));
+  }
+
+  async buildComments(data: any) {
+    data.forEach(async (element: any) => {
+      if (element.postID === this.postID) {
+        const author = await this.getAuthor(element.userID);
+        const data = element;
+        this.comments.push({ author, ...data });
+      }
     });
   }
 
@@ -40,5 +41,4 @@ export class CommentListComponent implements OnInit {
     this.authorData = await this.dataService.getCommentAuthor(userID);
     return this.authorData.username;
   }
-
 }
