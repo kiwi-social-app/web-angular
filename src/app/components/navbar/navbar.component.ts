@@ -8,6 +8,8 @@ import { AngularFireAuth } from '@angular/fire/compat/auth';
   styleUrls: ['./navbar.component.scss'],
 })
 export class NavbarComponent implements OnInit {
+  isCollapsed: boolean = true;
+
   constructor(
     @Inject(DOCUMENT) public document: Document,
     public afAuth: AngularFireAuth
@@ -17,5 +19,12 @@ export class NavbarComponent implements OnInit {
 
   logout() {
     this.afAuth.signOut();
+  }
+
+  collapseMenu() {
+    this.isCollapsed === true
+      ? (this.isCollapsed = false)
+      : (this.isCollapsed = true);
+    console.log(this.isCollapsed);
   }
 }

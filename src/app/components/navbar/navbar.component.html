@@ -3,7 +3,32 @@
     <div class="navbar-brand">
       <a routerLink="/">ChatBlog Angular</a>
     </div>
+    <button
+      [class.collapsed]="isCollapsed"
+      class="navbar-toggler"
+      (click)="collapseMenu()"
+    >
+      <span class="navbar-toggler-icon"></span>
+    </button>
+
     <div class="nav-links">
+      <a routerLink="/new-post" class="nav-link">New Post</a>
+      <a routerLink="/post-list" class="nav-link">Post List</a>
+      <ng-container *ngIf="afAuth.user | async; else loggedOut">
+        <a routerLink="/dashboard" class="nav-link">Dashboard</a>
+      </ng-container>
+
+      <ng-template #loggedOut>
+        <a routerLink="/login" class="nav-link">Log in</a>
+      </ng-template>
+    </div>
+  </div>
+  <div
+    [class.collapsed]="isCollapsed"
+    (click)="collapseMenu()"
+    class="mobile-menu"
+  >
+    <div class="mobile-links">
       <a routerLink="/new-post" class="nav-link">New Post</a>
       <a routerLink="/post-list" class="nav-link">Post List</a>
       <ng-container *ngIf="afAuth.user | async; else loggedOut">

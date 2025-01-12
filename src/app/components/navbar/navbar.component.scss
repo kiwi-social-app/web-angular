@@ -11,12 +11,13 @@
   .navbar-content {
     display: flex;
     flex-direction: row;
+    z-index: 2;
     justify-content: space-between;
     max-width: 1024px;
     padding: 1rem;
     width: 100%;
     margin: auto;
-    .navbar-brand > *{
+    .navbar-brand > * {
       display: flex;
       flex-direction: row;
       height: auto;
@@ -34,10 +35,6 @@
       }
     }
     .nav-links {
-      display: flex;
-      flex-direction: row;
-      margin: auto 0;
-
       .nav-link {
         padding-left: 1rem;
         padding-right: 1rem;
@@ -48,45 +45,98 @@
           color: rgba(255, 255, 255, 0.5);
         }
       }
-
-      // @media screen and (min-width: 720px) {
-      //   display: flex;
-      // }
-    }
-    a {
-      padding: 0.5rem;
-      text-decoration: none;
     }
   }
 }
 
+.nav-links {
+  display: flex;
+  flex-direction: row;
+  margin: auto 0;
+}
+
+.nav-link {
+  padding-left: 1rem;
+  padding-right: 1rem;
+  color: white;
+  cursor: pointer;
+
+  &:hover {
+    color: rgba(255, 255, 255, 0.5);
+  }
+}
+a {
+  padding: 0.5rem;
+  text-decoration: none;
+}
 .mobile-menu {
   position: fixed;
-  z-index: 3;
   display: flex;
   flex-direction: column;
-  background-color: #355591;
-  color: white;
-  margin-top: 4rem;
+  align-items: flex-end;
   height: 100vh;
-  right: -100%;
-  transition: right 200ms linear 0s;
-
-  .mobile-nav-links {
+  margin-top: 0.5rem;
+  padding: 7rem 2rem;
+  transition: all 0.3s ease;
+  background-color: #355591;
+  right: 0;
+  .mobile-links {
     display: flex;
     flex-direction: column;
-    justify-content: flex-start;
-    text-align: left;
-    gap: 1rem;
-    padding: 2rem;
-    margin: 0 auto;
-    color: white;
-    .navLink {
-      color: white;
+    justify-content: space-around;
+    gap: 2rem;
+  }
+  &.collapsed {
+    display: none;
+  }
+}
+///
+
+@media (max-width: 991px) {
+  .nav-links {
+    display: none;
+  }
+}
+
+.navbar-toggler {
+  display: none;
+  background-color: transparent;
+  color: white;
+  border: 0;
+  outline: 0;
+
+  .navbar-toggler-icon {
+    display: inline-block;
+    width: 1.5em;
+    height: 1.5em;
+    vertical-align: middle;
+    content: "";
+    background: no-repeat center center;
+    background-size: 100% 100%;
+    &::before {
+      display: block;
+      width: 1.5em;
+      height: 0.25em;
+      background-color: white;
+      border-radius: 0.25rem;
+      content: "";
+      transition: all 0.3s ease;
+    }
+    &::after {
+      display: block;
+      width: 1.5em;
+      height: 0.25em;
+      margin-top: 0.5em;
+      background-color: white;
+      border-radius: 0.25rem;
+      content: "";
+      transition: all 0.3s ease;
     }
   }
+}
 
-  &.expand-navbar {
-    right: 0;
+@media (max-width: 991px) {
+  .navbar-toggler {
+    display: block;
   }
 }
