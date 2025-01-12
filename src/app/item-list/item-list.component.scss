@@ -1,0 +1,30 @@
+.item-list-component{
+  padding: 1rem;
+  margin: 1rem auto;
+  width: fit-content;
+  display:flex;
+  flex-direction: column;
+
+  .list-title{
+    margin: auto;
+  }
+
+  .item-block{
+    padding: 1rem;
+    margin: 0.5rem;
+    width: 10rem;
+    border:0.1rem;
+    border-color:lightgrey;
+    border-style: solid;
+  }
+  .list-switch {
+    padding: 1rem;
+    margin: auto;
+    background-color: lightblue;
+    border: none;
+    border-radius: 0.5rem;
+    &:active {
+      background-color: lightgrey;
+    }
+  }
+}
