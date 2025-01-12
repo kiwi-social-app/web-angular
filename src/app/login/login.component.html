@@ -27,3 +27,12 @@
     </form>
 
 </div>
+
+<div *ngIf="auth.user$ | async as user; else login">
+  {{ user | json }}
+  <hr>
+  <button (click)="auth.signOut()">Sign Out</button>
+</div>
+<ng-template #login>
+  <button (click)="auth.googleSignin()">Google Sign In</button>
+</ng-template>

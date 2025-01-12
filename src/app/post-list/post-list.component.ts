@@ -1,6 +1,6 @@
-import { identifierName } from '@angular/compiler';
 import { Component, OnInit } from '@angular/core';
-import { DataService, Post } from '../services/data.service';
+import { DataService } from '../services/data.service';
+import {Post} from '../services/post.model';
 
 @Component({
   selector: 'app-post-list',

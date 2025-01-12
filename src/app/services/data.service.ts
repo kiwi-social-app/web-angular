@@ -2,22 +2,7 @@ import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { AngularFirestore } from '@angular/fire/compat/firestore';
-
-export interface Post {
-  id: string;
-  title: string;
-  body: string;
-  image?: string | null;
-}
-
-export interface User {
-  id: string;
-  username: string;
-  email: string;
-  firstname: string;
-  lastname: string;
-  password: string;
-}
+import { Post } from './post.model';
 
 const httpOptions = {
   headers: new HttpHeaders({
@@ -76,7 +61,7 @@ export class DataService {
   //   return this.http.post(this.usersUrl, user, httpOptions);
   // }
 
-  // public logIn(login: { username: string; password: string }): Observable<any> {
+  // public logIn(login: { displayname: string; password: string }): Observable<any> {
   //   return this.http.post(this.loginUrl, login, httpOptions);
   // }
 }

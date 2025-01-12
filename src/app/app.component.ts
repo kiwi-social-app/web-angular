@@ -1,7 +1,7 @@
 import { Component } from '@angular/core';
 import { AngularFirestore } from '@angular/fire/compat/firestore';
 import { Observable } from 'rxjs';
-import { Post } from './services/data.service';
+import { Post } from './services/post.model';
 
 @Component({
   selector: 'app-root',

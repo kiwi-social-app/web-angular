@@ -14,7 +14,7 @@ export class LoginComponent implements OnInit {
   firebaseErrorMessage: string;
 
   constructor(
-    private authService: AuthService,
+    public auth: AuthService,
     private router: Router,
     private afAuth: AngularFireAuth
   ) {
@@ -32,7 +32,7 @@ export class LoginComponent implements OnInit {
       return;
     }
 
-    this.authService
+    this.auth
       .loginUser(this.loginForm.value.email, this.loginForm.value.password)
       .then((result) => {
         if (result == null) {
