@@ -1,0 +1,10 @@
+<div class="comment-list-component">
+  <h2 class="list-title">Comments</h2>
+  <div class="list">
+    <div class="card-container" *ngFor="let comment of comments">
+      <div class="card-content">
+        <p>{{ comment.body }}</p>
+      </div>
+    </div>
+  </div>
+</div>

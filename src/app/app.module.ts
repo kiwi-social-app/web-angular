@@ -17,6 +17,8 @@ import { AngularFirestoreModule } from '@angular/fire/compat/firestore';
 import { AngularFireDatabaseModule } from '@angular/fire/compat/database';
 import { SignupComponent } from './signup/signup.component';
 import { LoginComponent } from './login/login.component';
+import { CommentListComponent } from './comment-list/comment-list.component';
+import { NewCommentComponent } from './new-comment/new-comment.component';
 @NgModule({
   declarations: [
     AppComponent,
@@ -28,6 +30,8 @@ import { LoginComponent } from './login/login.component';
     PostCardComponent,
     SignupComponent,
     LoginComponent,
+    CommentListComponent,
+    NewCommentComponent,
   ],
   imports: [
     BrowserModule,

@@ -5,6 +5,7 @@ import { AngularFirestore } from '@angular/fire/compat/firestore';
 import { Post } from './post.model';
 import { AuthService } from './auth.service';
 import { User } from './user.model';
+import { Comment } from './comment.model';
 
 const httpOptions = {
   headers: new HttpHeaders({
@@ -52,13 +53,23 @@ export class DataService {
 
   public createPost(post: Post) {
     post.userID = this.auth.currentUser.uid;
-   // post.author = this.auth.currentUser.displayname;
-    console.log(post);
+    // post.author = this.auth.currentUser.displayname;
     return this.fireStore.collection('posts').add(post);
   }
 
   public deletePost(id: string) {
     return this.fireStore.collection('posts').doc(id).delete();
+  }
+
+  public createComment(comment: Comment, postID: string) {
+    comment.userID = this.auth.currentUser.uid;
+    comment.postID = postID;
+    // comment.author = this.auth.currentUser.displayname;
+    return this.fireStore.collection('comments').add(comment);
+  }
+
+  public getAllComments(): any {
+    return this.fireStore.collection('comments').snapshotChanges();
   }
 
   // public addUser(user: any): Observable<any> {
