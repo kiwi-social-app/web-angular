@@ -14,16 +14,11 @@ export class PostListComponent implements OnInit {
   @Input() searchTerm!: string;
 
   posts: Post[] = [];
-  author!: string;
-  authorData!: any;
   filteredList!: Post[];
   searchResults: Post[] = [];
   subscription!: Subscription;
 
-  constructor(
-    private postService: PostService,
-    private firestoreService: FirestoreService
-  ) {}
+  constructor(private postService: PostService) {}
 
   ngOnInit(): void {
     this.getPosts();
@@ -37,22 +32,10 @@ export class PostListComponent implements OnInit {
     this.subscription = this.postService
       .fetchPosts()
       .subscribe((response: Post[]) => {
-        return response.forEach((post) => this.buildPosts(post));
+        console.log(response)
+        this.posts = response;
+        this.sortPosts();
       });
-  }
-
-  async buildPosts(post: any) {
-    if (!this.posts.some((e) => e.id === post.id)) {
-      await this.postService
-        .getPostAuthor(post.userID)
-        .subscribe((response) => {
-          this.author = response.username;
-          this.posts.push({
-            ...post,
-            author: this.author,
-          });
-        });
-    }
   }
 
   searchBar() {

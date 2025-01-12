@@ -42,13 +42,12 @@ export class PostService {
   }
 
   public createPost(post: Post): Observable<any> {
-    post.userID = this.auth.currentUser.uid;
+    const userID = this.auth.currentUser.uid;
     post.createdAt = new Date();
     post.image = this.checkImage(post.image);
-
-    return this.http
-      .post(this.postsUrl, post)
-      .pipe(map((response) => response));
+    const url = `${this.postsUrl}?userID=${userID}`;
+    console.log(post)
+    return this.http.post(url, post).pipe(map((response) => response));
   }
 
   public deletePost(id: string): Observable<any> {
@@ -73,9 +72,5 @@ export class PostService {
         return of(error);
       })
     );
-  }
-
-  public getPostAuthor(userID: string): Observable<any> {
-    return this.http.get<User>(`${this.usersUrl}${userID}`, httpOptions);
   }
 }

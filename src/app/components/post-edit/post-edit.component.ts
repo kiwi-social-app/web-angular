@@ -18,9 +18,10 @@ export class PostEditComponent implements OnInit {
     title: '',
     body: '',
     createdAt: null,
-    userID: '',
     id: '',
+    userID: '',
     image: null,
+    author: null
   };
   public postID!: string | null;
   imageValidation: boolean = true;

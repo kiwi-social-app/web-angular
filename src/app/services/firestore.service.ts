@@ -59,7 +59,7 @@ export class FirestoreService {
   }
 
   public createPost(post: Post) {
-    post.userID = this.auth.currentUser.uid;
+    // post.userID = this.auth.currentUser.uid;
     post.createdAt = new Date();
     post.image = this.checkImage(post.image);
     return this.afs.collection('posts').add(post);

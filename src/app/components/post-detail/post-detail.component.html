@@ -4,7 +4,7 @@
     <h1 class="post-title">{{ post.title }}</h1>
     <p class="post-createdAt">{{ post.createdAt | date: 'medium'}}</p>
     <p class="post-body">{{ post.body }}</p>
-    <p class="post-author">{{ author}}</p>
+    <p class="post-author">{{ post.author?.username}}</p>
   </div>
   <div>
     <app-comment-list></app-comment-list>

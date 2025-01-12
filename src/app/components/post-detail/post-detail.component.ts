@@ -18,9 +18,9 @@ export class PostDetailComponent implements OnInit {
     userID: '',
     id: '',
     image: null,
+    author: null
   };
   public postID!: string | null;
-  public author!: any;
 
   constructor(
     private route: ActivatedRoute,
@@ -38,16 +38,7 @@ export class PostDetailComponent implements OnInit {
       this.postService.fetchPostByID(this.postID)
       .subscribe((data: any) => {
         this.post = data;
-        this.getAuthor(this.post.userID);
-      });
-    }
-  }
-
-  getAuthor(userID: string) {
-    if (this.postID != null) {
-      this.postService.getPostAuthor(userID)
-      .subscribe((authorData: any) => {
-        this.author = authorData.username;
+        console.log(this.post)
       });
     }
   }

@@ -1,4 +1,4 @@
-import { Timestamp } from "rxjs";
+import { User } from "./user.model";
 
 export interface Post {
   id: string;
@@ -8,4 +8,5 @@ export interface Post {
   userID: string;
   createdAt: any;
   updatedAt?: any;
+  author?: User | null;
 }

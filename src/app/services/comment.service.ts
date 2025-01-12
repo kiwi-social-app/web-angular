@@ -17,8 +17,6 @@ const httpOptions = {
   providedIn: 'root',
 })
 export class CommentService {
-  private postsUrl: string = 'http://localhost:4000/posts/';
-  private usersUrl: string = 'http://localhost:4000/users/';
   private commentsUrl: string = 'http://localhost:4000/comments/';
 
   constructor(private http: HttpClient, private auth: AuthService) {}
@@ -57,7 +55,4 @@ export class CommentService {
     );
   }
 
-  public getCommentAuthor(userID: string): Observable<any> {
-    return this.http.get<User>(`${this.usersUrl}${userID}`, httpOptions);
-  }
 }
