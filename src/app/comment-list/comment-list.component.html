@@ -4,7 +4,7 @@
     <div *ngIf="comments.length > 0; else noComments">
       <div class="comment-card" *ngFor="let comment of comments">
         <div class="comment-header">
-          <div class="header-content">{{ author }}</div>
+          <div class="header-content">{{ comment.author }}</div>
         </div>
         <p>{{ comment.body }}</p>
       </div>

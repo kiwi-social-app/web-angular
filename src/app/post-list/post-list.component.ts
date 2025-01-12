@@ -1,6 +1,5 @@
 import { Component, OnInit } from '@angular/core';
 import { DataService } from '../services/data.service';
-import { Post } from '../services/post.model';
 
 @Component({
   selector: 'app-post-list',
@@ -9,8 +8,9 @@ import { Post } from '../services/post.model';
   providers: [DataService],
 })
 export class PostListComponent implements OnInit {
-  posts: Post[] = [];
-  public author!: any;
+  posts: any = [];
+  author!: any;
+  authorData!: any;
 
   constructor(private dataService: DataService) {}
 
@@ -20,18 +20,19 @@ export class PostListComponent implements OnInit {
 
   getPosts() {
     this.dataService.getAllPosts().subscribe((data) => {
-      data.forEach((element: any) => {
+      data.forEach(async (element: any) => {
+        this.author = await this.getAuthor(element.payload.doc.data().userID);
         this.posts.push({
           id: element.payload.doc.id,
           ...element.payload.doc.data(),
+          author: this.author,
         });
-        this.getAuthor(element.payload.doc.data().userID);
       });
     });
   }
-  getAuthor(userID: string) {
-    this.dataService.getPostAuthor(userID).then((authorData: any) => {
-      this.author = authorData.username;
-    });
+
+  async getAuthor(userID: string): Promise<string> {
+    this.authorData = await this.dataService.getPostAuthor(userID);
+    return this.authorData.username;
   }
 }

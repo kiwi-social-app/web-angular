@@ -1,17 +1,10 @@
-import { Injectable } from '@angular/core';
-import { Observable, map } from 'rxjs';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
+import { Injectable } from '@angular/core';
 import { AngularFirestore } from '@angular/fire/compat/firestore';
-import { Post } from './post.model';
+import { Observable } from 'rxjs';
 import { AuthService } from './auth.service';
-import { User } from './user.model';
 import { Comment } from './comment.model';
-
-const httpOptions = {
-  headers: new HttpHeaders({
-    'Content-Type': 'application/json',
-  }),
-};
+import { Post } from './post.model';
 
 @Injectable({
   providedIn: 'root',
@@ -19,11 +12,7 @@ const httpOptions = {
 export class DataService {
   currentUser!: any;
 
-  constructor(
-    private http: HttpClient,
-    private auth: AuthService,
-    private fireStore: AngularFirestore
-  ) {
+  constructor(private auth: AuthService, private fireStore: AngularFirestore) {
     this.currentUser = this.auth.getCurrentUser();
   }
 

@@ -1,7 +1,6 @@
 import { Component, OnInit } from '@angular/core';
-import { Comment } from '../services/comment.model';
-import { DataService } from '../services/data.service';
 import { ActivatedRoute } from '@angular/router';
+import { DataService } from '../services/data.service';
 
 @Component({
   selector: 'app-comment-list',
@@ -9,9 +8,10 @@ import { ActivatedRoute } from '@angular/router';
   styleUrls: ['./comment-list.component.scss'],
 })
 export class CommentListComponent implements OnInit {
-  comments: Comment[] = [];
+  comments: any[] = [];
   public postID: string;
   public author!: any;
+  authorData!: any;
 
   constructor(private dataService: DataService, private route: ActivatedRoute) {
     this.postID = String(this.route.snapshot.paramMap.get('id'));
@@ -23,21 +23,21 @@ export class CommentListComponent implements OnInit {
 
   getComments() {
     this.dataService.getAllComments().subscribe((data: any) => {
-      data.forEach((element: any) => {
+      data.forEach(async (element: any) => {
         if (element.payload.doc.data().postID === this.postID) {
+          this.author = await this.getAuthor(element.payload.doc.data().userID);
           this.comments.push({
             id: element.payload.doc.id,
             ...element.payload.doc.data(),
+            author: this.author,
           });
-          this.getAuthor(element.payload.doc.data().userID);
         }
       });
     });
   }
 
-  getAuthor(userID: string) {
-    this.dataService.getCommentAuthor(userID).then((authorData: any) => {
-      this.author = authorData.username;
-    });
+  async getAuthor(userID: string): Promise<string> {
+    this.authorData = await this.dataService.getCommentAuthor(userID);
+    return this.authorData.username;
   }
 }
