@@ -3,7 +3,6 @@ import { Router } from '@angular/router';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { DataService } from '../services/data.service';
 import { AuthService } from '../services/auth.service';
-import { User } from '../services/user.model';
 import { Post } from '../services/post.model';
 import { Comment } from '../services/comment.model';
 import { ActivatedRoute } from '@angular/router';
@@ -20,10 +19,11 @@ export class NewCommentComponent implements OnInit {
   newComment!: Comment;
   public postID: string;
 
-  currentUser!: User;
+  currentUser!: any;
   currentPost!: Post;
   loading: boolean = false;
   success: boolean = false;
+  userData!: any;
 
   constructor(
     private dataService: DataService,
@@ -38,6 +38,11 @@ export class NewCommentComponent implements OnInit {
 
   ngOnInit(): void {
     this.initialiseForm();
+    this.auth.afAuth.authState.subscribe((user) => {
+      if (user) {
+        this.currentUser = user;
+      }
+    });
   }
 
   initialiseForm(): void {

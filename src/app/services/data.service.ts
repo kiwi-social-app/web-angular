@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { Observable } from 'rxjs';
+import { Observable, map } from 'rxjs';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { AngularFirestore } from '@angular/fire/compat/firestore';
 import { Post } from './post.model';
@@ -17,10 +17,7 @@ const httpOptions = {
   providedIn: 'root',
 })
 export class DataService {
-  // private postsUrl: string = 'http://localhost:4000/posts/';
-  // private usersUrl: string = 'http://localhost:4000/users/';
-  // private loginUrl: string = 'http://localhost:4000/login/';
-  currentUser!: User;
+  currentUser!: any;
 
   constructor(
     private http: HttpClient,
@@ -53,7 +50,6 @@ export class DataService {
 
   public createPost(post: Post) {
     post.userID = this.auth.currentUser.uid;
-    // post.author = this.auth.currentUser.displayname;
     return this.fireStore.collection('posts').add(post);
   }
 
@@ -64,27 +60,85 @@ export class DataService {
   public createComment(comment: Comment, postID: string) {
     comment.userID = this.auth.currentUser.uid;
     comment.postID = postID;
-    // comment.author = this.auth.currentUser.displayname;
+
     return this.fireStore.collection('comments').add(comment);
+  }
+
+  public getPostAuthor(userID: string) {
+    return this.fireStore
+      .collection('user')
+      .doc(userID)
+      .ref.get()
+      .then(function (doc) {
+        if (doc.exists) {
+          console.log(doc.data());
+          return doc.data();
+        } else {
+          console.log('No such document!');
+          return;
+        }
+      })
+      .catch(function (error) {
+        console.log('Error getting document:', error);
+      });
+  }
+
+  public getCommentAuthor(userID: string) {
+    return this.fireStore
+      .collection('user')
+      .doc(userID)
+      .ref.get()
+      .then(function (doc) {
+        if (doc.exists) {
+          console.log(doc.data());
+          return doc.data();
+        } else {
+          console.log('No such document!');
+          return;
+        }
+      })
+      .catch(function (error) {
+        console.log('Error getting document:', error);
+      });
+  }
+
+  public getAuthor(userID: string, collection: string) {
+    return this.fireStore
+      .collection(collection)
+      .doc(userID)
+      .ref.get()
+      .then(function (doc) {
+        if (doc.exists) {
+          console.log(doc.data());
+          return doc.data();
+        } else {
+          console.log('No such document!');
+          return;
+        }
+      })
+      .catch(function (error) {
+        console.log('Error getting document:', error);
+      });
   }
 
   public getAllComments(): any {
     return this.fireStore.collection('comments').snapshotChanges();
   }
 
-  // public addUser(user: any): Observable<any> {
-  //   return this.http.post<any>(this.usersUrl, user, httpOptions);
-  // }
-
-  // public getAllUsers(): Observable<User[]> {
-  //   return this.http.get<User[]>(this.usersUrl);
-  // }
-
-  // public signUp(user: User): Observable<any> {
-  //   return this.http.post(this.usersUrl, user, httpOptions);
-  // }
-
-  // public logIn(login: { displayname: string; password: string }): Observable<any> {
-  //   return this.http.post(this.loginUrl, login, httpOptions);
-  // }
+  public getUserData(userID: any): any {
+    return this.fireStore
+      .collection('user')
+      .doc(userID)
+      .ref.get()
+      .then(function (doc) {
+        if (doc.exists) {
+          return doc.data();
+        } else {
+          console.log('No such document!');
+        }
+      })
+      .catch(function (error) {
+        console.log('Error getting document:', error);
+      });
+  }
 }

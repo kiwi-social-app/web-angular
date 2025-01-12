@@ -1,10 +1,10 @@
 <div class="dashboard-component">
   <h2>Dashboard</h2>
 
-  <div *ngIf="auth.currentUser as user">
-    <p>{{user.uid}}</p>
-    <p>{{user.email}}</p>
-    <p>{{user.displayname ? user.displayname : ''}}</p>
+  <div *ngIf="currentUser as user">
+    <p>{{ user.uid }}</p>
+    <p>{{ user.email }}</p>
+    <p>{{ user.username }}</p>
     <hr />
     <button (click)="auth.signOut()">Sign Out</button>
   </div>

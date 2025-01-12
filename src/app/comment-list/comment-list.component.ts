@@ -11,6 +11,7 @@ import { ActivatedRoute } from '@angular/router';
 export class CommentListComponent implements OnInit {
   comments: Comment[] = [];
   public postID: string;
+  public author!: any;
 
   constructor(private dataService: DataService, private route: ActivatedRoute) {
     this.postID = String(this.route.snapshot.paramMap.get('id'));
@@ -28,8 +29,16 @@ export class CommentListComponent implements OnInit {
             id: element.payload.doc.id,
             ...element.payload.doc.data(),
           });
+          this.getAuthor(element.payload.doc.data().userID);
         }
       });
+    });
+  }
+
+  getAuthor(userID: string) {
+    this.dataService.getCommentAuthor(userID).then((authorData: any) => {
+      this.author = authorData.username;
+      console.log(this.author);
     });
   }
 }

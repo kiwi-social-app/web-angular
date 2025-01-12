@@ -4,5 +4,4 @@ export interface Post {
   body: string;
   image?: string | null;
   userID: string;
-  // author: string;
 }

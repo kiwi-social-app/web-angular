@@ -1,6 +1,5 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
-import { map } from 'rxjs/operators';
 import { Location } from '@angular/common';
 
 import { DataService } from '../services/data.service';
@@ -12,9 +11,10 @@ import { Post } from '../services/post.model';
   styleUrls: ['./post-detail.component.scss'],
 })
 export class PostDetailComponent implements OnInit {
-  public post!: Post | undefined;
+  public post!: Post;
   public posts: Post[] | undefined;
   public id!: string | null;
+  public author!: any;
   constructor(
     private route: ActivatedRoute,
     private location: Location,
@@ -31,6 +31,15 @@ export class PostDetailComponent implements OnInit {
     if (this.id != null) {
       this.dataService.getPostByID(this.id).then((data: any) => {
         this.post = data;
+        this.getAuthor(this.post.userID);
+      });
+    }
+  }
+
+  getAuthor(userID: string) {
+    if (this.id != null) {
+      this.dataService.getPostAuthor(userID).then((authorData: any) => {
+        this.author = authorData.username;
       });
     }
   }
