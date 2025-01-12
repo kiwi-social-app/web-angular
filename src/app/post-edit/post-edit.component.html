@@ -1,0 +1,49 @@
+<div class="post-edit-component">
+  <img class="image" src="{{ post?.image }}" alt="" />
+
+  <form
+    class="update-post-form"
+    *ngIf="updatePostForm"
+    [formGroup]="updatePostForm"
+    (ngSubmit)="updatePost()"
+  >
+    <div class="form-block">
+      <label for="title">Title:</label>
+      <input
+        id="title"
+        type="text"
+        formControlName="title"
+        value="{{ post.title }}"
+        [(ngModel)]="post.title"
+      />
+    </div>
+    <div class="form-block">
+      <label for="body">Body:</label>
+      <textarea
+        id="body"
+        type="text"
+        rows="5"
+        formControlName="body"
+        value="{{ post.body }}"
+        [(ngModel)]="post.body"
+      ></textarea>
+    </div>
+    <div class="form-block">
+      <label for="image">Image link:</label>
+      <input
+        id="image"
+        type="text"
+        formControlName="image"
+        value="{{ post.image }}"
+        [(ngModel)]="post.image"
+      />
+    </div>
+
+    <div class="buttons">
+      <button class="update-btn" type="submit">Update post</button>
+      <button class="delete-btn" (click)="deletePost(post.id)">
+        Delete post
+      </button>
+    </div>
+  </form>
+</div>

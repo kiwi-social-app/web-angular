@@ -42,6 +42,10 @@ export class DataService {
     return this.fireStore.collection('posts').add(post);
   }
 
+  public updatePost(postID: string, post: Post) {
+    return this.fireStore.collection('posts').doc(postID).update(post);
+  }
+
   public deletePost(id: string) {
     return this.fireStore.collection('posts').doc(id).delete();
   }

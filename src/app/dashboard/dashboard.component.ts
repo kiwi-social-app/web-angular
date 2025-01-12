@@ -10,10 +10,12 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
   styleUrls: ['./dashboard.component.scss'],
 })
 export class DashboardComponent implements OnInit {
-  @Output() onEditProfile: EventEmitter<User> = new EventEmitter();
+  @Output() onUpdateProfile: EventEmitter<User> = new EventEmitter();
 
   editProfileForm!: FormGroup;
   users: User[] = [];
+  posts: any = [];
+
   currentUser!: any;
   updatedUser!: User;
   editMode: boolean = false;
@@ -26,10 +28,10 @@ export class DashboardComponent implements OnInit {
 
   ngOnInit(): void {
     this.getUser();
+    console.log(this.posts)
   }
 
-  initialiseForm(userData: any): void {
-    console.log(userData);
+  initialiseForm(): void {
     this.editProfileForm = this.fb.group({
       username: [null, [Validators.required]],
       email: [null, [Validators.required]],
@@ -45,7 +47,20 @@ export class DashboardComponent implements OnInit {
           .getUserData(user.uid)
           .then((userData: any) => {
             this.currentUser = userData;
-            this.initialiseForm(this.currentUser);
+            this.initialiseForm();
+
+            this.dataService.getAllPosts().subscribe((data) => {
+              data.forEach(async (element: any) => {
+                console.log(element.payload.doc.data())
+                if (element.payload.doc.data().userID === this.currentUser.uid) {
+                  this.posts.push({
+                    id: element.payload.doc.id,
+                    ...element.payload.doc.data(),
+                  });
+                  console.log(this.posts)
+                }
+              });
+            });
           });
       }
     });
@@ -53,7 +68,6 @@ export class DashboardComponent implements OnInit {
 
   updateProfile() {
     this.updatedUser = this.editProfileForm.getRawValue();
-    console.log(this.updatedUser);
     this.dataService.updateUser(this.currentUser.uid, this.updatedUser);
   }
 

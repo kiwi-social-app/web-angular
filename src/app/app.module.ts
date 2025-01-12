@@ -19,6 +19,8 @@ import { SignupComponent } from './signup/signup.component';
 import { LoginComponent } from './login/login.component';
 import { CommentListComponent } from './comment-list/comment-list.component';
 import { NewCommentComponent } from './new-comment/new-comment.component';
+import { UserPostsComponent } from './user-posts/user-posts.component';
+import { PostEditComponent } from './post-edit/post-edit.component';
 @NgModule({
   declarations: [
     AppComponent,
@@ -32,6 +34,8 @@ import { NewCommentComponent } from './new-comment/new-comment.component';
     LoginComponent,
     CommentListComponent,
     NewCommentComponent,
+    UserPostsComponent,
+    PostEditComponent,
   ],
   imports: [
     BrowserModule,

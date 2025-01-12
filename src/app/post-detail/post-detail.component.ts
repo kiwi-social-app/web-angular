@@ -1,6 +1,5 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
-import { Location } from '@angular/common';
 
 import { DataService } from '../services/data.service';
 import { Post } from '../services/post.model';
@@ -14,9 +13,9 @@ export class PostDetailComponent implements OnInit {
   public post!: Post;
   public postID!: string | null;
   public author!: any;
+
   constructor(
     private route: ActivatedRoute,
-    private location: Location,
     private dataService: DataService
   ) {
     this.postID = String(this.route.snapshot.paramMap.get('id'));
@@ -43,7 +42,4 @@ export class PostDetailComponent implements OnInit {
     }
   }
 
-  goBack(): void {
-    this.location.back();
-  }
 }
