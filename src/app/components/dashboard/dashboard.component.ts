@@ -69,7 +69,7 @@ export class DashboardComponent implements OnInit {
   }
 
   async buildPosts(response: any) {
-    if (response.userID === this.currentUser.id && !this.posts.some((e) => e.id === response.id)) {
+    if (response.author.id === this.currentUser.id && !this.posts.some((e) => e.id === response.id)) {
       this.posts.push({
         ...response,
       });
@@ -91,7 +91,7 @@ export class DashboardComponent implements OnInit {
 
   sortPosts() {
     this.posts.sort((a: any, b: any) => {
-      return b.createdAt.valueOf() - a.createdAt.valueOf();
+      return b.created_at.valueOf() - a.created_at.valueOf();
     });
   }
 }

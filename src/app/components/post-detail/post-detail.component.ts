@@ -10,16 +10,7 @@ import { Post } from '../../models/post.model';
   styleUrls: ['./post-detail.component.scss'],
 })
 export class PostDetailComponent implements OnInit {
-  public post: Post = {
-    title: '',
-    body: '',
-    createdAt: null,
-    updatedAt: null,
-    userID: '',
-    id: '',
-    image: null,
-    author: null
-  };
+  public post!: Post;
   public postID!: string | null;
 
   constructor(

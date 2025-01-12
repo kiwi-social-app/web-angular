@@ -5,8 +5,7 @@ export interface Post {
   title: string;
   body: string;
   image?: string | null;
-  userID: string;
-  createdAt: any;
-  updatedAt?: any;
-  author?: User | null;
+  created_at: any;
+  updated_at?: any;
+  author: User;
 }

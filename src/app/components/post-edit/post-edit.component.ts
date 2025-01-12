@@ -14,15 +14,7 @@ export class PostEditComponent implements OnInit {
 
   updatePostForm!: FormGroup;
   updatedPost!: any;
-  public post: Post = {
-    title: '',
-    body: '',
-    createdAt: null,
-    id: '',
-    userID: '',
-    image: null,
-    author: null
-  };
+  public post!: Post;
   public postID!: string | null;
   imageValidation: boolean = true;
 

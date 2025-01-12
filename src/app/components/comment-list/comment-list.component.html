@@ -4,9 +4,9 @@
     <div *ngIf="comments$ | async as comments; else noComments">
       <div class="comment-card" *ngFor="let comment of comments">
         <div class="comment-header">
-          <p class="header-content">{{ comment.author?.username }}</p>
+          <p class="header-content">{{ comment.author.username }}</p>
           <p class="header-content">
-            {{ comment.createdAt | date : 'medium' }}
+            {{ comment.created_at | date : 'medium' }}
           </p>
         </div>
         <p class="comment-text">{{ comment.body }}</p>

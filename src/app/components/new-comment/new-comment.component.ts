@@ -46,6 +46,7 @@ export class NewCommentComponent implements OnInit {
 
   createComment() {
     this.newComment = this.newCommentForm.getRawValue();
+    console.log(this.newComment)
     this.commentService.createComment(this.newComment, this.postID).subscribe((response) => this.onNewComment.emit(response));
     this.newCommentForm.reset();
   }

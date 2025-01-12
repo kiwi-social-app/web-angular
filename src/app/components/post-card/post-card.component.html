@@ -1,6 +1,6 @@
 <div routerLink="/posts/{{post.id}}" class="post-card">
   <div class="card-content">
-    <img class="image" src="{{ post.image }}" alt="" />
+    <img class="image" src="{{ post.image ?? './assets/placeholder.png'}}" alt="" />
     <h3>{{ post.title }}</h3>
     <p>{{ (post.body.length>10)? (post.body | slice:0:100)+'...':(post.body) }}</p>
     <p>{{ post.author.username }}</p>

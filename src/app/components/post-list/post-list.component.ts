@@ -2,30 +2,28 @@ import { Component, Input, OnInit } from '@angular/core';
 import { Subscription } from 'rxjs';
 import { PostService } from 'src/app/services/post.service';
 import { Post } from '../../models/post.model';
-import { FirestoreService } from '../../services/firestore.service';
+import { UserService } from 'src/app/services/user.service';
 
 @Component({
   selector: 'app-post-list',
   templateUrl: './post-list.component.html',
   styleUrls: ['./post-list.component.scss'],
-  providers: [FirestoreService],
 })
 export class PostListComponent implements OnInit {
   @Input() searchTerm!: string;
 
-  posts: Post[] = [];
+  posts!: Post[];
   filteredList!: Post[];
-  searchResults: Post[] = [];
+  searchResults!: Post[];
   subscription!: Subscription;
 
-  constructor(private postService: PostService) {}
+  constructor(
+    private postService: PostService,
+    private userService: UserService
+  ) {}
 
   ngOnInit(): void {
     this.getPosts();
-  }
-
-  ngOnDestroy() {
-    this.subscription.unsubscribe();
   }
 
   getPosts() {
@@ -51,7 +49,7 @@ export class PostListComponent implements OnInit {
 
   sortPosts() {
     this.posts.sort((a: Post, b: Post) => {
-      return b.createdAt.valueOf() - a.createdAt.valueOf();
+      return b.created_at.valueOf() - a.created_at.valueOf();
     });
   }
 }

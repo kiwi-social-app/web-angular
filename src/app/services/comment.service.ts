@@ -17,6 +17,7 @@ const httpOptions = {
   providedIn: 'root',
 })
 export class CommentService {
+  // private commentsUrl: string = 'http://localhost:8080/comments/';
   private commentsUrl: string = 'http://localhost:4000/comments/';
 
   constructor(private http: HttpClient, private auth: AuthService) {}
@@ -34,10 +35,12 @@ export class CommentService {
   }
 
   public createComment(comment: Comment, postID: string): Observable<any> {
-    comment.userID = this.auth.currentUser.uid;
-    comment.createdAt = new Date();
+    const userID = this.auth.currentUser.uid
+    const url = `${this.commentsUrl}`
+    comment.userID = userID;
     comment.postID = postID;
-    return this.http.post(this.commentsUrl, comment).pipe(map((response) => response));
+    comment.created_at = new Date();
+    return this.http.post(url, comment).pipe(map((response) => response));
   }
 
   public deleteComment(id: string): Observable<any> {
@@ -55,4 +58,5 @@ export class CommentService {
       catchError((error) => error)
     );
   }
+
 }
