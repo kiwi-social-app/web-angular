@@ -28,7 +28,6 @@ export class NewCommentComponent implements OnInit {
   constructor(
     private dataService: DataService,
     private fb: FormBuilder,
-    private router: Router,
     public auth: AuthService,
     private route: ActivatedRoute
   ) {
@@ -54,6 +53,5 @@ export class NewCommentComponent implements OnInit {
   createComment() {
     this.newComment = this.newCommentForm.getRawValue();
     this.dataService.createComment(this.newComment, this.postID);
-    this.router.navigate(['/']);
   }
 }

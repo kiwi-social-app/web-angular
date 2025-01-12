@@ -8,27 +8,27 @@
     <div class="form-block">
       <label for="title">Title:</label>
       <input
+      class="title-input"
         id="title"
         type="text"
-        placeholder="title"
         formControlName="title"
       />
     </div>
     <div class="form-block">
       <label for="body">Body:</label>
-      <input id="body" type="text" placeholder="body" formControlName="body" />
+      <textarea class="body-input" id="body" type="text" formControlName="body"></textarea>
     </div>
     <div class="form-block">
-      <label for="image">Image:</label>
+      <label for="image">Image link:</label>
       <input
+      class="image-input"
         id="image"
         type="text"
-        placeholder="image"
         formControlName="image"
       />
     </div>
 
-    <button type="submit">Publish</button>
+    <button class="publish-btn" type="submit">Publish</button>
   </form>
 
   <div *ngIf="success">Successfully submitted post.</div>

@@ -5,16 +5,14 @@
     [formGroup]="newCommentForm"
     (ngSubmit)="createComment()"
   >
-    Value: {{ newCommentForm.value | json }}
     <div class="form-block">
-      <label for="body">comment:</label>
-      <input
+      <textarea
+        class="body-input"
         id="comment"
         type="text"
-        placeholder="comment"
         formControlName="body"
-      />
+      ></textarea>
     </div>
-    <button type="submit">Publish Comment</button>
+    <button class="publish-btn" type="submit">Publish Comment</button>
   </form>
 </div>

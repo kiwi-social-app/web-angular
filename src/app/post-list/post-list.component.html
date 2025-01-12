@@ -2,7 +2,7 @@
   <h2 class="list-title">Post List</h2>
   <div class="list">
     <div class="card-container" *ngFor="let post of posts">
-      <app-post-card [post]="post" routerLink="['/posts', post.id]"></app-post-card>
+      <app-post-card [post]="post" [author]="author" routerLink="['/posts', post.id]"></app-post-card>
     </div>
   </div>
 </div>

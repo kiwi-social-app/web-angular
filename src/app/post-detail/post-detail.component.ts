@@ -12,15 +12,14 @@ import { Post } from '../services/post.model';
 })
 export class PostDetailComponent implements OnInit {
   public post!: Post;
-  public posts: Post[] | undefined;
-  public id!: string | null;
+  public postID!: string | null;
   public author!: any;
   constructor(
     private route: ActivatedRoute,
     private location: Location,
     private dataService: DataService
   ) {
-    this.id = String(this.route.snapshot.paramMap.get('id'));
+    this.postID = String(this.route.snapshot.paramMap.get('id'));
   }
 
   ngOnInit(): void {
@@ -28,8 +27,8 @@ export class PostDetailComponent implements OnInit {
   }
 
   getPost() {
-    if (this.id != null) {
-      this.dataService.getPostByID(this.id).then((data: any) => {
+    if (this.postID != null) {
+      this.dataService.getPostByID(this.postID).then((data: any) => {
         this.post = data;
         this.getAuthor(this.post.userID);
       });
@@ -37,7 +36,7 @@ export class PostDetailComponent implements OnInit {
   }
 
   getAuthor(userID: string) {
-    if (this.id != null) {
+    if (this.postID != null) {
       this.dataService.getPostAuthor(userID).then((authorData: any) => {
         this.author = authorData.username;
       });

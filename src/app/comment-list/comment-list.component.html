@@ -1,11 +1,16 @@
 <div class="comment-list-component">
   <h2 class="list-title">Comments</h2>
   <div class="list">
-    <div class="card-container" *ngFor="let comment of comments">
-      <div class="card-content">
+    <div *ngIf="comments.length > 0; else noComments">
+      <div class="comment-card" *ngFor="let comment of comments">
+        <div class="comment-header">
+          <div class="header-content">{{ author }}</div>
+        </div>
         <p>{{ comment.body }}</p>
-        <p>{{author}}</p>
       </div>
     </div>
+    <ng-template #noComments>
+      <p class="no-comment-msg">Be the first to leave a comment!</p>
+    </ng-template>
   </div>
 </div>

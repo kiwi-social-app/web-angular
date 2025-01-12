@@ -10,6 +10,7 @@ import { Post } from '../services/post.model';
 })
 export class PostListComponent implements OnInit {
   posts: Post[] = [];
+  public author!: any;
 
   constructor(private dataService: DataService) {}
 
@@ -24,7 +25,13 @@ export class PostListComponent implements OnInit {
           id: element.payload.doc.id,
           ...element.payload.doc.data(),
         });
+        this.getAuthor(element.payload.doc.data().userID);
       });
+    });
+  }
+  getAuthor(userID: string) {
+    this.dataService.getPostAuthor(userID).then((authorData: any) => {
+      this.author = authorData.username;
     });
   }
 }

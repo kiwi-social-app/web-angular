@@ -15,6 +15,22 @@
       display: flex;
       flex-direction: row;
       gap: 1rem;
+
+      .body-input {
+        width: 100%;
+        height: 20rem;
+        border: 1px solid skyblue;
+        border-radius: 0.5rem;
+        resize: none;
+      }
+    }
+    .publish-btn{
+      width: 10rem;
+      height: 2rem;
+      color: white;
+      background-color:skyblue;
+      border: none;
+      border-radius: 0.5rem;
     }
   }
 }

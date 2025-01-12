@@ -71,7 +71,6 @@ export class DataService {
       .ref.get()
       .then(function (doc) {
         if (doc.exists) {
-          console.log(doc.data());
           return doc.data();
         } else {
           console.log('No such document!');
@@ -90,7 +89,6 @@ export class DataService {
       .ref.get()
       .then(function (doc) {
         if (doc.exists) {
-          console.log(doc.data());
           return doc.data();
         } else {
           console.log('No such document!');
@@ -109,7 +107,6 @@ export class DataService {
       .ref.get()
       .then(function (doc) {
         if (doc.exists) {
-          console.log(doc.data());
           return doc.data();
         } else {
           console.log('No such document!');

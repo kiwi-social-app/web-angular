@@ -38,7 +38,6 @@ export class CommentListComponent implements OnInit {
   getAuthor(userID: string) {
     this.dataService.getCommentAuthor(userID).then((authorData: any) => {
       this.author = authorData.username;
-      console.log(this.author);
     });
   }
 }
