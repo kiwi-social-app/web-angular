@@ -19,8 +19,6 @@ posts: Post[] = [];
 fetchPosts() {
   this.dataService.getAllPosts().subscribe(res => {
     this.posts = res;
-    console.log(this.posts)
-
   });
 }
 

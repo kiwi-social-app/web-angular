@@ -32,8 +32,6 @@ export class SignupComponent implements OnInit {
       password: [null, [Validators.required]],
     });
 
-    // this.signUpForm.valueChanges.subscribe(console.log);
-
   }
 
   signUp() {

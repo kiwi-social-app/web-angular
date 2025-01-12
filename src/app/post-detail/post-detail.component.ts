@@ -20,7 +20,7 @@ export class PostDetailComponent implements OnInit {
     private dataService: DataService
   ) {}
 
-  async ngOnInit() {
+  ngOnInit(): void {
     this.getPost();
   }
 
@@ -31,8 +31,6 @@ export class PostDetailComponent implements OnInit {
       .subscribe((posts: any) => {
         const id = String(this.route.snapshot.paramMap.get('id'));
         this.post = posts.find((post: any) => post.id === id);
-
-        console.log(this.post);
       });
   }
 

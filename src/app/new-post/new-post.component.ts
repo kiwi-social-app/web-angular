@@ -28,12 +28,10 @@ export class NewPostComponent implements OnInit {
       content: [null, [Validators.required]],
       image: null,
     });
-
-    this.newPostForm.valueChanges.subscribe(console.log);
   }
 
   createPost() {
-    this.dataService.createPost(this.newPostForm.getRawValue()).subscribe((response) => console.log(`createPost : ${response}`));
+    this.dataService.createPost(this.newPostForm.getRawValue()).subscribe((response) => response);
   }
 
 }
