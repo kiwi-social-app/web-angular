@@ -9,7 +9,6 @@ import firebase from 'firebase/compat/app';
 import {of, Subscription} from 'rxjs';
 import { UserService } from './user.service';
 import {Auth, user} from "@angular/fire/auth";
-import {User} from "../models/user.model";
 
 @Injectable({
   providedIn: 'root',
@@ -96,7 +95,7 @@ export class AuthService {
   async signupUser(user: any): Promise<any> {
     try{
     let result = await this.afAuth.createUserWithEmailAndPassword(user.email, user.password);
-    console.log(result);
+
     if(result.user){
       await result.user?.sendEmailVerification();
       if (result.additionalUserInfo?.isNewUser) {
