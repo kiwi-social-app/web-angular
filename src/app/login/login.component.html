@@ -1,38 +1,35 @@
-
 <div class="login-component">
-    <form [formGroup]="loginForm" (ngSubmit)="loginUser()">
-          <div class="form-block">
-            <label for="email">email :</label>
-            <input
-              id="email"
-              type="email"
-              placeholder="email"
-              formControlName="email"
-            />
-          </div>
-          <div class="form-block">
-            <label for="password">password :</label>
-            <input
-              id="password"
-              type="password"
-              placeholder="password"
-              formControlName="password"
-            />
-          </div>
-          <div *ngIf="firebaseErrorMessage != ''" class="error">
-            <span>{{firebaseErrorMessage}}</span>
-          </div>
+  <h1>Log In</h1>
+  <form [formGroup]="loginForm" (ngSubmit)="loginUser()">
+    <div class="form-block">
+      <label for="email">email :</label>
+      <input
+        id="email"
+        type="email"
+        placeholder="email"
+        formControlName="email"
+      />
+    </div>
+    <div class="form-block">
+      <label for="password">password :</label>
+      <input
+        id="password"
+        type="password"
+        placeholder="password"
+        formControlName="password"
+      />
+    </div>
+    <div *ngIf="firebaseErrorMessage != ''" class="error">
+      <span>{{ firebaseErrorMessage }}</span>
+    </div>
 
-          <button>Log in</button>
-    </form>
-
+    <button>Log in</button>
+  </form>
+  <div>
+    <button (click)="auth.googleSignin()">Google Sign In</button>
+  </div>
 </div>
 
-<div *ngIf="auth.user$ | async as user; else login">
-  {{ user | json }}
-  <hr>
-  <button (click)="auth.signOut()">Sign Out</button>
+<div>
+  <app-signup></app-signup>
 </div>
-<ng-template #login>
-  <button (click)="auth.googleSignin()">Google Sign In</button>
-</ng-template>

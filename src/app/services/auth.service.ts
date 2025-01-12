@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { AngularFireAuth } from '@angular/fire/compat/auth';
 import { Router } from '@angular/router';
-import { Observable, of, switchMap } from 'rxjs';
+import { Observable, map, of, switchMap } from 'rxjs';
 import { User } from './user.model';
 import {
   AngularFirestore,
@@ -15,7 +15,7 @@ import firebase from 'firebase/compat/app';
 export class AuthService {
   userLoggedIn!: boolean;
   user$: Observable<User | null | undefined>;
-
+  currentUser!: any;
   constructor(
     public afAuth: AngularFireAuth,
     private router: Router,
@@ -40,10 +40,21 @@ export class AuthService {
     });
   }
 
+  public getCurrentUser() {
+    this.afAuth.user.pipe(map((data) => data)).subscribe((data) => {
+      this.setUser(data);
+    });
+    return this.currentUser;
+  }
+  public setUser(data: any) {
+    this.currentUser = data;
+  }
+
   async googleSignin() {
     const provider = new firebase.auth.GoogleAuthProvider();
     const credential = await this.afAuth.signInWithPopup(provider);
-    return this.updateUserData(credential.user);
+    this.updateUserData(credential.user);
+    this.router.navigate(['/']);
   }
 
   async signOut() {

@@ -1,10 +1,12 @@
 
 <div class="signup-component">
+  <h2>Not a user? Sign Up</h2>
+
     <form [formGroup]="signupForm" (ngSubmit)="signup()">
           <div class="form-block">
             <label for="email">email :</label>
             <input
-              id="email"
+              id="signup-email"
               type="email"
               placeholder="email"
               formControlName="email"
@@ -13,7 +15,7 @@
           <div class="form-block">
             <label for="password">password :</label>
             <input
-              id="password"
+              id="signup-password"
               type="password"
               placeholder="password"
               formControlName="password"

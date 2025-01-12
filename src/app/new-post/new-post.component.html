@@ -1,6 +1,10 @@
 <div class="new-post-component">
   <h1 class="title">New Post</h1>
-  <form class="new-post-form" [formGroup]="newPostForm" (ngSubmit)="createPost()">
+  <form
+    class="new-post-form"
+    [formGroup]="newPostForm"
+    (ngSubmit)="createPost()"
+  >
     Value: {{ newPostForm.value | json }}
     <div class="form-block">
       <label for="title">Title:</label>
@@ -13,12 +17,7 @@
     </div>
     <div class="form-block">
       <label for="body">Body:</label>
-      <input
-        id="body"
-        type="text"
-        placeholder="body"
-        formControlName="body"
-      />
+      <input id="body" type="text" placeholder="body" formControlName="body" />
     </div>
     <div class="form-block">
       <label for="image">Image:</label>
@@ -29,8 +28,9 @@
         formControlName="image"
       />
     </div>
+
     <button type="submit">Publish</button>
   </form>
 
-  <div *ngIf="success"> Successfully submitted post.</div>
+  <div *ngIf="success">Successfully submitted post.</div>
 </div>

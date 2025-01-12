@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { DataService } from '../services/data.service';
-import {Post} from '../services/post.model';
+import { Post } from '../services/post.model';
 
 @Component({
   selector: 'app-post-list',
@@ -14,10 +14,10 @@ export class PostListComponent implements OnInit {
   constructor(private dataService: DataService) {}
 
   ngOnInit(): void {
-    this.fetchPosts();
+    this.getPosts();
   }
 
-  fetchPosts() {
+  getPosts() {
     this.dataService.getAllPosts().subscribe((data) => {
       data.forEach((element: any) => {
         this.posts.push({

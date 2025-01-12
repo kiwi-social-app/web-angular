@@ -3,4 +3,6 @@ export interface Post {
   title: string;
   body: string;
   image?: string | null;
+  userID: string;
+  // author: string;
 }

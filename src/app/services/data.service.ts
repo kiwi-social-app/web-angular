@@ -3,6 +3,8 @@ import { Observable } from 'rxjs';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { AngularFirestore } from '@angular/fire/compat/firestore';
 import { Post } from './post.model';
+import { AuthService } from './auth.service';
+import { User } from './user.model';
 
 const httpOptions = {
   headers: new HttpHeaders({
@@ -17,8 +19,15 @@ export class DataService {
   // private postsUrl: string = 'http://localhost:4000/posts/';
   // private usersUrl: string = 'http://localhost:4000/users/';
   // private loginUrl: string = 'http://localhost:4000/login/';
+  currentUser!: User;
 
-  constructor(private http: HttpClient, private fireStore: AngularFirestore) {}
+  constructor(
+    private http: HttpClient,
+    private auth: AuthService,
+    private fireStore: AngularFirestore
+  ) {
+    this.currentUser = this.auth.getCurrentUser();
+  }
 
   public getAllPosts(): Observable<any> {
     return this.fireStore.collection('posts').snapshotChanges();
@@ -42,6 +51,9 @@ export class DataService {
   }
 
   public createPost(post: Post) {
+    post.userID = this.auth.currentUser.uid;
+   // post.author = this.auth.currentUser.displayname;
+    console.log(post);
     return this.fireStore.collection('posts').add(post);
   }
 
