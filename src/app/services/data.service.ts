@@ -27,7 +27,7 @@ export class DataService {
   }
 
   public getAllPosts(): Observable<any> {
-    return this.afs.collection('posts').snapshotChanges();
+    return this.afs.collection('posts', ref => ref.orderBy('createdAt', 'desc')).snapshotChanges();
   }
 
   public getPostByID(id: string): any {
@@ -126,7 +126,7 @@ export class DataService {
   }
 
   public getAllComments(): Observable<any> {
-    return this.afs.collection('comments').snapshotChanges();
+    return this.afs.collection('comments', ref => ref.orderBy('createdAt', 'desc')).snapshotChanges();
   }
 
   public getUserData(userID: any): any {
