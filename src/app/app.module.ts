@@ -26,6 +26,7 @@ import { PostEditComponent } from './components/post-edit/post-edit.component';
 import { initializeApp, provideFirebaseApp } from '@angular/fire/app';
 import { provideAuth, getAuth } from '@angular/fire/auth';
 import { ImageGalleryComponent } from './components/image-gallery/image-gallery.component';
+import { ChatComponent } from './components/chat/chat.component';
 @NgModule({
   declarations: [
     AppComponent,
@@ -42,6 +43,7 @@ import { ImageGalleryComponent } from './components/image-gallery/image-gallery.
     UserPostsComponent,
     PostEditComponent,
     ImageGalleryComponent,
+    ChatComponent,
   ],
   imports: [
     BrowserModule,

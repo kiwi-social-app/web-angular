@@ -9,10 +9,12 @@ import { PostListComponent } from './components/post-list/post-list.component';
 import { AuthGuard } from './services/auth.guard';
 import { SignupComponent } from './components/signup/signup.component';
 import { ImageGalleryComponent } from './components/image-gallery/image-gallery.component';
+import { ChatComponent } from './components/chat/chat.component';
 
 const routes: Routes = [
   { path: '', redirectTo: '/post-list', pathMatch: 'full' },
   { path: 'signup', component: SignupComponent },
+  { path: 'chat', component: ChatComponent},
   { path: 'login', component: LoginComponent },
   {
     path: 'dashboard',
