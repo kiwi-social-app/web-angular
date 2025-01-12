@@ -55,6 +55,7 @@ export class DashboardComponent implements OnInit {
           .getUserByID(user.uid)
           .subscribe((userData: any) => {
             this.currentUser = userData;
+            console.log(this.currentUser)
             this.initialiseForm();
           });
       }

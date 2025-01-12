@@ -19,6 +19,7 @@ export class UserService {
   constructor(private http: HttpClient) {}
 
   public addUser(user: any): Observable<any> {
+    console.log(user)
     return this.http.post<any>(this.usersUrl, user, httpOptions).pipe(
       tap((response: any) => console.log(response)),
       catchError((error: any) => {

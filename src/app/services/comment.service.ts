@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 
-import { HttpClient, HttpHeaders } from '@angular/common/http';
+import {HttpClient, HttpHeaders, HttpParams} from '@angular/common/http';
 import { catchError, map, Observable, of, tap, throwError } from 'rxjs';
 import { Post } from '../models/post.model';
 import { User } from '../models/user.model';
@@ -17,7 +17,6 @@ const httpOptions = {
   providedIn: 'root',
 })
 export class CommentService {
-  // private commentsUrl: string = 'http://localhost:8080/comments/';
   private commentsUrl: string = 'http://localhost:8080/comments/';
 
   constructor(private http: HttpClient, private auth: AuthService) {}
@@ -37,10 +36,23 @@ export class CommentService {
   public createComment(comment: Comment, postID: string): Observable<any> {
     const userID = this.auth.currentUser.uid
     const url = `${this.commentsUrl}`
-    comment.userID = userID;
-    comment.postID = postID;
     comment.created_at = new Date();
-    return this.http.post(url, comment).pipe(map((response) => response));
+
+    const params = new HttpParams()
+      .set('userId', userID)
+      .set('postId', postID)
+
+    console.log(comment)
+    console.log(params)
+
+    return this.http
+      .post(url, comment, {params})
+      .pipe(map((response) => response),
+        catchError((error) => {
+          console.log(error);
+          return of(error);
+        })
+      );
   }
 
   public deleteComment(id: string): Observable<any> {
