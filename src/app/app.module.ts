@@ -21,6 +21,8 @@ import { CommentListComponent } from './components/comment-list/comment-list.com
 import { NewCommentComponent } from './components/new-comment/new-comment.component';
 import { UserPostsComponent } from './components/user-posts/user-posts.component';
 import { PostEditComponent } from './components/post-edit/post-edit.component';
+import { initializeApp,provideFirebaseApp } from '@angular/fire/app';
+import { provideAuth,getAuth } from '@angular/fire/auth';
 @NgModule({
   declarations: [
     AppComponent,
@@ -45,7 +47,9 @@ import { PostEditComponent } from './components/post-edit/post-edit.component';
     ReactiveFormsModule,
     AngularFireModule.initializeApp(environment.firebase),
     AngularFirestoreModule,
-    AngularFireDatabaseModule
+    AngularFireDatabaseModule,
+    provideFirebaseApp(() => initializeApp(environment.firebase)),
+    provideAuth(() => getAuth())
 
   ],
   providers: [],
