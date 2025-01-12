@@ -1,12 +1,12 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 import { DashboardComponent } from './dashboard/dashboard.component';
-import { ItemListComponent } from './item-list/item-list.component';
+import { PostListComponent } from './post-list/post-list.component';
 
 const routes: Routes = [
-  { path: '', redirectTo: '/dashboard', pathMatch: 'full' },
+  { path: '', redirectTo: '/post-list', pathMatch: 'full' },
   { path: 'dashboard', component: DashboardComponent },
-  { path: 'item-list', component: ItemListComponent },
+  { path: 'post-list', component: PostListComponent },
 ];
 
 @NgModule({

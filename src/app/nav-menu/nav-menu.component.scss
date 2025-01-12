@@ -1,10 +1,91 @@
-.nav-menu-component{
-  padding: 1rem;
-  margin-bottom: 1rem;
-  background-color: lightgrey;
+.navbar-component {
+  display: flex;
+  position: fixed;
+  z-index: 2;
+  flex-direction: row;
+  background-color: #355591;
+  color: aliceblue;
+  width: 100vw;
+  box-shadow: 0px 2px 5px lightgrey;
 
-  a {
-    padding: 0.5rem;
-    text-decoration: none;
+  .navbar-content {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    max-width: 1024px;
+    padding: 1rem;
+    width: 100%;
+    margin: auto;
+    .navbar-brand {
+      display: flex;
+      flex-direction: row;
+      height: auto;
+      color: white;
+      gap: 1rem;
+
+      svg {
+        height: 100%;
+        width: "auto";
+        padding-right: 1rem;
+        color: white;
+      }
+      span {
+        margin: auto;
+      }
+    }
+    .nav-links {
+      display: flex;
+      flex-direction: row;
+      margin: auto 0;
+
+      .nav-link {
+        padding-left: 1rem;
+        padding-right: 1rem;
+        color: white;
+
+        &:hover {
+          color: rgba(255, 255, 255, 0.5);
+        }
+      }
+
+      // @media screen and (min-width: 720px) {
+      //   display: flex;
+      // }
+    }
+    a {
+      padding: 0.5rem;
+      text-decoration: none;
+    }
+  }
+}
+
+.mobile-menu {
+  position: fixed;
+  z-index: 3;
+  display: flex;
+  flex-direction: column;
+  background-color: #355591;
+  color: white;
+  margin-top: 4rem;
+  height: 100vh;
+  right: -100%;
+  transition: right 200ms linear 0s;
+
+  .mobile-nav-links {
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    text-align: left;
+    gap: 1rem;
+    padding: 2rem;
+    margin: 0 auto;
+    color: white;
+    .navLink {
+      color: white;
+    }
+  }
+
+  &.expand-navbar {
+    right: 0;
   }
 }

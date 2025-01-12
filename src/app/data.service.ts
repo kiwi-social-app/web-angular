@@ -18,6 +18,5 @@ export class DataService {
 
  public getAllPosts(): Observable<Post[]>{
     return this.http.get<Post[]>('http://localhost:4000/posts')
-
   }
 }
