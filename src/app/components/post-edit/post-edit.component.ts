@@ -50,8 +50,7 @@ export class PostEditComponent implements OnInit {
 
   updatePost() {
     if (this.postID != null) {
-      this.updatedPost = this.updatePostForm.getRawValue();
-
+      this.updatedPost = {...this.post, ...this.updatePostForm.getRawValue()};
       if (
         this.checkImageUrl(this.updatedPost.image) === true ||
         this.updatePostForm?.get('image')?.getRawValue().length === 0
