@@ -100,6 +100,16 @@
             ],
             "scripts": []
           }
+        },
+        "deploy": {
+          "builder": "@angular/fire:deploy",
+          "options": {
+            "prerender": false,
+            "ssr": false,
+            "browserTarget": "angular-app:build:production",
+            "firebaseProject": "chatter-app-33613",
+            "firebaseHostingSite": "chatter-app-33613"
+          }
         }
       }
     }

@@ -1,0 +1,14 @@
+{
+  "targets": {
+    "chatter-app-33613": {
+      "hosting": {
+        "angular-app": [
+          "chatter-app-33613"
+        ]
+      }
+    }
+  },
+  "projects": {
+    "default": "chatter-app-33613"
+  }
+}

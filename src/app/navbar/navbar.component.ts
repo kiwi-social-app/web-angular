@@ -1,6 +1,6 @@
 import { Component, Inject, OnInit } from '@angular/core';
-import { AuthService } from '@auth0/auth0-angular';
 import { DOCUMENT } from '@angular/common';
+import { AngularFireAuth } from '@angular/fire/compat/auth';
 
 @Component({
   selector: 'app-navbar',
@@ -10,15 +10,15 @@ import { DOCUMENT } from '@angular/common';
 export class NavbarComponent implements OnInit {
   constructor(
     @Inject(DOCUMENT) public document: Document,
-    public auth: AuthService
+    public afAuth: AngularFireAuth
   ) {}
 
   ngOnInit(): void {}
 
-  login() {
-    this.auth.loginWithPopup();
-  }
-  logout() {
-    this.auth.logout({ returnTo: this.document.location.origin });
-  }
+  // login() {
+  //   this.auth.loginWithPopup();
+  // }
+  // logout() {
+  //   this.auth.logout({ returnTo: this.document.location.origin });
+  // }
 }

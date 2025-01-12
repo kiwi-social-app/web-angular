@@ -1,0 +1,57 @@
+
+<div class="signup-component">
+    <form [formGroup]="signupForm" (ngSubmit)="signup()">
+        <div class="form-block">
+            <label for="firstname">firstname :</label>
+            <input
+              id="firstname"
+              type="text"
+              placeholder="firstname"
+              formControlName="firstname"
+            />
+          </div>
+          <div class="form-block">
+            <label for="lastname">lastname :</label>
+            <input
+              id="lastname"
+              type="text"
+              placeholder="lastname"
+              formControlName="lastname"
+            />
+          </div>
+          <div class="form-block">
+            <label for="username">username :</label>
+            <input
+              id="username"
+              type="text"
+              placeholder="username"
+              formControlName="username"
+            />
+          </div>
+          <div class="form-block">
+            <label for="email">email :</label>
+            <input
+              id="email"
+              type="email"
+              placeholder="email"
+              formControlName="email"
+            />
+          </div>
+          <div class="form-block">
+            <label for="password">password :</label>
+            <input
+              id="password"
+              type="password"
+              placeholder="password"
+              formControlName="password"
+            />
+          </div>
+          <div *ngIf="firebaseErrorMessage != ''" class="error">
+            <span>{{firebaseErrorMessage}}</span>
+          </div>
+
+          <button>Sign up</button>
+    </form>
+
+</div>
+

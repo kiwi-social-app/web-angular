@@ -1,5 +1,5 @@
 import { Component, OnInit, Output, EventEmitter } from '@angular/core';
-import { DataService, Post } from '../data.service';
+import { DataService, Post } from '../services/data.service';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { v4 as uuidv4 } from 'uuid';
 

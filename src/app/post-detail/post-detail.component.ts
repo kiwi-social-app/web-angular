@@ -3,7 +3,7 @@ import { ActivatedRoute } from '@angular/router';
 import { map } from 'rxjs/operators';
 import { Location } from '@angular/common';
 
-import { DataService, Post } from '../data.service';
+import { DataService, Post } from '../services/data.service';
 
 @Component({
   selector: 'app-post-detail',

@@ -8,12 +8,13 @@ import { NavbarComponent } from './navbar/navbar.component';
 import { DashboardComponent } from './dashboard/dashboard.component';
 import { HttpClientModule } from '@angular/common/http';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
-import { AuthModule } from '@auth0/auth0-angular';
 import { NewPostComponent } from './new-post/new-post.component';
 import { PostDetailComponent } from './post-detail/post-detail.component';
 import { PostCardComponent } from './post-card/post-card.component';
 import { environment } from '../environments/environment';
-
+import { AngularFireModule } from '@angular/fire/compat';
+import { AngularFirestoreModule } from '@angular/fire/compat/firestore';
+import { SignupComponent } from './signup/signup.component';
 @NgModule({
   declarations: [
     AppComponent,
@@ -23,6 +24,7 @@ import { environment } from '../environments/environment';
     NewPostComponent,
     PostDetailComponent,
     PostCardComponent,
+    SignupComponent,
   ],
   imports: [
     BrowserModule,
@@ -30,7 +32,9 @@ import { environment } from '../environments/environment';
     HttpClientModule,
     FormsModule,
     ReactiveFormsModule,
-    AuthModule.forRoot({ ...environment.auth }),
+    AngularFireModule.initializeApp(environment.firebaseConfig),
+    AngularFirestoreModule
+
   ],
   providers: [],
   bootstrap: [AppComponent],

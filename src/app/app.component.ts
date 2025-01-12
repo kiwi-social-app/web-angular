@@ -1,4 +1,8 @@
 import { Component } from '@angular/core';
+import { AngularFirestore } from '@angular/fire/compat/firestore';
+import { Observable } from 'rxjs';
+import { Post } from './services/data.service';
+
 @Component({
   selector: 'app-root',
   templateUrl: './app.component.html',
@@ -6,6 +10,9 @@ import { Component } from '@angular/core';
 })
 export class AppComponent {
   title = 'angular-app';
+  post = this.store.collection('post').valueChanges({idField: 'id'}) as Observable<Post[]>;
+  constructor(private store: AngularFirestore) {}
+
 
 
 }
