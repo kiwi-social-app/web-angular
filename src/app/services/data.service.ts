@@ -29,9 +29,9 @@ const httpOptions = {
   providedIn: 'root',
 })
 export class DataService {
-  private postsUrl: string = 'http://localhost:4000/posts/';
-  private usersUrl: string = 'http://localhost:4000/users/';
-  private loginUrl: string = 'http://localhost:4000/login/';
+  // private postsUrl: string = 'http://localhost:4000/posts/';
+  // private usersUrl: string = 'http://localhost:4000/users/';
+  // private loginUrl: string = 'http://localhost:4000/login/';
 
   constructor(private http: HttpClient, private fireStore: AngularFirestore) {}
 
@@ -44,17 +44,24 @@ export class DataService {
       .collection('posts')
       .doc(id)
       .ref.get()
-      .then((doc) => {
+      .then(function (doc) {
         if (doc.exists) {
-          console.log(doc.data());
           return doc.data();
         } else {
-          return 'Doc does not exist';
+          console.log('No such document!');
         }
       })
-      .catch((err) => {
-        console.error(err);
+      .catch(function (error) {
+        console.log('Error getting document:', error);
       });
+  }
+
+  public createPost(post: Post) {
+    return this.fireStore.collection('posts').add(post);
+  }
+
+  public deletePost(id: string) {
+    return this.fireStore.collection('posts').doc(id).delete();
   }
 
   // public addUser(user: any): Observable<any> {
@@ -65,19 +72,11 @@ export class DataService {
   //   return this.http.get<User[]>(this.usersUrl);
   // }
 
-  public createPost(post: Post) {
-    return this.fireStore.collection('posts').add(post);
-  }
+  // public signUp(user: User): Observable<any> {
+  //   return this.http.post(this.usersUrl, user, httpOptions);
+  // }
 
-  public deletePost(id: string) {
-    return this.fireStore.collection('posts').doc(id).delete();
-  }
-
-  public signUp(user: User): Observable<any> {
-    return this.http.post(this.usersUrl, user, httpOptions);
-  }
-
-  public logIn(login: { username: string; password: string }): Observable<any> {
-    return this.http.post(this.loginUrl, login, httpOptions);
-  }
+  // public logIn(login: { username: string; password: string }): Observable<any> {
+  //   return this.http.post(this.loginUrl, login, httpOptions);
+  // }
 }

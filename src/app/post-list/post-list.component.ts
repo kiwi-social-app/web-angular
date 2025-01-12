@@ -1,3 +1,4 @@
+import { identifierName } from '@angular/compiler';
 import { Component, OnInit } from '@angular/core';
 import { DataService, Post } from '../services/data.service';
 
@@ -19,7 +20,10 @@ export class PostListComponent implements OnInit {
   fetchPosts() {
     this.dataService.getAllPosts().subscribe((data) => {
       data.forEach((element: any) => {
-        this.posts.push(element.payload.doc.data());
+        this.posts.push({
+          id: element.payload.doc.id,
+          ...element.payload.doc.data(),
+        });
       });
     });
   }

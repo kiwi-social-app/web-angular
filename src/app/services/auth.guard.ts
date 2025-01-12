@@ -23,7 +23,7 @@ export class AuthGuard implements CanActivate {
     | boolean
     | UrlTree {
     return new Promise((resolve, reject) => {
-      this.afAuth.onAuthStateChanged((user) => {
+      this.afAuth.onAuthStateChanged((user: any) => {
         if (user) {
           resolve(true);
         } else {

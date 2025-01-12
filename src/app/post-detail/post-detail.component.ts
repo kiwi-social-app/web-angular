@@ -19,7 +19,7 @@ export class PostDetailComponent implements OnInit {
     private location: Location,
     private dataService: DataService
   ) {
-    this.id = this.route.snapshot.paramMap.get('id');
+    this.id = String(this.route.snapshot.paramMap.get('id'));
   }
 
   ngOnInit(): void {
@@ -29,7 +29,7 @@ export class PostDetailComponent implements OnInit {
   getPost() {
     if (this.id != null) {
       this.dataService.getPostByID(this.id).then((data: any) => {
-        console.log(data);
+        this.post = data;
       });
     }
   }
