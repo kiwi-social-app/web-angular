@@ -1,11 +1,10 @@
-import { Component, OnInit, Output, EventEmitter } from '@angular/core';
-import { FirestoreService } from '../../services/firestore.service';
-import { Post } from '../../models/post.model';
+import { Component, EventEmitter, OnInit, Output } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
-import { AuthService } from '../../services/auth.service';
+import { PostService } from 'src/app/services/post.service';
+import { Post } from '../../models/post.model';
 import { User } from '../../models/user.model';
-import { NodejsService } from 'src/app/services/nodejs.service';
+import { AuthService } from '../../services/auth.service';
 
 @Component({
   selector: 'app-new-post',
@@ -23,8 +22,7 @@ export class NewPostComponent implements OnInit {
   imageValidation: boolean = true;
 
   constructor(
-    private nodejsService: NodejsService,
-    private firestoreService: FirestoreService,
+    private postService: PostService,
     private fb: FormBuilder,
     private router: Router,
     public auth: AuthService
@@ -44,32 +42,21 @@ export class NewPostComponent implements OnInit {
     });
   }
 
-  createNodePost() {
-    this.newPost = this.newPostForm.getRawValue();
-    if (
-      this.checkImageUrl(this.newPost.image) === true ||
-      this.newPostForm?.get('image')?.getRawValue().length === 0
-    ) {
-      this.nodejsService.createPost(this.newPost)
-      this.router.navigate(['/']);
-    } else {
-      this.imageValidation = false;
-    }
-  }
-
   createPost() {
     this.newPost = this.newPostForm.getRawValue();
     if (
       this.checkImageUrl(this.newPost.image) === true ||
       this.newPostForm?.get('image')?.getRawValue().length === 0
     ) {
-      this.imageValidation = true;
-      this.firestoreService.createPost(this.newPost);
-      this.router.navigate(['/']);
+      this.postService.createPost(this.newPost).subscribe((response) => {
+        console.log(response);
+        this.router.navigate(['/']);
+      });
     } else {
       this.imageValidation = false;
     }
   }
+
 
   checkImageUrl(url: any): any {
     var request = new XMLHttpRequest();

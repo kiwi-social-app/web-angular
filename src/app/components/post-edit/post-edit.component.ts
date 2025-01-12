@@ -1,8 +1,8 @@
 import { Component, EventEmitter, OnInit, Output } from '@angular/core';
-import { ActivatedRoute } from '@angular/router';
-import { FirestoreService } from '../../services/firestore.service';
-import { Post } from '../../models/post.model';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { ActivatedRoute, Router } from '@angular/router';
+import { PostService } from 'src/app/services/post.service';
+import { Post } from '../../models/post.model';
 
 @Component({
   selector: 'app-post-edit',
@@ -27,8 +27,9 @@ export class PostEditComponent implements OnInit {
 
   constructor(
     private route: ActivatedRoute,
+    private router: Router,
     private fb: FormBuilder,
-    private firestoreService: FirestoreService
+    private postService: PostService
   ) {
     this.postID = String(this.route.snapshot.paramMap.get('id'));
   }
@@ -47,7 +48,7 @@ export class PostEditComponent implements OnInit {
 
   getPost() {
     if (this.postID != null) {
-      this.firestoreService.getPostByID(this.postID).then((data: any) => {
+      this.postService.fetchPostByID(this.postID).subscribe((data: any) => {
         this.post = data;
         this.initialiseForm();
       });
@@ -63,7 +64,10 @@ export class PostEditComponent implements OnInit {
         this.updatePostForm?.get('image')?.getRawValue().length === 0
       ) {
         this.imageValidation = true;
-        this.firestoreService.updatePost(this.postID, this.updatedPost);
+        this.postService
+          .updatePost(this.postID, this.updatedPost)
+          .subscribe((response: any) => response);
+
         // this.router.navigate(['/']);
       } else {
         this.imageValidation = false;
@@ -72,7 +76,11 @@ export class PostEditComponent implements OnInit {
   }
 
   deletePost(postID: string) {
-    this.firestoreService.deletePost(postID);
+    console.log(postID);
+    this.postService.deletePost(postID).subscribe((response: any) => {
+      console.log(response);
+      this.router.navigate(['/']);
+    });
   }
 
   checkImageUrl(url: any): any {
@@ -80,7 +88,7 @@ export class PostEditComponent implements OnInit {
     request.open('GET', url, true);
     request.send();
     request.onload = function () {
-      if (request.status == 200) {
+      if (request.status == 200 || url === '../../assets/placeholder.png') {
         console.log(`image exists`);
         return true;
       } else {

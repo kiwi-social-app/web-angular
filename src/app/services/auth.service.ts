@@ -1,13 +1,14 @@
 import { Injectable } from '@angular/core';
 import { AngularFireAuth } from '@angular/fire/compat/auth';
-import { Router } from '@angular/router';
-import { Observable, map, of, switchMap } from 'rxjs';
-import { User } from '../models/user.model';
 import {
   AngularFirestore,
   AngularFirestoreDocument,
 } from '@angular/fire/compat/firestore';
+import { Router } from '@angular/router';
 import firebase from 'firebase/compat/app';
+import { map, Observable, of, switchMap } from 'rxjs';
+import { User } from '../models/user.model';
+import { UserService } from './user.service';
 
 @Injectable({
   providedIn: 'root',
@@ -19,7 +20,8 @@ export class AuthService {
   constructor(
     public afAuth: AngularFireAuth,
     private router: Router,
-    private afs: AngularFirestore
+    private afs: AngularFirestore,
+    private userService: UserService
   ) {
     this.user$ = this.afAuth.authState.pipe(
       switchMap((user) => {
@@ -54,6 +56,12 @@ export class AuthService {
     const provider = new firebase.auth.GoogleAuthProvider();
     const credential = await this.afAuth.signInWithPopup(provider);
     this.updateUserData(credential.user);
+    if (credential.additionalUserInfo?.isNewUser) {
+      this.userService
+        .addUser(credential.user)
+        .subscribe((response) => response);
+    }
+
     this.router.navigate(['/']);
   }
 
@@ -97,6 +105,11 @@ export class AuthService {
         let emailLower = user.email.toLowerCase();
         result.user?.sendEmailVerification();
         this.updateUserData(result.user);
+        if (result.additionalUserInfo?.isNewUser) {
+          this.userService
+            .addUser(result.user)
+            .subscribe((response) => response);
+        }
       })
       .catch((error) => {
         console.log('Auth Service: signup error', error);

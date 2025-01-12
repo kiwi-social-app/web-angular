@@ -1,6 +1,6 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { Subscription } from 'rxjs';
-import { NodejsService } from 'src/app/services/nodejs.service';
+import { PostService } from 'src/app/services/post.service';
 import { Post } from '../../models/post.model';
 import { FirestoreService } from '../../services/firestore.service';
 
@@ -20,31 +20,21 @@ export class PostListComponent implements OnInit {
   searchResults: Post[] = [];
   subscription!: Subscription;
 
-  constructor(private nodejsService: NodejsService, private firestoreService: FirestoreService) {}
+  constructor(private postService: PostService, private firestoreService: FirestoreService) {}
 
   ngOnInit(): void {
     this.getPosts();
-    this.getNodePosts();
   }
 
   ngOnDestroy() {
     this.subscription.unsubscribe();
   }
 
-  getNodePosts(){
-    this.nodejsService.fetchPosts().subscribe((response: Post[]) => {
+  getPosts(){
+   this.subscription = this.postService.fetchPosts().subscribe((response: Post[]) => {
       console.log(response)
       this.posts = response;
     })
-  }
-
-  getPosts() {
-    this.subscription = this.firestoreService
-      .fetchPosts()
-
-      .subscribe((response) => {
-        this.buildPosts(response);
-      });
   }
 
   async buildPosts(response: any) {

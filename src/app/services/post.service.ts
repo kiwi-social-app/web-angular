@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 
 import { HttpClient, HttpHeaders } from '@angular/common/http';
-import { Observable } from 'rxjs';
+import { catchError, map, Observable, of, tap, throwError } from 'rxjs';
 import { Post } from '../models/post.model';
 import { User } from '../models/user.model';
 import { AuthService } from './auth.service';
@@ -15,7 +15,7 @@ const httpOptions = {
 @Injectable({
   providedIn: 'root',
 })
-export class NodejsService {
+export class PostService {
   private postsUrl: string = 'http://localhost:4000/posts/';
   private usersUrl: string = 'http://localhost:4000/users/';
   private loginUrl: string = 'http://localhost:4000/login/';
@@ -42,31 +42,46 @@ export class NodejsService {
     return this.http.get<Post>(`${this.postsUrl}${id}`, httpOptions);
   }
 
-  public addUser(user: any): Observable<any> {
-    return this.http.post<any>(this.usersUrl, user, httpOptions);
-  }
-
-  public fetchUsers(): Observable<User[]> {
-    return this.http.get<User[]>(this.usersUrl);
-  }
-
   public createPost(post: Post): Observable<any> {
     post.userID = this.auth.currentUser.uid;
     post.createdAt = new Date();
     post.image = this.checkImage(post.image);
-    return this.http.post(this.postsUrl, post, httpOptions);
+
+    return this.http
+      .post(this.postsUrl, post)
+      .pipe(map((response) => response));
   }
 
-  public signUp(user: User): Observable<any> {
-    return this.http.post(this.usersUrl, user, httpOptions);
+  public deletePost(id: string): Observable<any> {
+    const url = `${this.postsUrl}${id}`;
+    return this.http.delete(url).pipe(
+      map((response) => response),
+      catchError((error) => error)
+    );
+  }
+
+  public updatePost(postID: string, post: Post) {
+    const url = `${this.postsUrl}${postID}`;
+    post.updatedAt = new Date();
+    post.image = this.checkImage(post.image);
+    console.log(post);
+    console.log(url);
+    return this.http.put(url, post, httpOptions).pipe(
+      tap((response) => {
+        console.log(response);
+      }),
+      catchError((error) => {
+        console.log(error);
+        return of(error);
+      })
+    );
   }
 
   public getPostAuthor(userID: string): Observable<any> {
     return this.http.get<User>(`${this.usersUrl}${userID}`, httpOptions);
   }
 
-  public logIn(login: { username: string; password: string }): Observable<any> {
-    return this.http.post(this.loginUrl, login, httpOptions);
-  }
-
+  // public logIn(login: { username: string; password: string }): Observable<any> {
+  //   return this.http.post(this.loginUrl, login, httpOptions);
+  // }
 }

@@ -1,6 +1,6 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
-import { FirestoreService } from '../../services/firestore.service';
+import { PostService } from 'src/app/services/post.service';
 
 @Component({
   selector: 'app-user-posts',
@@ -10,15 +10,15 @@ import { FirestoreService } from '../../services/firestore.service';
 export class UserPostsComponent implements OnInit {
   @Input() posts!: any;
 
-  constructor(
-    private firestoreService: FirestoreService,
-    private router: Router
-  ) {}
+  constructor(private postService: PostService, private router: Router) {}
 
   ngOnInit(): void {}
 
   deletePost(postID: string) {
-    this.firestoreService.deletePost(postID);
+    console.log(postID);
+    this.postService.deletePost(postID).subscribe((response: any) => {
+      console.log(response);
+    });
   }
   editPost(postID: string) {
     this.router.navigate([`/post-edit/${postID}`]);

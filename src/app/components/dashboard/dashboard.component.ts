@@ -1,10 +1,11 @@
 import { Component, EventEmitter, OnInit, Output } from '@angular/core';
-import { FirestoreService } from '../../services/firestore.service';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { Subscription } from 'rxjs';
+import { Post } from 'src/app/models/post.model';
+import { PostService } from 'src/app/services/post.service';
+import { UserService } from 'src/app/services/user.service';
 import { User } from '../../models/user.model';
 import { AuthService } from '../../services/auth.service';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { Post } from 'src/app/models/post.model';
-import { Subscription } from 'rxjs';
 
 @Component({
   selector: 'app-dashboard',
@@ -26,7 +27,8 @@ export class DashboardComponent implements OnInit {
   constructor(
     public auth: AuthService,
     private fb: FormBuilder,
-    private firestoreService: FirestoreService
+    private postService: PostService,
+    private userService: UserService
   ) {}
 
   ngOnInit(): void {
@@ -48,14 +50,19 @@ export class DashboardComponent implements OnInit {
   getUser() {
     this.subscription = this.auth.afAuth.authState.subscribe((user) => {
       if (user) {
-        this.currentUser = this.firestoreService
-          .getUserData(user.uid)
-          .then((userData: any) => {
+        this.currentUser = this.userService
+          .getUserByID(user.uid)
+          .subscribe((userData: any) => {
             this.currentUser = userData;
+            console.log(this.currentUser);
             this.initialiseForm();
 
-            this.firestoreService.fetchPosts().subscribe((response) => {
-              this.buildPosts(response);
+            this.postService.fetchPosts()
+            .subscribe((response) => {
+              response.forEach((post) => {
+                console.log(post)
+                this.buildPosts(post);
+              });
             });
           });
       }
@@ -64,7 +71,7 @@ export class DashboardComponent implements OnInit {
 
   async buildPosts(response: any) {
     if (
-      response.userID === this.currentUser.uid &&
+      response.userID === this.currentUser.id &&
       !this.posts.some((e) => e.id === response.id)
     ) {
       this.posts.push({
@@ -75,7 +82,9 @@ export class DashboardComponent implements OnInit {
 
   updateProfile() {
     this.updatedUser = this.editProfileForm.getRawValue();
-    this.firestoreService.updateUser(this.currentUser.uid, this.updatedUser);
+    this.userService
+      .updateUser(this.currentUser.id, this.updatedUser)
+      .subscribe((response: any) => response);
   }
 
   editBtn() {

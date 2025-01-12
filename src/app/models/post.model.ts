@@ -7,4 +7,5 @@ export interface Post {
   image?: string | null;
   userID: string;
   createdAt: any;
+  updatedAt?: any;
 }

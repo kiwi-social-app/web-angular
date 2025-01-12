@@ -1,9 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 
-import { NodejsService } from 'src/app/services/nodejs.service';
+import { PostService } from 'src/app/services/post.service';
 import { Post } from '../../models/post.model';
-import { FirestoreService } from '../../services/firestore.service';
 
 @Component({
   selector: 'app-post-detail',
@@ -15,6 +14,7 @@ export class PostDetailComponent implements OnInit {
     title: '',
     body: '',
     createdAt: null,
+    updatedAt: null,
     userID: '',
     id: '',
     image: null,
@@ -24,29 +24,18 @@ export class PostDetailComponent implements OnInit {
 
   constructor(
     private route: ActivatedRoute,
-    private nodejsService: NodejsService,
-    private firestoreService: FirestoreService
+    private postService: PostService
   ) {
     this.postID = String(this.route.snapshot.paramMap.get('id'));
   }
 
   ngOnInit(): void {
     this.getPost();
-    this.getPostNode();
   }
 
   getPost() {
     if (this.postID != null) {
-      this.firestoreService.getPostByID(this.postID).then((data: any) => {
-        this.post = data;
-        this.getAuthor(this.post.userID);
-      });
-    }
-  }
-
-  getPostNode() {
-    if (this.postID != null) {
-      this.nodejsService.fetchPostByID(this.postID).subscribe((data: any) => {
+      this.postService.fetchPostByID(this.postID).subscribe((data: any) => {
         this.post = data;
         this.getAuthor(this.post.userID);
       });
@@ -55,7 +44,7 @@ export class PostDetailComponent implements OnInit {
 
   getAuthor(userID: string) {
     if (this.postID != null) {
-      this.firestoreService.getPostAuthor(userID).then((authorData: any) => {
+      this.postService.getPostAuthor(userID).subscribe((authorData: any) => {
         this.author = authorData.username;
       });
     }
