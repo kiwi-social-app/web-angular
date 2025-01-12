@@ -9,7 +9,6 @@ import { DashboardComponent } from './dashboard/dashboard.component';
 import { HttpClientModule } from '@angular/common/http';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { AuthModule } from '@auth0/auth0-angular';
-import { SignupComponent } from './signup/signup.component';
 import { NewPostComponent } from './new-post/new-post.component';
 import { PostDetailComponent } from './post-detail/post-detail.component';
 import { PostCardComponent } from './post-card/post-card.component';
@@ -21,7 +20,6 @@ import { environment } from '../environments/environment';
     PostListComponent,
     NavbarComponent,
     DashboardComponent,
-    SignupComponent,
     NewPostComponent,
     PostDetailComponent,
     PostCardComponent,

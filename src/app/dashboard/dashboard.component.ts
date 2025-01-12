@@ -12,7 +12,5 @@ export class DashboardComponent implements OnInit {
 
   constructor(public auth: AuthService, private dataService: DataService) {}
 
-  ngOnInit(): void {
-console.log(this.auth.user$)
-  }
+  ngOnInit(): void {}
 }
