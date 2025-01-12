@@ -3,6 +3,8 @@ import { DataService } from '../../services/data.service';
 import { User } from '../../models/user.model';
 import { AuthService } from '../../services/auth.service';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { Post } from 'src/app/models/post.model';
+import { Subscription } from 'rxjs';
 
 @Component({
   selector: 'app-dashboard',
@@ -14,11 +16,12 @@ export class DashboardComponent implements OnInit {
 
   editProfileForm!: FormGroup;
   users: User[] = [];
-  posts: any = [];
+  posts: Post[] = [];
 
   currentUser!: any;
   updatedUser!: User;
   editMode: boolean = false;
+  subscription!: Subscription;
 
   constructor(
     public auth: AuthService,
@@ -28,6 +31,9 @@ export class DashboardComponent implements OnInit {
 
   ngOnInit(): void {
     this.getUser();
+  }
+  ngOnDestroy() {
+    this.subscription.unsubscribe();
   }
 
   initialiseForm(): void {
@@ -40,7 +46,7 @@ export class DashboardComponent implements OnInit {
   }
 
   getUser() {
-    this.auth.afAuth.authState.subscribe((user) => {
+    this.subscription = this.auth.afAuth.authState.subscribe((user) => {
       if (user) {
         this.currentUser = this.dataService
           .getUserData(user.uid)
@@ -48,22 +54,23 @@ export class DashboardComponent implements OnInit {
             this.currentUser = userData;
             this.initialiseForm();
 
-            this.dataService.getAllPosts().subscribe((data) => {
-              data.forEach(async (element: any) => {
-                if (
-                  element.payload.doc.data().userID === this.currentUser.uid
-                ) {
-                  this.posts.push({
-                    id: element.payload.doc.id,
-                    ...element.payload.doc.data(),
-                  });
-                }
-              });
-              this.sortPosts();
+            this.dataService.fetchPosts().subscribe((response) => {
+              this.buildPosts(response);
             });
           });
       }
     });
+  }
+
+  async buildPosts(response: any) {
+    if (
+      response.userID === this.currentUser.uid &&
+      !this.posts.some((e) => e.id === response.id)
+    ) {
+      this.posts.push({
+        ...response,
+      });
+    }
   }
 
   updateProfile() {

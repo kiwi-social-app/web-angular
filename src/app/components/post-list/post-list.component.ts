@@ -1,6 +1,7 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { DataService } from '../../services/data.service';
 import { Post } from '../../models/post.model';
+import { Subscription } from 'rxjs';
 
 @Component({
   selector: 'app-post-list',
@@ -16,6 +17,7 @@ export class PostListComponent implements OnInit {
   authorData!: any;
   filteredList!: Post[];
   searchResults: Post[] = [];
+  subscription!: Subscription;
 
   constructor(private dataService: DataService) {}
 
@@ -23,19 +25,28 @@ export class PostListComponent implements OnInit {
     this.getPosts();
   }
 
-  getPosts() {
-    this.dataService.getAllPosts().subscribe((data) => {
-      data.forEach(async (element: any) => {
-        this.author = await this.getAuthor(element.payload.doc.data().userID);
+  ngOnDestroy() {
+    this.subscription.unsubscribe();
+  }
 
-        this.posts.push({
-          id: element.payload.doc.id,
-          ...element.payload.doc.data(),
-          author: this.author,
-        });
-        this.sortPosts();
+  getPosts() {
+    this.subscription = this.dataService
+      .fetchPosts()
+
+      .subscribe((response) => {
+        this.buildPosts(response);
       });
-    });
+  }
+
+  async buildPosts(response: any) {
+    if (!this.posts.some((e) => e.id === response.id)) {
+      this.author = await this.getAuthor(response.userID);
+
+      this.posts.push({
+        ...response,
+        author: this.author,
+      });
+    }
   }
 
   async getAuthor(userID: string): Promise<string> {
@@ -60,5 +71,4 @@ export class PostListComponent implements OnInit {
       return b.createdAt.valueOf() - a.createdAt.valueOf();
     });
   }
-
 }

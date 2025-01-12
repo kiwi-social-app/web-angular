@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { DataService } from '../../services/data.service';
+import { Subscription } from 'rxjs';
 
 @Component({
   selector: 'app-comment-list',
@@ -12,6 +13,7 @@ export class CommentListComponent implements OnInit {
   public postID: string;
   public author!: any;
   authorData!: any;
+  subscription!: Subscription;
 
   constructor(private dataService: DataService, private route: ActivatedRoute) {
     this.postID = String(this.route.snapshot.paramMap.get('id'));
@@ -21,20 +23,27 @@ export class CommentListComponent implements OnInit {
     this.getComments();
   }
 
-  async getComments() {
-    await this.dataService
-      .fetchComments()
-      .subscribe((data) => this.buildComments(data));
+  ngOnDestroy() {
+    this.subscription.unsubscribe();
   }
 
-  async buildComments(data: any) {
-    data.forEach(async (element: any) => {
-      if (element.postID === this.postID) {
-        const author = await this.getAuthor(element.userID);
-        const data = element;
-        this.comments.push({ author, ...data });
-      }
-    });
+  getComments() {
+    this.subscription = this.dataService
+      .fetchComments()
+      .subscribe((response) => {
+        return this.buildComments(response);
+      });
+  }
+
+  async buildComments(response: any) {
+    if (
+      response.postID === this.postID &&
+      !this.comments.some((e) => e.id === response.id)
+    ) {
+      const author = await this.getAuthor(response.userID);
+      const data = response;
+      this.comments.push({ author, ...data });
+    }
   }
 
   async getAuthor(userID: string): Promise<string> {
