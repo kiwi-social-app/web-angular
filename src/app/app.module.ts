@@ -6,7 +6,7 @@ import { AppComponent } from './app.component';
 import { PostListComponent } from './components/post-list/post-list.component';
 import { NavbarComponent } from './components/navbar/navbar.component';
 import { DashboardComponent } from './components/dashboard/dashboard.component';
-import { HttpClientModule } from '@angular/common/http';
+import { provideHttpClient, withInterceptorsFromDi } from '@angular/common/http';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { NewPostComponent } from './components/new-post/new-post.component';
 import { PostDetailComponent } from './components/post-detail/post-detail.component';
@@ -26,37 +26,34 @@ import {environment} from "../environments/environment";
 import {AngularFireAuthModule} from "@angular/fire/compat/auth";
 import {getStorage, provideStorage} from "@angular/fire/storage";
 
-@NgModule({
-  declarations: [
-    AppComponent,
-    PostListComponent,
-    NavbarComponent,
-    DashboardComponent,
-    NewPostComponent,
-    PostDetailComponent,
-    PostCardComponent,
-    SignupComponent,
-    LoginComponent,
-    CommentListComponent,
-    NewCommentComponent,
-    UserPostsComponent,
-    PostEditComponent,
-    ImageGalleryComponent,
-    ChatComponent,
-  ],
-  imports: [
-    BrowserModule,
-    AppRoutingModule,
-    HttpClientModule,
-    FormsModule,
-    ReactiveFormsModule,
-    AngularFireModule.initializeApp(environment.firebase),
-    AngularFireAuthModule,
+@NgModule({ declarations: [
+        AppComponent,
+        PostListComponent,
+        NavbarComponent,
+        DashboardComponent,
+        NewPostComponent,
+        PostDetailComponent,
+        PostCardComponent,
+        SignupComponent,
+        LoginComponent,
+        CommentListComponent,
+        NewCommentComponent,
+        UserPostsComponent,
+        PostEditComponent,
+        ImageGalleryComponent,
+        ChatComponent,
+    ],
+    bootstrap: [AppComponent], imports: [BrowserModule,
+        AppRoutingModule,
+        FormsModule,
+        ReactiveFormsModule,
+        AngularFireModule.initializeApp(environment.firebase),
+        AngularFireAuthModule,
+],
+  providers: [
+    provideHttpClient(withInterceptorsFromDi()),
     provideFirebaseApp(() => initializeApp(environment.firebase)),
     provideAuth(() => getAuth()),
-    provideStorage(() => getStorage()),
-  ],
-  providers: [],
-  bootstrap: [AppComponent],
-})
+    provideStorage(() => getStorage())
+  ] })
 export class AppModule {}

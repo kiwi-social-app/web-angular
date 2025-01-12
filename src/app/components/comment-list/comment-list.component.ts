@@ -5,9 +5,10 @@ import { CommentService } from 'src/app/services/comment.service';
 import { Comment } from '../../models/comment.model';
 
 @Component({
-  selector: 'app-comment-list',
-  templateUrl: './comment-list.component.html',
-  styleUrls: ['./comment-list.component.scss'],
+    selector: 'app-comment-list',
+    templateUrl: './comment-list.component.html',
+    styleUrls: ['./comment-list.component.scss'],
+    standalone: false
 })
 export class CommentListComponent implements OnInit {
   public comments$!: Observable<Comment[]>;

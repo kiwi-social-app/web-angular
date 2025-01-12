@@ -5,9 +5,10 @@ import { PostService } from 'src/app/services/post.service';
 import { Post } from '../../models/post.model';
 
 @Component({
-  selector: 'app-post-edit',
-  templateUrl: './post-edit.component.html',
-  styleUrls: ['./post-edit.component.scss'],
+    selector: 'app-post-edit',
+    templateUrl: './post-edit.component.html',
+    styleUrls: ['./post-edit.component.scss'],
+    standalone: false
 })
 export class PostEditComponent implements OnInit {
   @Output() onUpdatePost: EventEmitter<Post> = new EventEmitter();

@@ -4,9 +4,10 @@ import { PostService } from 'src/app/services/post.service';
 import { Post } from '../../models/post.model';
 
 @Component({
-  selector: 'app-post-list',
-  templateUrl: './post-list.component.html',
-  styleUrls: ['./post-list.component.scss'],
+    selector: 'app-post-list',
+    templateUrl: './post-list.component.html',
+    styleUrls: ['./post-list.component.scss'],
+    standalone: false
 })
 export class PostListComponent implements OnInit {
   @Input() searchTerm!: string;

@@ -7,9 +7,10 @@ import { User } from '../../models/user.model';
 import { AuthService } from '../../services/auth.service';
 
 @Component({
-  selector: 'app-new-post',
-  templateUrl: './new-post.component.html',
-  styleUrls: ['./new-post.component.scss'],
+    selector: 'app-new-post',
+    templateUrl: './new-post.component.html',
+    styleUrls: ['./new-post.component.scss'],
+    standalone: false
 })
 export class NewPostComponent implements OnInit {
   @Output() onNewPost: EventEmitter<Post> = new EventEmitter();

@@ -7,9 +7,10 @@ import { Post } from '../../models/post.model';
 import { AuthService } from '../../services/auth.service';
 
 @Component({
-  selector: 'app-new-comment',
-  templateUrl: './new-comment.component.html',
-  styleUrls: ['./new-comment.component.scss'],
+    selector: 'app-new-comment',
+    templateUrl: './new-comment.component.html',
+    styleUrls: ['./new-comment.component.scss'],
+    standalone: false
 })
 export class NewCommentComponent implements OnInit {
   @Output() onNewComment: EventEmitter<Comment> = new EventEmitter();

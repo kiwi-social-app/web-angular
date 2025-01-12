@@ -3,9 +3,10 @@ import { DOCUMENT } from '@angular/common';
 import { Auth } from '@angular/fire/auth';
 
 @Component({
-  selector: 'app-navbar',
-  templateUrl: './navbar.component.html',
-  styleUrls: ['./navbar.component.scss'],
+    selector: 'app-navbar',
+    templateUrl: './navbar.component.html',
+    styleUrls: ['./navbar.component.scss'],
+    standalone: false
 })
 export class NavbarComponent implements OnInit {
   isCollapsed: boolean = true;

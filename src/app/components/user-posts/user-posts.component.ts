@@ -5,9 +5,10 @@ import { Post } from 'src/app/models/post.model';
 import { PostService } from 'src/app/services/post.service';
 
 @Component({
-  selector: 'app-user-posts',
-  templateUrl: './user-posts.component.html',
-  styleUrls: ['./user-posts.component.scss'],
+    selector: 'app-user-posts',
+    templateUrl: './user-posts.component.html',
+    styleUrls: ['./user-posts.component.scss'],
+    standalone: false
 })
 export class UserPostsComponent implements OnInit {
   @Input() userPosts!: Post[];

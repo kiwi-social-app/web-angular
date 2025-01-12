@@ -9,9 +9,10 @@ import {
 import { AuthService } from 'src/app/services/auth.service';
 
 @Component({
-  selector: 'app-image-gallery',
-  templateUrl: './image-gallery.component.html',
-  styleUrls: ['./image-gallery.component.scss'],
+    selector: 'app-image-gallery',
+    templateUrl: './image-gallery.component.html',
+    styleUrls: ['./image-gallery.component.scss'],
+    standalone: false
 })
 export class ImageGalleryComponent {
   private readonly storage: Storage = inject(Storage);
