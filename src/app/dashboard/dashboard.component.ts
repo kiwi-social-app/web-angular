@@ -28,7 +28,6 @@ export class DashboardComponent implements OnInit {
 
   ngOnInit(): void {
     this.getUser();
-    console.log(this.posts)
   }
 
   initialiseForm(): void {
@@ -51,13 +50,11 @@ export class DashboardComponent implements OnInit {
 
             this.dataService.getAllPosts().subscribe((data) => {
               data.forEach(async (element: any) => {
-                console.log(element.payload.doc.data())
                 if (element.payload.doc.data().userID === this.currentUser.uid) {
                   this.posts.push({
                     id: element.payload.doc.id,
                     ...element.payload.doc.data(),
                   });
-                  console.log(this.posts)
                 }
               });
             });

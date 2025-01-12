@@ -39,7 +39,6 @@ export class PostEditComponent implements OnInit {
 
   getPost() {
     if (this.postID != null) {
-      console.log(this.postID);
       this.dataService.getPostByID(this.postID).then((data: any) => {
         this.post = data;
         this.initialiseForm();
