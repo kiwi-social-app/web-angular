@@ -2,7 +2,7 @@
   <div class="card-content">
     <img class="image" src="{{ post.image }}" alt="" />
     <h3>{{ post.title }}</h3>
-    <p>{{ post.body }}</p>
+    <p>{{ (post.body.length>10)? (post.body | slice:0:100)+'...':(post.body) }}</p>
     <p>{{ post.author }}</p>
   </div>
 </div>
