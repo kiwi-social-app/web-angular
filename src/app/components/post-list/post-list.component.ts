@@ -1,13 +1,14 @@
 import { Component, Input, OnInit } from '@angular/core';
-import { DataService } from '../../services/data.service';
-import { Post } from '../../models/post.model';
 import { Subscription } from 'rxjs';
+import { NodejsService } from 'src/app/services/nodejs.service';
+import { Post } from '../../models/post.model';
+import { FirestoreService } from '../../services/firestore.service';
 
 @Component({
   selector: 'app-post-list',
   templateUrl: './post-list.component.html',
   styleUrls: ['./post-list.component.scss'],
-  providers: [DataService],
+  providers: [FirestoreService],
 })
 export class PostListComponent implements OnInit {
   @Input() searchTerm!: string;
@@ -19,18 +20,26 @@ export class PostListComponent implements OnInit {
   searchResults: Post[] = [];
   subscription!: Subscription;
 
-  constructor(private dataService: DataService) {}
+  constructor(private nodejsService: NodejsService, private firestoreService: FirestoreService) {}
 
   ngOnInit(): void {
     this.getPosts();
+    this.getNodePosts();
   }
 
   ngOnDestroy() {
     this.subscription.unsubscribe();
   }
 
+  getNodePosts(){
+    this.nodejsService.fetchPosts().subscribe((response: Post[]) => {
+      console.log(response)
+      this.posts = response;
+    })
+  }
+
   getPosts() {
-    this.subscription = this.dataService
+    this.subscription = this.firestoreService
       .fetchPosts()
 
       .subscribe((response) => {
@@ -50,7 +59,7 @@ export class PostListComponent implements OnInit {
   }
 
   async getAuthor(userID: string): Promise<string> {
-    this.authorData = await this.dataService.getPostAuthor(userID);
+    this.authorData = await this.firestoreService.getPostAuthor(userID);
     return this.authorData.username;
   }
 

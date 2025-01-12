@@ -1,10 +1,10 @@
 import { Component, EventEmitter, OnInit, Output } from '@angular/core';
-import { FormGroup, FormBuilder, Validators } from '@angular/forms';
-import { DataService } from '../../services/data.service';
-import { AuthService } from '../../services/auth.service';
-import { Post } from '../../models/post.model';
-import { Comment } from '../../models/comment.model';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute } from '@angular/router';
+import { Comment } from '../../models/comment.model';
+import { Post } from '../../models/post.model';
+import { AuthService } from '../../services/auth.service';
+import { FirestoreService } from '../../services/firestore.service';
 
 @Component({
   selector: 'app-new-comment',
@@ -25,7 +25,7 @@ export class NewCommentComponent implements OnInit {
   userData!: any;
 
   constructor(
-    private dataService: DataService,
+    private firestoreService: FirestoreService,
     private fb: FormBuilder,
     public auth: AuthService,
     private route: ActivatedRoute
@@ -51,6 +51,6 @@ export class NewCommentComponent implements OnInit {
 
   createComment() {
     this.newComment = this.newCommentForm.getRawValue();
-    this.dataService.createComment(this.newComment, this.postID);
+    this.firestoreService.createComment(this.newComment, this.postID);
   }
 }

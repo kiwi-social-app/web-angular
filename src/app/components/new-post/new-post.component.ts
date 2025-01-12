@@ -1,10 +1,11 @@
 import { Component, OnInit, Output, EventEmitter } from '@angular/core';
-import { DataService } from '../../services/data.service';
+import { FirestoreService } from '../../services/firestore.service';
 import { Post } from '../../models/post.model';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { AuthService } from '../../services/auth.service';
 import { User } from '../../models/user.model';
+import { NodejsService } from 'src/app/services/nodejs.service';
 
 @Component({
   selector: 'app-new-post',
@@ -22,7 +23,8 @@ export class NewPostComponent implements OnInit {
   imageValidation: boolean = true;
 
   constructor(
-    private dataService: DataService,
+    private nodejsService: NodejsService,
+    private firestoreService: FirestoreService,
     private fb: FormBuilder,
     private router: Router,
     public auth: AuthService
@@ -42,6 +44,19 @@ export class NewPostComponent implements OnInit {
     });
   }
 
+  createNodePost() {
+    this.newPost = this.newPostForm.getRawValue();
+    if (
+      this.checkImageUrl(this.newPost.image) === true ||
+      this.newPostForm?.get('image')?.getRawValue().length === 0
+    ) {
+      this.nodejsService.createPost(this.newPost)
+      this.router.navigate(['/']);
+    } else {
+      this.imageValidation = false;
+    }
+  }
+
   createPost() {
     this.newPost = this.newPostForm.getRawValue();
     if (
@@ -49,7 +64,7 @@ export class NewPostComponent implements OnInit {
       this.newPostForm?.get('image')?.getRawValue().length === 0
     ) {
       this.imageValidation = true;
-      this.dataService.createPost(this.newPost);
+      this.firestoreService.createPost(this.newPost);
       this.router.navigate(['/']);
     } else {
       this.imageValidation = false;

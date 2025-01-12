@@ -9,7 +9,7 @@ import { User } from '../models/user.model';
 @Injectable({
   providedIn: 'root',
 })
-export class DataService {
+export class FirestoreService {
   currentUser!: any;
 
   constructor(private auth: AuthService, private afs: AngularFirestore) {}
@@ -27,10 +27,6 @@ export class DataService {
   }
 
   public fetchPosts(): Observable<any> {
-    // return this.afs
-    //   .collection('posts', (ref) => ref.orderBy('createdAt', 'desc'))
-    //   .snapshotChanges();
-
       return this.afs
       .collection('posts', (ref) => ref.orderBy('createdAt', 'desc'))
       .snapshotChanges()

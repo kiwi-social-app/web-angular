@@ -1,6 +1,6 @@
 import { Component, EventEmitter, OnInit, Output } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
-import { DataService } from '../../services/data.service';
+import { FirestoreService } from '../../services/firestore.service';
 import { Post } from '../../models/post.model';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 
@@ -28,7 +28,7 @@ export class PostEditComponent implements OnInit {
   constructor(
     private route: ActivatedRoute,
     private fb: FormBuilder,
-    private dataService: DataService
+    private firestoreService: FirestoreService
   ) {
     this.postID = String(this.route.snapshot.paramMap.get('id'));
   }
@@ -47,7 +47,7 @@ export class PostEditComponent implements OnInit {
 
   getPost() {
     if (this.postID != null) {
-      this.dataService.getPostByID(this.postID).then((data: any) => {
+      this.firestoreService.getPostByID(this.postID).then((data: any) => {
         this.post = data;
         this.initialiseForm();
       });
@@ -63,7 +63,7 @@ export class PostEditComponent implements OnInit {
         this.updatePostForm?.get('image')?.getRawValue().length === 0
       ) {
         this.imageValidation = true;
-        this.dataService.updatePost(this.postID, this.updatedPost);
+        this.firestoreService.updatePost(this.postID, this.updatedPost);
         // this.router.navigate(['/']);
       } else {
         this.imageValidation = false;
@@ -72,7 +72,7 @@ export class PostEditComponent implements OnInit {
   }
 
   deletePost(postID: string) {
-    this.dataService.deletePost(postID);
+    this.firestoreService.deletePost(postID);
   }
 
   checkImageUrl(url: any): any {

@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
-import { DataService } from '../../services/data.service';
+import { FirestoreService } from '../../services/firestore.service';
 import { Subscription } from 'rxjs';
 
 @Component({
@@ -15,7 +15,7 @@ export class CommentListComponent implements OnInit {
   authorData!: any;
   subscription!: Subscription;
 
-  constructor(private dataService: DataService, private route: ActivatedRoute) {
+  constructor(private firestoreService: FirestoreService, private route: ActivatedRoute) {
     this.postID = String(this.route.snapshot.paramMap.get('id'));
   }
 
@@ -28,7 +28,7 @@ export class CommentListComponent implements OnInit {
   }
 
   getComments() {
-    this.subscription = this.dataService
+    this.subscription = this.firestoreService
       .fetchComments()
       .subscribe((response) => {
         return this.buildComments(response);
@@ -47,7 +47,7 @@ export class CommentListComponent implements OnInit {
   }
 
   async getAuthor(userID: string): Promise<string> {
-    this.authorData = await this.dataService.getCommentAuthor(userID);
+    this.authorData = await this.firestoreService.getCommentAuthor(userID);
     return this.authorData.username;
   }
 }

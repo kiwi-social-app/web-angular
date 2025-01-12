@@ -1,5 +1,5 @@
 import { Component, EventEmitter, OnInit, Output } from '@angular/core';
-import { DataService } from '../../services/data.service';
+import { FirestoreService } from '../../services/firestore.service';
 import { User } from '../../models/user.model';
 import { AuthService } from '../../services/auth.service';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
@@ -26,7 +26,7 @@ export class DashboardComponent implements OnInit {
   constructor(
     public auth: AuthService,
     private fb: FormBuilder,
-    private dataService: DataService
+    private firestoreService: FirestoreService
   ) {}
 
   ngOnInit(): void {
@@ -48,13 +48,13 @@ export class DashboardComponent implements OnInit {
   getUser() {
     this.subscription = this.auth.afAuth.authState.subscribe((user) => {
       if (user) {
-        this.currentUser = this.dataService
+        this.currentUser = this.firestoreService
           .getUserData(user.uid)
           .then((userData: any) => {
             this.currentUser = userData;
             this.initialiseForm();
 
-            this.dataService.fetchPosts().subscribe((response) => {
+            this.firestoreService.fetchPosts().subscribe((response) => {
               this.buildPosts(response);
             });
           });
@@ -75,7 +75,7 @@ export class DashboardComponent implements OnInit {
 
   updateProfile() {
     this.updatedUser = this.editProfileForm.getRawValue();
-    this.dataService.updateUser(this.currentUser.uid, this.updatedUser);
+    this.firestoreService.updateUser(this.currentUser.uid, this.updatedUser);
   }
 
   editBtn() {
