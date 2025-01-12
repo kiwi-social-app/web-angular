@@ -38,7 +38,6 @@ export class ChatComponent {
       }
     });
     this.chatService.getNewMessage().subscribe((message) => {
-      console.log(message);
       this.messageList.push(message);
     });
   }
@@ -55,5 +54,6 @@ export class ChatComponent {
       author: currentUserInfo,
     };
     this.chatService.sendMessage(this.newMessage);
+    this.form.reset();
   }
 }

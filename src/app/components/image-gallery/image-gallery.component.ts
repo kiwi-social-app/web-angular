@@ -42,7 +42,6 @@ export class ImageGalleryComponent {
       if (file) {
         this.auth.afAuth.authState.subscribe((user) => {
           if (user) {
-            console.log(user);
             this.currentUserId = user.uid;
             const storageRef = ref(
               this.storage,

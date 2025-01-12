@@ -38,7 +38,6 @@ export class PostListComponent implements OnInit {
   searchBar() {
 
     if (this.searchTerm.length > 0) {
-      console.log(this.searchTerm);
       this.posts = this.posts.filter((post) => {
         return post.title.toLowerCase().includes(this.searchTerm.toLowerCase());
       });

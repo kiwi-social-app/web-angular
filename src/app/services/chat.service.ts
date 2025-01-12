@@ -15,13 +15,11 @@ export class ChatService {
   socket = io('http://localhost:4000');
 
   public sendMessage(message : Message) {
-    console.log(message)
     this.socket.emit('message', message);
   }
 
   public getNewMessage = () => {
     this.socket.on('message', (message) =>{
-      console.log(message)
       this.message$.next(message);
     });
 
