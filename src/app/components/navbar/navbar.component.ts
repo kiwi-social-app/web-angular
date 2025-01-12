@@ -17,12 +17,8 @@ export class NavbarComponent implements OnInit {
 
   ngOnInit(): void {}
 
-  logout() {
-    this.afAuth.signOut();
-  }
-
   collapseMenu() {
-    this.isCollapsed === true
+    this.isCollapsed
       ? (this.isCollapsed = false)
       : (this.isCollapsed = true);
   }
