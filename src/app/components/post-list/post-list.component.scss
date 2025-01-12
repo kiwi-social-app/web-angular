@@ -10,8 +10,15 @@
     input {
       border-radius: 0.5rem;
       border: 1px solid grey;
-      width: 20rem;
       height: 2rem;
+      width: 15rem;
+
+    }
+
+    @media (min-width: 500px) {
+      input {
+        width: 20rem;
+      }
     }
   }
 
