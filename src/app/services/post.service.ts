@@ -46,7 +46,6 @@ export class PostService {
     post.createdAt = new Date();
     post.image = this.checkImage(post.image);
     const url = `${this.postsUrl}?userID=${userID}`;
-    console.log(post)
     return this.http.post(url, post).pipe(map((response) => response));
   }
 

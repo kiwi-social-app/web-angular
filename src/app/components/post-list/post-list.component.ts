@@ -32,7 +32,6 @@ export class PostListComponent implements OnInit {
     this.subscription = this.postService
       .fetchPosts()
       .subscribe((response: Post[]) => {
-        console.log(response)
         this.posts = response;
         this.sortPosts();
       });

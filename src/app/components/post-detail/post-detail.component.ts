@@ -38,7 +38,6 @@ export class PostDetailComponent implements OnInit {
       this.postService.fetchPostByID(this.postID)
       .subscribe((data: any) => {
         this.post = data;
-        console.log(this.post)
       });
     }
   }

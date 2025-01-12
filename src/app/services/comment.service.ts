@@ -33,7 +33,6 @@ export class CommentService {
     comment.userID = this.auth.currentUser.uid;
     comment.createdAt = new Date();
     comment.postID = postID;
-    console.log(comment);
     return this.http
       .post(this.commentsUrl, comment)
       .pipe(map((response) => response));
