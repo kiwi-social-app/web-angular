@@ -31,15 +31,14 @@ export class CommentService {
     comment.created_at = new Date();
 
     const params = new HttpParams()
-      .set('userId', userID)
+      .set('user_id', userID)
       .set('postId', postID)
-
-    console.log(comment)
-    console.log(params)
 
     return this.http
       .post(url, comment, {params})
-      .pipe(map((response) => response),
+      .pipe(map((response) =>
+         response
+        ),
         catchError((error) => {
           console.log(error);
           return of(error);
