@@ -6,6 +6,7 @@ import {
   listAll,
   getDownloadURL,
 } from '@angular/fire/storage';
+import { AuthService } from 'src/app/services/auth.service';
 
 @Component({
   selector: 'app-image-gallery',
@@ -14,39 +15,44 @@ import {
 })
 export class ImageGalleryComponent {
   private readonly storage: Storage = inject(Storage);
-  listRef = ref(this.storage, 'images');
   images: string[] = [];
+  currentUserId!: string;
+  constructor(public auth: AuthService) {}
 
   ngOnInit() {
-    listAll(this.listRef)
-      .then((res) => {
-        console.log(res);
-        res.prefixes.forEach((folderRef) => {
-        });
-        res.items.forEach((itemRef) => {
-          getDownloadURL(itemRef)
-          .then(url => {
-            this.images.push(url);
-          })
-        });
-      })
-      .catch((error) => {
-
-      });
+    this.auth.afAuth.authState.subscribe((user) => {
+      listAll(ref(this.storage, `${user?.uid}/images`))
+        .then((res) => {
+          res.prefixes.forEach((folderRef) => {});
+          res.items.forEach((itemRef) => {
+            getDownloadURL(itemRef).then((url) => {
+              this.images.push(url);
+            });
+          });
+        })
+        .catch((error) => {});
+    });
   }
 
   uploadFile(input: HTMLInputElement) {
     if (!input.files) return;
     const files: FileList = input.files;
-    console.log(this.storage);
     for (let i = 0; i < files.length; i++) {
       const file = files.item(i);
       if (file) {
-        const storageRef = ref(
-          this.storage,
-          `images/${file.name}_${new Date().getTime()}`
-        );
-        uploadBytesResumable(storageRef, file);
+        this.auth.afAuth.authState.subscribe((user) => {
+          if (user) {
+            console.log(user);
+            this.currentUserId = user.uid;
+            const storageRef = ref(
+              this.storage,
+              `${this.currentUserId}/images/${
+                file.name
+              }_${new Date().getTime()}`
+            );
+            uploadBytesResumable(storageRef, file);
+          }
+        });
       }
     }
   }
