@@ -1,5 +1,6 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, Input, OnInit } from '@angular/core';
 import { DataService } from '../services/data.service';
+import { Post } from '../services/post.model';
 
 @Component({
   selector: 'app-post-list',
@@ -8,9 +9,14 @@ import { DataService } from '../services/data.service';
   providers: [DataService],
 })
 export class PostListComponent implements OnInit {
-  posts: any = [];
-  author!: any;
+  @Input() searchTerm!: string;
+
+  posts: Post[] = [];
+  author!: string;
   authorData!: any;
+  filteredList!: Post[];
+  searchResults: Post[] = [];
+  message: string = 'No Post Found';
 
   constructor(private dataService: DataService) {}
 
@@ -34,5 +40,17 @@ export class PostListComponent implements OnInit {
   async getAuthor(userID: string): Promise<string> {
     this.authorData = await this.dataService.getPostAuthor(userID);
     return this.authorData.username;
+  }
+
+  searchBar() {
+    if (this.searchTerm.length > 0) {
+      this.posts = this.posts.filter((post) => {
+        return post.title.includes(this.searchTerm);
+      });
+    } else {
+      this.searchResults = [];
+      this.posts = [];
+      this.getPosts();
+    }
   }
 }
