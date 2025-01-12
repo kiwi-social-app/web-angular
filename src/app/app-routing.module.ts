@@ -8,7 +8,7 @@ import { PostEditComponent } from './components/post-edit/post-edit.component';
 import { PostListComponent } from './components/post-list/post-list.component';
 import { AuthGuard } from './services/auth.guard';
 import { SignupComponent } from './components/signup/signup.component';
-import { FileUploadComponent } from './components/file-upload/file-upload.component';
+import { ImageGalleryComponent } from './components/image-gallery/image-gallery.component';
 
 const routes: Routes = [
   { path: '', redirectTo: '/post-list', pathMatch: 'full' },
@@ -33,8 +33,8 @@ const routes: Routes = [
     canActivate: [AuthGuard],
   },
   {
-    path: 'file-upload',
-    component: FileUploadComponent,
+    path: 'images',
+    component: ImageGalleryComponent,
     canActivate: [AuthGuard],
   },
 ];

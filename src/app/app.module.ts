@@ -25,7 +25,7 @@ import { UserPostsComponent } from './components/user-posts/user-posts.component
 import { PostEditComponent } from './components/post-edit/post-edit.component';
 import { initializeApp, provideFirebaseApp } from '@angular/fire/app';
 import { provideAuth, getAuth } from '@angular/fire/auth';
-import { FileUploadComponent } from './components/file-upload/file-upload.component';
+import { ImageGalleryComponent } from './components/image-gallery/image-gallery.component';
 @NgModule({
   declarations: [
     AppComponent,
@@ -41,7 +41,7 @@ import { FileUploadComponent } from './components/file-upload/file-upload.compon
     NewCommentComponent,
     UserPostsComponent,
     PostEditComponent,
-    FileUploadComponent,
+    ImageGalleryComponent,
   ],
   imports: [
     BrowserModule,
