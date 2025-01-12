@@ -1,0 +1,26 @@
+.post-detail-component {
+  display: flex;
+  flex-direction: column;
+  padding: 4rem 0;
+
+  .image {
+      margin: auto;
+      height: 5rem;
+      width: 10rem;
+    }
+
+  .text-content{
+      margin: auto;
+      width: 40rem;
+
+      .post-title {
+
+      }
+
+      .post-content {
+
+      }
+
+  }
+
+}

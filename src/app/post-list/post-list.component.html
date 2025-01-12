@@ -1,14 +1,8 @@
 <div class="post-list-component">
   <h2 class="list-title">Post List</h2>
   <div class="list">
-    <div *ngFor="let post of posts">
-      <div class="post-card">
-        <div class="card-content">
-          <img class="image" src="" alt="" />
-          <h3>{{ post.title }}</h3>
-          <p>{{ post.content }}</p>
-        </div>
-      </div>
+    <div class="card-container" *ngFor="let post of posts">
+      <app-post-card [post]="post"></app-post-card>
     </div>
   </div>
 </div>
