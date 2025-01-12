@@ -15,14 +15,17 @@ import { environment } from '../environments/environment';
 import { AngularFireModule } from '@angular/fire/compat';
 import { AngularFirestoreModule } from '@angular/fire/compat/firestore';
 import { AngularFireDatabaseModule } from '@angular/fire/compat/database';
+import { AngularFireStorageModule } from '@angular/fire/compat/storage';
+import { provideStorage, getStorage } from '@angular/fire/storage';
 import { SignupComponent } from './components/signup/signup.component';
 import { LoginComponent } from './components/login/login.component';
 import { CommentListComponent } from './components/comment-list/comment-list.component';
 import { NewCommentComponent } from './components/new-comment/new-comment.component';
 import { UserPostsComponent } from './components/user-posts/user-posts.component';
 import { PostEditComponent } from './components/post-edit/post-edit.component';
-import { initializeApp,provideFirebaseApp } from '@angular/fire/app';
-import { provideAuth,getAuth } from '@angular/fire/auth';
+import { initializeApp, provideFirebaseApp } from '@angular/fire/app';
+import { provideAuth, getAuth } from '@angular/fire/auth';
+import { FileUploadComponent } from './components/file-upload/file-upload.component';
 @NgModule({
   declarations: [
     AppComponent,
@@ -38,6 +41,7 @@ import { provideAuth,getAuth } from '@angular/fire/auth';
     NewCommentComponent,
     UserPostsComponent,
     PostEditComponent,
+    FileUploadComponent,
   ],
   imports: [
     BrowserModule,
@@ -47,10 +51,11 @@ import { provideAuth,getAuth } from '@angular/fire/auth';
     ReactiveFormsModule,
     AngularFireModule.initializeApp(environment.firebase),
     AngularFirestoreModule,
+    AngularFireStorageModule,
     AngularFireDatabaseModule,
     provideFirebaseApp(() => initializeApp(environment.firebase)),
-    provideAuth(() => getAuth())
-
+    provideAuth(() => getAuth()),
+    provideStorage(() => getStorage())
   ],
   providers: [],
   bootstrap: [AppComponent],
