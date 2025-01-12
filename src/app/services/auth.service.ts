@@ -102,7 +102,6 @@ export class AuthService {
     return this.afAuth
       .createUserWithEmailAndPassword(user.email, user.password)
       .then((result) => {
-        let emailLower = user.email.toLowerCase();
         result.user?.sendEmailVerification();
         this.updateUserData(result.user);
         if (result.additionalUserInfo?.isNewUser) {

@@ -16,7 +16,6 @@ export class SignupComponent implements OnInit {
   constructor(
     private authService: AuthService,
     private router: Router,
-    private afAuth: AngularFireAuth
   ) {
     this.firebaseErrorMessage = '';
   }

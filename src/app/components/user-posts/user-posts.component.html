@@ -1,7 +1,7 @@
 <div class="user-posts-component">
   <h2 class="list-title">Post List</h2>
   <div class="list">
-    <div *ngIf="userPosts | async as userPosts; else noPosts">
+    <div *ngIf="userPosts !== undefined && userPosts.length > 0; else noPosts">
       <div class="card-container" *ngFor="let post of userPosts">
         <div class="post-card">
           <div class="card-content">

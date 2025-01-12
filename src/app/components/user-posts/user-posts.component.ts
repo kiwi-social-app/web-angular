@@ -10,7 +10,7 @@ import { PostService } from 'src/app/services/post.service';
   styleUrls: ['./user-posts.component.scss'],
 })
 export class UserPostsComponent implements OnInit {
-  @Input() userPosts!: Observable<Post[]>;
+  @Input() userPosts!: Post[];
 
   constructor(private postService: PostService, private router: Router) {}
   @Output() onPostChange: EventEmitter<Comment> = new EventEmitter();

@@ -12,7 +12,7 @@ export class ChatService {
   public message$: BehaviorSubject<Message> = new BehaviorSubject<Message>({body:'', author:{uid:'', email:''}});
   constructor() {}
 
-  socket = io('http://localhost:4000');
+  socket = io('http://localhost:8080');
 
   public sendMessage(message : Message) {
     this.socket.emit('message', message);

@@ -24,11 +24,16 @@ export class DashboardComponent implements OnInit {
   editMode: boolean = false;
   subscription!: Subscription;
 
-  constructor(public auth: AuthService, private fb: FormBuilder, private postService: PostService, private userService: UserService) {}
+  constructor(
+    public auth: AuthService,
+    private fb: FormBuilder,
+    private postService: PostService,
+    private userService: UserService
+  ) {}
 
   ngOnInit(): void {
     this.getUser();
-    this.getUserPosts();
+    // this.getUserPosts();
   }
   ngOnDestroy() {
     this.subscription.unsubscribe();
@@ -46,39 +51,21 @@ export class DashboardComponent implements OnInit {
   getUser() {
     this.subscription = this.auth.afAuth.authState.subscribe((user) => {
       if (user) {
-        this.currentUser = this.userService.getUserByID(user.uid).subscribe((userData: any) => {
-          this.currentUser = userData;
-          this.initialiseForm();
-
-          this.postService.fetchPosts().subscribe((response) => {
-            response.forEach((post) => {
-              this.buildPosts(post);
-            });
+        this.currentUser = this.userService
+          .getUserByID(user.uid)
+          .subscribe((userData: any) => {
+            this.currentUser = userData;
+            this.initialiseForm();
           });
-        });
       }
     });
-  }
-
-  getUserPosts() {
-    this.auth.afAuth.authState.subscribe((user) => {
-      if (user) {
-        this.userPosts$ = this.postService.fetchPostsByUserID(user.uid);
-      }
-    });
-  }
-
-  async buildPosts(response: any) {
-    if (response.author.id === this.currentUser.id && !this.posts.some((e) => e.id === response.id)) {
-      this.posts.push({
-        ...response,
-      });
-    }
   }
 
   updateProfile() {
     this.updatedUser = this.editProfileForm.getRawValue();
-    this.userService.updateUser(this.currentUser.id, this.updatedUser).subscribe((response: any) => response);
+    this.userService
+      .updateUser(this.currentUser.id, this.updatedUser)
+      .subscribe((response: any) => response);
   }
 
   editBtn() {

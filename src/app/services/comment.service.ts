@@ -18,7 +18,7 @@ const httpOptions = {
 })
 export class CommentService {
   // private commentsUrl: string = 'http://localhost:8080/comments/';
-  private commentsUrl: string = 'http://localhost:4000/comments/';
+  private commentsUrl: string = 'http://localhost:8080/comments/';
 
   constructor(private http: HttpClient, private auth: AuthService) {}
 

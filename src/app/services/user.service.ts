@@ -14,7 +14,7 @@ const httpOptions = {
   providedIn: 'root',
 })
 export class UserService {
-  private usersUrl: string = 'http://localhost:4000/users/';
+  private usersUrl: string = 'http://localhost:8080/users/';
   // private usersUrl: string = 'http://localhost:8080/user';
 
   constructor(private http: HttpClient) {}

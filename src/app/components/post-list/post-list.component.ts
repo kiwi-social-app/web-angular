@@ -17,10 +17,7 @@ export class PostListComponent implements OnInit {
   searchResults!: Post[];
   subscription!: Subscription;
 
-  constructor(
-    private postService: PostService,
-    private userService: UserService
-  ) {}
+  constructor(private postService: PostService) {}
 
   ngOnInit(): void {
     this.getPosts();
@@ -36,7 +33,6 @@ export class PostListComponent implements OnInit {
   }
 
   searchBar() {
-
     if (this.searchTerm.length > 0) {
       this.posts = this.posts.filter((post) => {
         return post.title.toLowerCase().includes(this.searchTerm.toLowerCase());

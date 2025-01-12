@@ -76,6 +76,9 @@
       </ng-template>
     </div>
 
-    <app-user-posts (onPostChange)="getUserPosts()" [userPosts]="userPosts$"></app-user-posts>
+    <app-user-posts
+      (onPostChange)="getUser()"
+      [userPosts]="currentUser.posts"
+    ></app-user-posts>
   </div>
 </div>
