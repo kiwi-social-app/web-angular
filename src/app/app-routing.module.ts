@@ -6,10 +6,11 @@ import { PostListComponent } from './post-list/post-list.component';
 import { SignupComponent } from './signup/signup.component';
 import { LoginComponent } from './login/login.component';
 import { PostDetailComponent } from './post-detail/post-detail.component';
+import { AuthGuard } from './auth.guard';
 
 const routes: Routes = [
   { path: '', redirectTo: '/post-list', pathMatch: 'full' },
-  { path: 'dashboard', component: DashboardComponent },
+  { path: 'dashboard', component: DashboardComponent, canActivate:[AuthGuard] },
   { path: 'new-post', component: NewPostComponent },
   { path: 'post-list', component: PostListComponent },
   { path: 'posts/:id', pathMatch: 'full', component: PostDetailComponent },
