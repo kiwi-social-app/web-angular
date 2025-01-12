@@ -1,15 +1,24 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, Inject, OnInit } from '@angular/core';
+import { AuthService } from '@auth0/auth0-angular';
+import { DOCUMENT } from '@angular/common';
 
 @Component({
   selector: 'app-navbar',
   templateUrl: './navbar.component.html',
-  styleUrls: ['./navbar.component.scss']
+  styleUrls: ['./navbar.component.scss'],
 })
 export class NavbarComponent implements OnInit {
+  constructor(
+    @Inject(DOCUMENT) public document: Document,
+    public auth: AuthService
+  ) {}
 
-  constructor() { }
+  ngOnInit(): void {}
 
-  ngOnInit(): void {
+  login() {
+    this.auth.loginWithRedirect();
   }
-
+  logout() {
+    this.auth.logout({ returnTo: this.document.location.origin });
+  }
 }

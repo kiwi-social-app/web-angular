@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { DataService, User } from '../data.service';
+import {AuthService} from '@auth0/auth0-angular';
 
 @Component({
   selector: 'app-dashboard',
@@ -9,11 +10,9 @@ import { DataService, User } from '../data.service';
 export class DashboardComponent implements OnInit {
   users: User[] = [];
 
-  constructor(private dataService: DataService) {}
+  constructor(public auth: AuthService, private dataService: DataService) {}
 
   ngOnInit(): void {
-    this.dataService.getAllUsers().subscribe((users) => {
-      this.users = users;
-    });
+console.log(this.auth.user$)
   }
 }

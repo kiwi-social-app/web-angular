@@ -4,18 +4,16 @@ import { DashboardComponent } from './dashboard/dashboard.component';
 import { NewPostComponent } from './new-post/new-post.component';
 import { PostListComponent } from './post-list/post-list.component';
 import { SignupComponent } from './signup/signup.component';
-import { LoginComponent } from './login/login.component';
 import { PostDetailComponent } from './post-detail/post-detail.component';
 import { AuthGuard } from './auth.guard';
 
 const routes: Routes = [
   { path: '', redirectTo: '/post-list', pathMatch: 'full' },
-  { path: 'dashboard', component: DashboardComponent, canActivate:[AuthGuard] },
+  { path: 'dashboard', component: DashboardComponent },
   { path: 'new-post', component: NewPostComponent },
   { path: 'post-list', component: PostListComponent },
   { path: 'posts/:id', pathMatch: 'full', component: PostDetailComponent },
   { path: 'signup', component: SignupComponent },
-  { path: 'login', component: LoginComponent },
 ];
 
 @NgModule({

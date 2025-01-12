@@ -16,7 +16,7 @@
     padding: 1rem;
     width: 100%;
     margin: auto;
-    .navbar-brand {
+    .navbar-brand > *{
       display: flex;
       flex-direction: row;
       height: auto;
@@ -42,6 +42,7 @@
         padding-left: 1rem;
         padding-right: 1rem;
         color: white;
+        cursor: pointer;
 
         &:hover {
           color: rgba(255, 255, 255, 0.5);
