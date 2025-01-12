@@ -6,10 +6,12 @@ import { PostListComponent } from './post-list/post-list.component';
 import { PostDetailComponent } from './post-detail/post-detail.component';
 import { SignupComponent } from './signup/signup.component';
 import { AuthGuard } from './services/auth.guard';
+import { LoginComponent } from './login/login.component';
 
 const routes: Routes = [
   { path: '', redirectTo: '/post-list', pathMatch: 'full' },
   { path: 'signup', component: SignupComponent },
+  { path: 'login', component: LoginComponent },
   {
     path: 'dashboard',
     component: DashboardComponent,

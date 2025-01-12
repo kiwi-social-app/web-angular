@@ -1,0 +1,29 @@
+
+<div class="login-component">
+    <form [formGroup]="loginForm" (ngSubmit)="loginUser()">
+          <div class="form-block">
+            <label for="email">email :</label>
+            <input
+              id="email"
+              type="email"
+              placeholder="email"
+              formControlName="email"
+            />
+          </div>
+          <div class="form-block">
+            <label for="password">password :</label>
+            <input
+              id="password"
+              type="password"
+              placeholder="password"
+              formControlName="password"
+            />
+          </div>
+          <div *ngIf="firebaseErrorMessage != ''" class="error">
+            <span>{{firebaseErrorMessage}}</span>
+          </div>
+
+          <button>Log in</button>
+    </form>
+
+</div>

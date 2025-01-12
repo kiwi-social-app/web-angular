@@ -15,6 +15,7 @@ import { environment } from '../environments/environment';
 import { AngularFireModule } from '@angular/fire/compat';
 import { AngularFirestoreModule } from '@angular/fire/compat/firestore';
 import { SignupComponent } from './signup/signup.component';
+import { LoginComponent } from './login/login.component';
 @NgModule({
   declarations: [
     AppComponent,
@@ -25,6 +26,7 @@ import { SignupComponent } from './signup/signup.component';
     PostDetailComponent,
     PostCardComponent,
     SignupComponent,
+    LoginComponent,
   ],
   imports: [
     BrowserModule,

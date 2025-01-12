@@ -15,10 +15,7 @@ export class NavbarComponent implements OnInit {
 
   ngOnInit(): void {}
 
-  // login() {
-  //   this.auth.loginWithPopup();
-  // }
-  // logout() {
-  //   this.auth.logout({ returnTo: this.document.location.origin });
-  // }
+  logout() {
+    this.afAuth.signOut();
+  }
 }
