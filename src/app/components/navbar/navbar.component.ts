@@ -25,6 +25,5 @@ export class NavbarComponent implements OnInit {
     this.isCollapsed === true
       ? (this.isCollapsed = false)
       : (this.isCollapsed = true);
-    console.log(this.isCollapsed);
   }
 }

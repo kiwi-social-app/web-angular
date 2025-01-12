@@ -14,7 +14,14 @@ export class PostEditComponent implements OnInit {
 
   updatePostForm!: FormGroup;
   updatedPost!: any;
-  public post!: Post;
+  public post: Post = {
+    title: '',
+    body: '',
+    createdAt: null,
+    userID: '',
+    id: '',
+    image: null,
+  };
   public postID!: string | null;
   imageValidation: boolean = true;
 
@@ -42,8 +49,6 @@ export class PostEditComponent implements OnInit {
     if (this.postID != null) {
       this.dataService.getPostByID(this.postID).then((data: any) => {
         this.post = data;
-        console.log(this.post)
-        console.log(this.post.image?.length)
         this.initialiseForm();
       });
     }
