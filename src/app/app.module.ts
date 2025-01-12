@@ -11,22 +11,21 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { NewPostComponent } from './components/new-post/new-post.component';
 import { PostDetailComponent } from './components/post-detail/post-detail.component';
 import { PostCardComponent } from './components/post-card/post-card.component';
-import { environment } from '../environments/environment';
-import { AngularFireModule } from '@angular/fire/compat';
-import { AngularFirestoreModule } from '@angular/fire/compat/firestore';
-import { AngularFireDatabaseModule } from '@angular/fire/compat/database';
-import { AngularFireStorageModule } from '@angular/fire/compat/storage';
-import { provideStorage, getStorage } from '@angular/fire/storage';
 import { SignupComponent } from './components/signup/signup.component';
 import { LoginComponent } from './components/login/login.component';
 import { CommentListComponent } from './components/comment-list/comment-list.component';
 import { NewCommentComponent } from './components/new-comment/new-comment.component';
 import { UserPostsComponent } from './components/user-posts/user-posts.component';
 import { PostEditComponent } from './components/post-edit/post-edit.component';
-import { initializeApp, provideFirebaseApp } from '@angular/fire/app';
-import { provideAuth, getAuth } from '@angular/fire/auth';
 import { ImageGalleryComponent } from './components/image-gallery/image-gallery.component';
 import { ChatComponent } from './components/chat/chat.component';
+import { AngularFireModule } from "@angular/fire/compat";
+import {getAuth, provideAuth} from "@angular/fire/auth";
+import {initializeApp, provideFirebaseApp} from "@angular/fire/app";
+import {environment} from "../environments/environment";
+import {AngularFireAuthModule} from "@angular/fire/compat/auth";
+import {getStorage, provideStorage} from "@angular/fire/storage";
+
 @NgModule({
   declarations: [
     AppComponent,
@@ -52,12 +51,10 @@ import { ChatComponent } from './components/chat/chat.component';
     FormsModule,
     ReactiveFormsModule,
     AngularFireModule.initializeApp(environment.firebase),
-    AngularFirestoreModule,
-    AngularFireStorageModule,
-    AngularFireDatabaseModule,
+    AngularFireAuthModule,
     provideFirebaseApp(() => initializeApp(environment.firebase)),
     provideAuth(() => getAuth()),
-    provideStorage(() => getStorage())
+    provideStorage(() => getStorage()),
   ],
   providers: [],
   bootstrap: [AppComponent],

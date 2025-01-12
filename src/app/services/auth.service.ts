@@ -1,4 +1,4 @@
-import { Injectable } from '@angular/core';
+import {inject, Injectable} from '@angular/core';
 import { AngularFireAuth } from '@angular/fire/compat/auth';
 import {
   AngularFirestore,
@@ -6,51 +6,51 @@ import {
 } from '@angular/fire/compat/firestore';
 import { Router } from '@angular/router';
 import firebase from 'firebase/compat/app';
-import { map, Observable, of, switchMap } from 'rxjs';
+import {of, Subscription} from 'rxjs';
 import { UserService } from './user.service';
+import {Auth, user} from "@angular/fire/auth";
+import {User} from "../models/user.model";
 
 @Injectable({
   providedIn: 'root',
 })
 export class AuthService {
+  private readonly auth = inject(Auth)
+
   userLoggedIn!: boolean;
-  user$: Observable<any | null | undefined>;
+  user$ = user(this.auth);
   currentUser!: any;
+  userSubscription: Subscription;
+
   constructor(
     public afAuth: AngularFireAuth,
     private router: Router,
     private afs: AngularFirestore,
     private userService: UserService
   ) {
-    this.user$ = this.afAuth.authState.pipe(
-      switchMap((user) => {
-        if (user) {
-          return this.afs.doc<any>(`users/${user.uid}`).valueChanges();
-        } else {
-          return of(null);
-        }
-      })
+    this.userSubscription = this.user$.subscribe( user => {
+      if (user) {
+        return this.afs.doc<any>(`users/${user.uid}`).valueChanges();
+      } else {
+        return of(null);
+      }
+      }
     );
     this.userLoggedIn = false;
-    this.afAuth.onAuthStateChanged((user) => {
+    this.auth.onAuthStateChanged((user) => {
       this.userLoggedIn = !!user;
-    });
+    })
   }
 
   public getCurrentUser() {
-    this.afAuth.user.pipe(map((data) => data)).subscribe((data) => {
-      this.setUser(data);
-    });
+    this.currentUser = this.auth.currentUser;
     return this.currentUser;
-  }
-  public setUser(data: any) {
-    this.currentUser = data;
   }
 
   async googleSignin() {
     const provider = new firebase.auth.GoogleAuthProvider();
     const credential = await this.afAuth.signInWithPopup(provider);
-    this.updateUserData(credential.user);
+    await this.updateUserData(credential.user);
     if (credential.additionalUserInfo?.isNewUser) {
       this.userService
         .addUser(credential.user)
@@ -61,7 +61,7 @@ export class AuthService {
   }
 
   async signOut() {
-    await this.afAuth.signOut();
+    await this.auth.signOut();
     return this.router.navigate(['/']);
   }
 

@@ -1,6 +1,6 @@
 import { Component, Inject, OnInit } from '@angular/core';
 import { DOCUMENT } from '@angular/common';
-import { AngularFireAuth } from '@angular/fire/compat/auth';
+import { Auth } from '@angular/fire/auth';
 
 @Component({
   selector: 'app-navbar',
@@ -12,7 +12,7 @@ export class NavbarComponent implements OnInit {
 
   constructor(
     @Inject(DOCUMENT) public document: Document,
-    public afAuth: AngularFireAuth
+    public afAuth: Auth
   ) {}
 
   ngOnInit(): void {}

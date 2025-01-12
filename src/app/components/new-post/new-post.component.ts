@@ -15,7 +15,7 @@ export class NewPostComponent implements OnInit {
   @Output() onNewPost: EventEmitter<Post> = new EventEmitter();
 
   newPostForm!: FormGroup;
-  currentUser!: User;
+  currentUser!: User | null;
   newPost!: Post;
   loading: boolean = false;
   success: boolean = false;
