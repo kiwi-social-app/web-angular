@@ -1,23 +1,29 @@
-import { Injectable } from '@angular/core';
-import { ActivatedRouteSnapshot, Router, RouterStateSnapshot, UrlTree } from '@angular/router';
+import { inject, Injectable } from '@angular/core';
+import {
+  ActivatedRouteSnapshot,
+  Router,
+  RouterStateSnapshot,
+  UrlTree,
+} from '@angular/router';
 import { Observable } from 'rxjs';
-import { Auth } from "@angular/fire/auth";
+import { Auth } from '@angular/fire/auth';
 
 @Injectable({
   providedIn: 'root',
 })
-export class AuthGuard  {
-  constructor(private router: Router, private afAuth: Auth) {}
+export class AuthGuard {
+  private readonly router: Router = inject(Router);
+  private readonly afAuth: Auth = inject(Auth);
 
-  canActivate(
+  public canActivate(
     route: ActivatedRouteSnapshot,
-    state: RouterStateSnapshot
+    state: RouterStateSnapshot,
   ):
     | Observable<boolean | UrlTree>
     | Promise<boolean | UrlTree>
     | boolean
     | UrlTree {
-    return new Promise((resolve, reject) => {
+    return new Promise((resolve) => {
       this.afAuth.onAuthStateChanged((user: any) => {
         if (user) {
           resolve(true);

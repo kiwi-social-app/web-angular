@@ -1,4 +1,4 @@
-import {inject, Injectable} from '@angular/core';
+import { inject, Injectable } from '@angular/core';
 import { AngularFireAuth } from '@angular/fire/compat/auth';
 import {
   AngularFirestore,
@@ -6,47 +6,27 @@ import {
 } from '@angular/fire/compat/firestore';
 import { Router } from '@angular/router';
 import firebase from 'firebase/compat/app';
-import {of, Subscription} from 'rxjs';
 import { UserService } from './user.service';
-import {Auth, user} from "@angular/fire/auth";
+import { Auth } from '@angular/fire/auth';
+import { Observable } from 'rxjs';
 
 @Injectable({
   providedIn: 'root',
 })
 export class AuthService {
-  private readonly auth = inject(Auth)
+  private readonly afAuth: AngularFireAuth = inject(AngularFireAuth);
+  private readonly auth: Auth = inject(Auth);
+  private readonly router: Router = inject(Router);
+  private readonly afs: AngularFirestore = inject(AngularFirestore);
+  private readonly userService: UserService = inject(UserService);
 
-  userLoggedIn!: boolean;
-  user$ = user(this.auth);
-  currentUser!: any;
-  userSubscription: Subscription;
-
-  constructor(
-    public afAuth: AngularFireAuth,
-    private router: Router,
-    private afs: AngularFirestore,
-    private userService: UserService
-  ) {
-    this.userSubscription = this.user$.subscribe( user => {
-      if (user) {
-        return this.afs.doc<any>(`users/${user.uid}`).valueChanges();
-      } else {
-        return of(null);
-      }
-      }
-    );
-    this.userLoggedIn = false;
-    this.auth.onAuthStateChanged((user) => {
-      this.userLoggedIn = !!user;
-    })
-  }
+  public currentUser!: any;
 
   public getCurrentUser() {
-    this.currentUser = this.auth.currentUser;
-    return this.currentUser;
+    return this.auth.currentUser;
   }
 
-  async googleSignin() {
+  public async googleSignin() {
     const provider = new firebase.auth.GoogleAuthProvider();
     const credential = await this.afAuth.signInWithPopup(provider);
     await this.updateUserData(credential.user);
@@ -59,7 +39,7 @@ export class AuthService {
     this.router.navigate(['/']);
   }
 
-  async signOut() {
+  public async signOut() {
     await this.auth.signOut();
     return this.router.navigate(['/']);
   }
@@ -92,19 +72,22 @@ export class AuthService {
     return userRef.set(data, { merge: true });
   }
 
-  async signupUser(user: any): Promise<any> {
-    try{
-    let result = await this.afAuth.createUserWithEmailAndPassword(user.email, user.password);
+  public async signupUser(user: any): Promise<any> {
+    try {
+      let result = await this.afAuth.createUserWithEmailAndPassword(
+        user.email,
+        user.password,
+      );
 
-    if(result.user){
-      await result.user?.sendEmailVerification();
-      if (result.additionalUserInfo?.isNewUser) {
-        return this.userService
-          .addUser(result.user)
-          .subscribe((response) => response);
+      if (result.user) {
+        await result.user?.sendEmailVerification();
+        if (result.additionalUserInfo?.isNewUser) {
+          return this.userService
+            .addUser(result.user)
+            .subscribe((response) => response);
+        }
       }
-    }
-    } catch (error){
+    } catch (error) {
       console.log('Auth Service: signup error', error);
       if (error) {
         return { isValid: false, message: error };
@@ -114,7 +97,7 @@ export class AuthService {
     }
   }
 
-  loginUser(email: string, password: string): Promise<any> {
+  public loginUser(email: string, password: string): Promise<any> {
     return this.afAuth
       .signInWithEmailAndPassword(email, password)
       .then(() => {
@@ -130,5 +113,9 @@ export class AuthService {
           return;
         }
       });
+  }
+
+  public authState(): Observable<firebase.User | null> {
+    return this.afAuth.authState;
   }
 }

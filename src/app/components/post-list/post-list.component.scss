@@ -4,34 +4,7 @@
   padding: 4rem 2rem;
   margin: auto;
   max-width: 45rem;
-
-  .search-bar {
-    margin: 2rem auto;
-    input {
-      border-radius: 0.5rem;
-      border: 1px solid grey;
-      height: 2rem;
-      width: 15rem;
-
-    }
-
-    @media (min-width: 500px) {
-      input {
-        width: 20rem;
-      }
-    }
-  }
-
-  .list-title {
-    padding: 1rem;
-    margin: auto;
-  }
-
-  .list {
-    display: flex;
-    flex-direction: row;
-    flex-wrap: wrap;
-    gap: 2rem;
-    justify-content: center;
-  }
+  justify-content: center;
+  overflow: scroll;
+  scrollbar-width: none;
 }

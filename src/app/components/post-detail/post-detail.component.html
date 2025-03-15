@@ -1,14 +1,13 @@
-<div *ngIf="post" class="post-detail-component">
-  <div class="post-container">
-    <img class="image" src="{{ post.image ?? './assets/placeholder.png' }}" alt="" />
-    <div class="text-content">
-      <h1>{{ post.title }}</h1>
-      <p>{{ post.createdAt | date : "medium" }}</p>
-      <p>{{ post.body }}</p>
-      <p>{{ post.author.username }}</p>
-    </div>
-  </div>
-  <div>
-    <app-comment-list></app-comment-list>
-  </div>
+@if(post){<div class="post-detail-component">
+<div class="post-container">
+<img class="image" src="{{ post.image ?? './assets/placeholder.png' }}" alt="" />
+<div class="text-content">
+<p>{{ post.createdAt | date : "medium" }}</p>
+<p>{{ post.body }}</p>
+<p>{{ post.author.username }}</p>
 </div>
+</div>
+<div>
+<app-comment-list></app-comment-list>
+</div>
+</div>}

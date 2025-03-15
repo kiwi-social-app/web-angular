@@ -1,33 +1,10 @@
 <div class="post-edit-component">
-  <img class="image" src="{{ post.image }}" alt="" />
-
+@if(updatePostForm){
   <form
     class="update-post-form"
-    *ngIf="updatePostForm"
     [formGroup]="updatePostForm"
     (ngSubmit)="updatePost()"
   >
-    <div class="form-block">
-      <label for="title">Title:</label>
-      <input
-        id="title"
-        type="text"
-        formControlName="title"
-        value="{{ post.title }}"
-        [(ngModel)]="post.title"
-      />
-      <div
-      *ngIf="
-        updatePostForm.controls['title'].invalid &&
-        (updatePostForm.controls['title'].dirty ||
-          updatePostForm.controls['title'].touched)
-      "
-    >
-      <div *ngIf="updatePostForm.controls['title'].invalid">
-        Please enter title
-      </div>
-    </div>
-    </div>
     <div class="form-block">
       <label for="body">Body:</label>
       <textarea
@@ -36,32 +13,23 @@
         rows="5"
         formControlName="body"
         value="{{ post.body }}"
-        [(ngModel)]="post.body"
       ></textarea>
-      <div
-      *ngIf="
-        updatePostForm.controls['body'].invalid &&
-        (updatePostForm.controls['body'].dirty ||
-          updatePostForm.controls['body'].touched)
-      "
-    >
-      <div *ngIf="updatePostForm.controls['body'].invalid">
-        Please enter post body
-      </div>
-    </div>
-    </div>
-    <div class="form-block">
-      <label for="image">Image link:</label>
-      <input
-        id="image"
-        type="text"
-        formControlName="image"
-        value="{{ post.image }}"
-        [(ngModel)]="post.image"
-      />
-      <div *ngIf="imageValidation === false">Please enter valid image url</div>
-    </div>
+      @if(updatePostForm.get('body')?.invalid &&
+      (updatePostForm.get('body')?.dirty ||
+        updatePostForm.get('body')?.touched)){
+        <div
 
+        >
+          @if(updatePostForm.controls['body'].invalid){
+            <div>
+              Please enter post body
+            </div>
+          }
+
+        </div>
+
+      }
+    </div>
     <div class="buttons">
       <button class="update-btn" type="submit" [disabled]="!updatePostForm.valid">Update post</button>
       <button class="delete-btn" (click)="deletePost(post.id)">
@@ -69,4 +37,5 @@
       </button>
     </div>
   </form>
+}
 </div>

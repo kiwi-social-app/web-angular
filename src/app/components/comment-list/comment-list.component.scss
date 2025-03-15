@@ -17,14 +17,12 @@
 
     .comment-card {
       display: flex;
-      background-color: white;
       flex-direction: column;
       box-shadow: none;
+      border-bottom: solid 0.1rem;
 
       .comment-header {
         width: 100%;
-        background-color: #355591;
-        color: white;
         font-size: 0.8rem;
         display: flex;
         flex-direction: row;

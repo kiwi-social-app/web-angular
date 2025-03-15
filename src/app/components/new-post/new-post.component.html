@@ -6,26 +6,6 @@
     (ngSubmit)="createPost()"
   >
     <div class="form-block">
-      <label for="title">Title:</label>
-      <input
-        class="title-input"
-        id="title"
-        type="text"
-        formControlName="title"
-      />
-      <div
-        *ngIf="
-          newPostForm.controls['title'].invalid &&
-          (newPostForm.controls['title'].dirty ||
-            newPostForm.controls['title'].touched)
-        "
-      >
-        <div *ngIf="newPostForm.controls['title'].invalid">
-          Please enter title
-        </div>
-      </div>
-    </div>
-    <div class="form-block">
       <label for="body">Body:</label>
       <textarea
         class="body-input"
@@ -33,34 +13,23 @@
         type="text"
         formControlName="body"
       ></textarea>
-      <div
-        *ngIf="
-          newPostForm.controls['body'].invalid &&
-          (newPostForm.controls['body'].dirty ||
-            newPostForm.controls['body'].touched)
-        "
-      >
-        <div *ngIf="newPostForm.controls['body'].invalid">
-          Please enter post body
-        </div>
-      </div>
-    </div>
-    <div class="form-block">
-      <label for="image">Image link:</label>
-      <input
-        class="image-input"
-        id="image"
-        type="text"
-        formControlName="image"
-      />
+      @if (
+        newPostForm.get("body")?.invalid &&
+        (newPostForm.get("body")?.dirty || newPostForm.get("body")?.touched)
+      ) {
+        @if(newPostForm.controls['body'].invalid){
+          <div>
+            Please enter post body
+          </div>
+        }
 
-      <div *ngIf="imageValidation === false">Please enter valid image url</div>
+      }
     </div>
-
     <button class="publish-btn" type="submit" [disabled]="!newPostForm.valid">
       Publish
     </button>
   </form>
-
-  <div *ngIf="success">Successfully submitted post.</div>
+  @if (success) {
+    <div>Successfully submitted post.</div>
+  }
 </div>

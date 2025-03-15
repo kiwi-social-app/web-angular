@@ -1,46 +1,51 @@
-import { Component, EventEmitter, OnInit, Output } from '@angular/core';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { Observable, Subscription } from 'rxjs';
+import {
+  Component,
+  DestroyRef,
+  EventEmitter,
+  inject,
+  OnInit,
+  Output,
+} from '@angular/core';
+import {
+  FormBuilder,
+  FormGroup,
+  ReactiveFormsModule,
+  Validators,
+} from '@angular/forms';
 import { Post } from 'src/app/models/post.model';
-import { PostService } from 'src/app/services/post.service';
 import { UserService } from 'src/app/services/user.service';
 import { User } from '../../models/user.model';
 import { AuthService } from '../../services/auth.service';
+import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
+import { UserPostsComponent } from '../user-posts/user-posts.component';
 
 @Component({
-    selector: 'app-dashboard',
-    templateUrl: './dashboard.component.html',
-    styleUrls: ['./dashboard.component.scss'],
-    standalone: false
+  selector: 'app-dashboard',
+  templateUrl: './dashboard.component.html',
+  styleUrls: ['./dashboard.component.scss'],
+  standalone: true,
+  imports: [UserPostsComponent, ReactiveFormsModule],
 })
 export class DashboardComponent implements OnInit {
   @Output() onUpdateProfile: EventEmitter<User> = new EventEmitter();
-  public userPosts$!: Observable<Post[]>;
-  editProfileForm!: FormGroup;
-  users: User[] = [];
-  posts: Post[] = [];
 
-  currentUser!: any;
-  updatedUser!: User;
-  editMode: boolean = false;
-  subscription!: Subscription;
+  private readonly userService: UserService = inject(UserService);
+  private readonly authService: AuthService = inject(AuthService);
+  private readonly fb: FormBuilder = inject(FormBuilder);
+  private readonly destroyRef: DestroyRef = inject(DestroyRef);
 
-  constructor(
-    public auth: AuthService,
-    private fb: FormBuilder,
-    private postService: PostService,
-    private userService: UserService
-  ) {}
+  protected editProfileForm!: FormGroup;
+  protected posts: Post[] = [];
+
+  protected currentUser!: any;
+  protected updatedUser!: User;
+  protected editMode: boolean = false;
 
   ngOnInit(): void {
     this.getUser();
-    // this.getUserPosts();
-  }
-  ngOnDestroy() {
-    this.subscription.unsubscribe();
   }
 
-  initialiseForm(): void {
+  protected initialiseForm(): void {
     this.editProfileForm = this.fb.group({
       username: [null, [Validators.required]],
       email: [null, [Validators.required]],
@@ -49,34 +54,39 @@ export class DashboardComponent implements OnInit {
     });
   }
 
-  getUser() {
-    this.subscription = this.auth.afAuth.authState.subscribe((user) => {
-      if (user) {
-        this.currentUser = this.userService
-          .getUserByID(user.uid)
-          .subscribe((userData: any) => {
+  protected getUser(): void {
+    this.authService
+      .authState()
+      .pipe(takeUntilDestroyed(this.destroyRef))
+      .subscribe((user) => {
+        if (user) {
+          this.userService.getUserByID(user.uid).subscribe((userData: User) => {
             this.currentUser = userData;
-            console.log(this.currentUser)
             this.initialiseForm();
+            this.editProfileForm.patchValue({
+              username: userData.username,
+              email: userData.email,
+              firstname: userData.firstname,
+              lastname: userData.lastname,
+            });
           });
-      }
-    });
+        }
+      });
   }
 
-  updateProfile() {
+  protected updateProfile(): void {
     this.updatedUser = this.editProfileForm.getRawValue();
     this.userService
       .updateUser(this.currentUser.id, this.updatedUser)
       .subscribe((response: any) => response);
   }
 
-  editBtn() {
+  protected editBtn(): void {
     this.editMode = !this.editMode;
+    this.getUser();
   }
 
-  sortPosts() {
-    this.posts.sort((a: any, b: any) => {
-      return b.created_at.valueOf() - a.created_at.valueOf();
-    });
+  protected signOut(): void {
+    this.authService.signOut();
   }
 }

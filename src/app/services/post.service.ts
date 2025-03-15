@@ -1,7 +1,7 @@
-import { Injectable } from '@angular/core';
+import { inject, Injectable } from '@angular/core';
 
 import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
-import {catchError, map, Observable, of, tap} from 'rxjs';
+import { catchError, map, Observable, of, tap, throwError } from 'rxjs';
 import { Post } from '../models/post.model';
 import { AuthService } from './auth.service';
 
@@ -15,9 +15,10 @@ const httpOptions = {
   providedIn: 'root',
 })
 export class PostService {
-  private postsUrl: string = 'http://localhost:8080/posts/';
+  private readonly http: HttpClient = inject(HttpClient);
+  private readonly authService: AuthService = inject(AuthService);
 
-  constructor(private http: HttpClient, private auth: AuthService) {}
+  private postsUrl: string = 'http://localhost:8080/posts/';
 
   public checkImage(imageData: any) {
     if (
@@ -25,7 +26,7 @@ export class PostService {
       imageData === undefined ||
       imageData.length === 0
     ) {
-      return '../../assets/placeholder.png';
+      return '';
     } else {
       return imageData;
     }
@@ -36,27 +37,29 @@ export class PostService {
   }
 
   public fetchPostByID(id: string): Observable<Post> {
-    return this.http.get<Post>(`${this.postsUrl}${id}`, httpOptions)
+    return this.http.get<Post>(`${this.postsUrl}${id}`, httpOptions);
   }
 
   public createPost(post: Post): Observable<any> {
-    const userID = this.auth.currentUser.uid;
+    const currentUser = this.authService.getCurrentUser();
+
+    if (!currentUser) {
+      return throwError(() => new Error('User is not authenticated'));
+    }
     post.createdAt = new Date();
     post.image = this.checkImage(post.image);
 
     const url = `${this.postsUrl}`;
 
-    const params = new HttpParams()
-    .set('user_id', userID)
+    const params = new HttpParams().set('user_id', currentUser.uid);
 
-    return this.http
-      .post(url, post, {params})
-      .pipe(map((response) => response),
-        catchError((error) => {
-          console.log(error);
-          return of(error);
-        })
-        );
+    return this.http.post(url, post, { params }).pipe(
+      map((response) => response),
+      catchError((error) => {
+        console.log(error);
+        return of(error);
+      }),
+    );
   }
 
   public deletePost(id: string): Observable<any> {
@@ -64,7 +67,7 @@ export class PostService {
 
     return this.http.delete(url).pipe(
       map((response) => response),
-      catchError((error) => error)
+      catchError((error) => error),
     );
   }
 
@@ -80,7 +83,7 @@ export class PostService {
       catchError((error) => {
         console.log(error);
         return of(error);
-      })
+      }),
     );
   }
 }

@@ -1,26 +1,15 @@
-import { Component, Inject, OnInit } from '@angular/core';
-import { DOCUMENT } from '@angular/common';
-import { Auth } from '@angular/fire/auth';
+import { Component, inject } from '@angular/core';
+import { RouterLink } from '@angular/router';
+import { MatIcon } from '@angular/material/icon';
+import { AuthService } from '../../services/auth.service';
 
 @Component({
-    selector: 'app-navbar',
-    templateUrl: './navbar.component.html',
-    styleUrls: ['./navbar.component.scss'],
-    standalone: false
+  selector: 'app-navbar',
+  templateUrl: './navbar.component.html',
+  styleUrls: ['./navbar.component.scss'],
+  standalone: true,
+  imports: [RouterLink, MatIcon],
 })
-export class NavbarComponent implements OnInit {
-  isCollapsed: boolean = true;
-
-  constructor(
-    @Inject(DOCUMENT) public document: Document,
-    public afAuth: Auth
-  ) {}
-
-  ngOnInit(): void {}
-
-  collapseMenu() {
-    this.isCollapsed
-      ? (this.isCollapsed = false)
-      : (this.isCollapsed = true);
-  }
+export class NavbarComponent {
+  public authService: AuthService = inject(AuthService);
 }

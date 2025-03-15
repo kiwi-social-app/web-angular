@@ -1,42 +1,38 @@
-import { Component, EventEmitter, OnInit, Output } from '@angular/core';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { Component, EventEmitter, inject, OnInit, Output } from '@angular/core';
+import {
+  FormBuilder,
+  FormGroup,
+  ReactiveFormsModule,
+  Validators,
+} from '@angular/forms';
 import { ActivatedRoute } from '@angular/router';
 import { CommentService } from 'src/app/services/comment.service';
 import { Comment } from '../../models/comment.model';
-import { Post } from '../../models/post.model';
 import { AuthService } from '../../services/auth.service';
+import firebase from 'firebase/compat';
+import User = firebase.User;
 
 @Component({
-    selector: 'app-new-comment',
-    templateUrl: './new-comment.component.html',
-    styleUrls: ['./new-comment.component.scss'],
-    standalone: false
+  selector: 'app-new-comment',
+  templateUrl: './new-comment.component.html',
+  styleUrls: ['./new-comment.component.scss'],
+  standalone: true,
+  imports: [ReactiveFormsModule],
 })
 export class NewCommentComponent implements OnInit {
   @Output() onNewComment: EventEmitter<Comment> = new EventEmitter();
 
-  newCommentForm!: FormGroup;
-  newComment!: Comment;
-  public postID: string;
+  private readonly commentService: CommentService = inject(CommentService);
+  private readonly fb: FormBuilder = inject(FormBuilder);
+  private readonly authService: AuthService = inject(AuthService);
+  private readonly route: ActivatedRoute = inject(ActivatedRoute);
 
-  currentUser!: any;
-  currentPost!: Post;
-  loading: boolean = false;
-  success: boolean = false;
-  userData!: any;
-
-  constructor(private commentService: CommentService, private fb: FormBuilder, public auth: AuthService, private route: ActivatedRoute) {
-    this.postID = String(this.route.snapshot.paramMap.get('id'));
-    this.currentUser = this.auth.getCurrentUser();
-  }
+  protected newCommentForm!: FormGroup;
+  private newComment!: Comment;
+  private postID: string = String(this.route.snapshot.paramMap.get('id'));
 
   ngOnInit(): void {
     this.initialiseForm();
-    this.auth.afAuth.authState.subscribe((user) => {
-      if (user) {
-        this.currentUser = user;
-      }
-    });
   }
 
   initialiseForm(): void {
@@ -47,7 +43,9 @@ export class NewCommentComponent implements OnInit {
 
   createComment() {
     this.newComment = this.newCommentForm.getRawValue();
-    this.commentService.createComment(this.newComment, this.postID).subscribe((response) => this.onNewComment.emit(response));
+    this.commentService
+      .createComment(this.newComment, this.postID)
+      .subscribe((response) => this.onNewComment.emit(response));
     this.newCommentForm.reset();
   }
 }

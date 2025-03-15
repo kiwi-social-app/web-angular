@@ -19,14 +19,16 @@
         formControlName="password"
       />
     </div>
-    <div *ngIf="firebaseErrorMessage != ''" class="error">
-      <span>{{ firebaseErrorMessage }}</span>
-    </div>
+    @if(firebaseErrorMessage != ''){
+      <div class="error">
+        <span>{{ firebaseErrorMessage }}</span>
+      </div>
+    }
 
     <button>Log in</button>
   </form>
   <div>
-    <button (click)="auth.googleSignin()">Google Sign In</button>
+    <button (click)="googleSignin()">Google Sign In</button>
   </div>
 </div>
 

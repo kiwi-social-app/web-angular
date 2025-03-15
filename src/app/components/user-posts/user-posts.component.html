@@ -1,23 +1,24 @@
 <div class="user-posts-component">
   <h2 class="list-title">Post List</h2>
   <div class="list">
-    <div *ngIf="userPosts !== undefined && userPosts.length > 0; else noPosts">
-      <div class="card-container" *ngFor="let post of userPosts">
-        <div class="post-card">
-          <div class="card-content">
-            <p>{{ post.title }}</p>
-            <div class="buttons">
-              <button class="edit-btn" (click)="editPost(post.id)">Edit</button>
-              <button class="delete-btn" (click)="deletePost(post.id)">
-                Delete
-              </button>
+    @if(userPosts && userPosts.length > 0){
+      @for(post of userPosts; track $index){
+        <div class="card-container">
+          <div class="post-card">
+            <div class="card-content">
+              {{post.body}}
+              <div class="buttons">
+                <button class="edit-btn" (click)="editPost(post.id)">Edit</button>
+                <button class="delete-btn" (click)="deletePost(post.id)">
+                  Delete
+                </button>
+              </div>
             </div>
           </div>
         </div>
-      </div>
-    </div>
-    <ng-template #noPosts>
+      }
+    } @else {
       <p class="no-post-msg">This user has no posts!</p>
-    </ng-template>
+    }
   </div>
 </div>
