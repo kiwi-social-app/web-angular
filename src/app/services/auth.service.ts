@@ -7,7 +7,7 @@ import {
 import { Router } from '@angular/router';
 import firebase from 'firebase/compat/app';
 import { UserService } from './user.service';
-import { Auth } from '@angular/fire/auth';
+import { Auth, getAuth, onAuthStateChanged } from '@angular/fire/auth';
 import { Observable } from 'rxjs';
 
 @Injectable({
@@ -20,7 +20,22 @@ export class AuthService {
   private readonly afs: AngularFirestore = inject(AngularFirestore);
   private readonly userService: UserService = inject(UserService);
 
-  public currentUser!: any;
+  private authInstance = getAuth();
+
+  constructor() {
+    // Listen for auth state changes (user sign-in or sign-out)
+    onAuthStateChanged(this.authInstance, (user) => {
+      if (user) {
+        // User is signed in, get and store the Firebase ID token
+        user.getIdToken().then((idToken) => {
+          localStorage.setItem('firebase_jwt_token', idToken); // Store the JWT token in localStorage
+        });
+      } else {
+        // User is signed out, clear any saved JWT token
+        localStorage.removeItem('firebase_jwt_token');
+      }
+    });
+  }
 
   public getCurrentUser() {
     return this.auth.currentUser;

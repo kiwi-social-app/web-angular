@@ -1,0 +1,16 @@
+<div class="messages-component" id="messages">
+  <ol>
+    @for(message of messages | async ; track $index){
+      <div class="message">
+        <p>{{message.sender}}</p>
+        <p>{{message.content}}</p>
+      </div>
+    }
+  </ol>
+  <form [formGroup]="messageForm">
+    <label for="message"></label>
+    <input id="message" formControlName="message" placeholder="Type a message..." type="text">
+  </form>
+  <button (click)="onSendMessage()">Send</button>
+
+</div>

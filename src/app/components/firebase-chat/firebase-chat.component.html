@@ -1,0 +1,17 @@
+<div class="chat-container">
+  @for(message of messages$ | async; track $index){
+    <div class="message">
+<!--      <strong>{{ message[1] }}:</strong> {{ message[0] }}-->
+    {{message}}
+    </div>
+
+  }
+
+  <input
+    type="text"
+    [(ngModel)]="newMessage"
+    placeholder="Type a message"
+    (keyup.enter)="sendMessage()"
+  />
+  <button (click)="sendMessage()">Send</button>
+</div>
