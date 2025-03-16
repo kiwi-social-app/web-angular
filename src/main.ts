@@ -15,6 +15,7 @@ import { AngularFireAuthModule } from '@angular/fire/compat/auth';
 import { AngularFireModule } from '@angular/fire/compat';
 import { AngularFirestoreModule } from '@angular/fire/compat/firestore';
 import { getFirestore, provideFirestore } from '@angular/fire/firestore';
+import { provideRxStomp } from './app/rx-stomp.config';
 
 if (environment.production) {
   enableProdMode();
@@ -32,5 +33,6 @@ bootstrapApplication(AppComponent, {
     provideAuth(() => getAuth()),
     provideStorage(() => getStorage()),
     provideFirestore(() => getFirestore()),
+    provideRxStomp(),
   ],
 }).catch((err) => console.error(err));

@@ -1,0 +1,9 @@
+<div class="messages-component" id="messages">
+  <button class="btn btn-primary" (click)="onSendMessage()">Send Test Message</button>
+  <h2>Received messages</h2>
+  <ol>
+    @for(message of receivedMessages; track $index){
+    <li class="message">{{ message }}</li>
+    }
+  </ol>
+</div>

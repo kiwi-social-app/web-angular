@@ -7,6 +7,7 @@ import { PostEditComponent } from './components/post-edit/post-edit.component';
 import { PostListComponent } from './components/post-list/post-list.component';
 import { AuthGuard } from './services/auth.guard';
 import { SignupComponent } from './components/signup/signup.component';
+import { MessagesComponent } from './messages/messages.component';
 
 export const routes: Routes = [
   { path: '', redirectTo: '/post-list', pathMatch: 'full' },
@@ -29,5 +30,9 @@ export const routes: Routes = [
     pathMatch: 'full',
     component: PostDetailComponent,
     canActivate: [AuthGuard],
+  },
+  {
+    path: 'wschat',
+    component: MessagesComponent,
   },
 ];
