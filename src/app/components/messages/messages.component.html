@@ -1,14 +1,12 @@
-<div class="messages-component" id="messages">
-  <ol>
+<div class="messages-component">
+  <div class="message-list">
     @if(messages){
       @for(message of messages | async ; track $index){
-        <div class="message">
           <app-message [message]="message"></app-message>
-        </div>
       }
     }
 
-  </ol>
+  </div>
   <form [formGroup]="messageForm">
     <label for="message"></label>
     <input id="message" formControlName="message" placeholder="Type a message..." type="text">

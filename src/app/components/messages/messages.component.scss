@@ -1,4 +1,14 @@
 .messages-component{
   padding: 4rem 2rem;
   overflow: scroll;
+  width: calc(100% - 12.5rem);
+
+  .message-list {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+    width: 20rem;
+
+
+  }
 }

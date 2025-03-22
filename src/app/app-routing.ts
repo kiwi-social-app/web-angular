@@ -11,7 +11,7 @@ import { MessagesComponent } from './components/messages/messages.component';
 import { FirebaseChatComponent } from './components/firebase-chat/firebase-chat.component';
 
 export const routes: Routes = [
-  { path: '', redirectTo: '/post-list', pathMatch: 'full' },
+  { path: '', component: PostListComponent, canActivate: [AuthGuard] },
   { path: 'signup', component: SignupComponent },
   { path: 'login', component: LoginComponent },
   {
@@ -20,7 +20,6 @@ export const routes: Routes = [
     canActivate: [AuthGuard],
   },
   { path: 'new-post', component: NewPostComponent, canActivate: [AuthGuard] },
-  { path: 'post-list', component: PostListComponent, canActivate: [AuthGuard] },
   {
     path: 'post-edit/:id',
     component: PostEditComponent,

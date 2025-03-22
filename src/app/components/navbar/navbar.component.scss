@@ -13,9 +13,11 @@
     z-index: 2;
     justify-content: space-between;
     padding: 1rem;
-    width: 100vw;
+    width: 98vw;
     margin: auto;
     background-color: #0c5570;
+    height: 1.4rem;
+    align-items: center;
 
     .navbar-brand > * {
       display: flex;
@@ -34,6 +36,21 @@
         margin: auto;
       }
     }
+
+    .top-bar-buttons{
+      display: flex;
+      gap:.5rem;
+      padding: 0 1rem;
+
+
+    .top-bar-button{
+      border: solid white 0.1rem;
+      border-radius: .5rem;
+      height: 2rem;
+      color: white;
+      background-color: transparent;
+    }
+    }
   }
 
   .side-bar {
@@ -41,12 +58,13 @@
     display: flex;
     flex-direction: column;
     align-items: flex-end;
-    height: 100vh;
-    margin-top: 0.5rem;
-    padding: 7rem 0.5rem;
+    height: calc(100vh - 5.5rem);
+    padding: 2rem .5rem 0 .5rem;
     right: 0;
     border-left: solid 0.1rem #5dadf4;
+    border-top: solid 0.1rem #5dadf4;
     background-color: #0c5570;
+    bottom: 0;
 
     .nav-links {
       display: flex;

@@ -3,20 +3,21 @@
     <div class="navbar-brand">
       <a routerLink="/">Chatter Angular</a>
     </div>
+    <div class="top-bar-buttons">
+      <button class="nav-link top-bar-button" type="button"><mat-icon>search</mat-icon></button>
+      <a routerLink="/new-post" class="nav-link top-bar-button"><mat-icon>add</mat-icon>New Post</a>
+      @if(authService.getCurrentUser()){
+        <a routerLink="/dashboard" class="nav-link top-bar-button"><mat-icon>person</mat-icon></a>
+      } @else{
+        <a routerLink="/login" class="nav-link top-bar-button">Log in</a>
+      }
+    </div>
   </div>
   <div
     class="side-bar"
   >
     <div class="nav-links">
-      <a routerLink="/new-post" class="nav-link"><mat-icon>add</mat-icon> <span class="sidebar-link-text">New Post</span></a>
-      <a routerLink="/post-list" class="nav-link"><mat-icon>list</mat-icon><span class="sidebar-link-text">Post List</span></a>
-
-      @if(authService.getCurrentUser()){
-        <a routerLink="/dashboard" class="nav-link"><mat-icon>person</mat-icon><span class="sidebar-link-text">Account</span></a>
-      } @else{
-        <a routerLink="/login" class="nav-link">Log in</a>
-      }
-
+      <a routerLink="" class="nav-link"><mat-icon>home</mat-icon><span class="sidebar-link-text">Home</span></a>
     </div>
   </div>
 </nav>
