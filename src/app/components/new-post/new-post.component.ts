@@ -16,6 +16,7 @@ import {
 import { Router } from '@angular/router';
 import { PostService } from 'src/app/services/post.service';
 import { Post } from '../../models/post.model';
+import { PostCreation } from '../../models/postCreation.model';
 
 @Component({
   selector: 'app-new-post',
@@ -32,9 +33,8 @@ export class NewPostComponent implements OnInit {
   @Output() onNewPost: EventEmitter<Post> = new EventEmitter();
 
   newPostForm!: FormGroup;
-  newPost!: Post;
+  newPost!: PostCreation;
   success: boolean = false;
-  imageValidation: boolean = true;
 
   ngOnInit() {
     this.initialiseForm();
@@ -43,36 +43,15 @@ export class NewPostComponent implements OnInit {
   protected initialiseForm(): void {
     this.newPostForm = this.fb.group({
       body: ['', [Validators.required]],
-      image: '',
     });
   }
 
   protected createPost() {
     this.newPost = this.newPostForm.getRawValue();
-    if (
-      this.checkImageUrl(this.newPost.image) === true ||
-      this.newPostForm?.get('image')?.getRawValue().length === 0
-    ) {
-      this.postService.createPost(this.newPost).subscribe((response) => {
-        this.router.navigate(['/']);
-      });
-    } else {
-      this.imageValidation = false;
-    }
-  }
+    console.log(this.newPost);
 
-  protected checkImageUrl(url: any): any {
-    var request = new XMLHttpRequest();
-    request.open('GET', url, true);
-    request.send();
-    request.onload = function () {
-      if (request.status == 200) {
-        console.log(`image exists`);
-        return true;
-      } else {
-        console.log(`image doesn't exist`);
-        return false;
-      }
-    };
+    this.postService.createPost(this.newPost).subscribe((response) => {
+      this.router.navigate(['/']);
+    });
   }
 }

@@ -1,10 +1,10 @@
-@if(post){<div class="post-detail-component">
+@if(post){
+  <div class="post-detail-component">
 <div class="post-container">
-<img class="image" src="{{ post.image ?? './assets/placeholder.png' }}" alt="" />
 <div class="text-content">
 <p>{{ post.createdAt | date : "medium" }}</p>
 <p>{{ post.body }}</p>
-<p>{{ post.author.username }}</p>
+<p>{{ (author | async)?.username ?? (author | async)?.email  }}</p>
 </div>
 </div>
 <div>

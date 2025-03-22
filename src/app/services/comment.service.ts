@@ -1,6 +1,6 @@
 import { inject, Injectable } from '@angular/core';
 
-import { HttpClient, HttpParams } from '@angular/common/http';
+import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
 import { catchError, map, Observable, of, throwError } from 'rxjs';
 import { Comment } from '../models/comment.model';
 import { AuthService } from './auth.service';
@@ -32,10 +32,15 @@ export class CommentService {
     comment.created_at = new Date();
 
     const params = new HttpParams()
-      .set('user_id', currentUser.uid)
+      .set('userId', currentUser.uid)
       .set('postId', postID);
 
-    return this.http.post(url, comment, { params }).pipe(
+    const headers = new HttpHeaders({
+      Authorization: `Bearer ${currentUser.getIdToken()}`,
+      'Content-Type': 'application/json',
+    });
+
+    return this.http.post(url, comment, { params, headers }).pipe(
       map((response) => response),
       catchError((error) => {
         console.log(error);

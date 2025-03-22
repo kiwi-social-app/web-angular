@@ -9,10 +9,11 @@ import {
   Validators,
 } from '@angular/forms';
 import { Observable } from 'rxjs';
+import { MessageComponent } from '../message/message.component';
 
 @Component({
   selector: 'app-messages',
-  imports: [AsyncPipe, ReactiveFormsModule],
+  imports: [AsyncPipe, ReactiveFormsModule, MessageComponent],
   templateUrl: './messages.component.html',
   styleUrl: './messages.component.scss',
   standalone: true,
@@ -36,7 +37,7 @@ export class MessagesComponent implements OnInit {
     if (this.wsChatService.connected()) {
       if (!this.messageForm.invalid) {
         this.wsChatService.sendMessage(
-          this.authService.getCurrentUser()!.email!,
+          this.authService.getCurrentUser()!.uid,
           this.messageForm.controls['message'].value,
         );
       }

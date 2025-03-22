@@ -4,6 +4,7 @@ import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
 import { catchError, map, Observable, of, tap, throwError } from 'rxjs';
 import { Post } from '../models/post.model';
 import { AuthService } from './auth.service';
+import { PostCreation } from '../models/postCreation.model';
 
 const httpOptions = {
   headers: new HttpHeaders({
@@ -20,18 +21,6 @@ export class PostService {
 
   private postsUrl: string = 'http://localhost:8080/posts/';
 
-  public checkImage(imageData: any) {
-    if (
-      imageData === null ||
-      imageData === undefined ||
-      imageData.length === 0
-    ) {
-      return '';
-    } else {
-      return imageData;
-    }
-  }
-
   public fetchPosts(): Observable<Post[]> {
     return this.http.get<Post[]>(this.postsUrl);
   }
@@ -40,26 +29,24 @@ export class PostService {
     return this.http.get<Post>(`${this.postsUrl}${id}`, httpOptions);
   }
 
-  public createPost(post: Post): Observable<any> {
+  public createPost(post: PostCreation): Observable<any> {
     const currentUser = this.authService.getCurrentUser();
 
     if (!currentUser) {
       return throwError(() => new Error('User is not authenticated'));
     }
-    post.createdAt = new Date();
-    post.image = this.checkImage(post.image);
 
     const url = `${this.postsUrl}`;
 
-    const params = new HttpParams().set('user_id', currentUser.uid);
+    const params = new HttpParams().set('userId', currentUser.uid);
 
-    return this.http.post(url, post, { params }).pipe(
-      map((response) => response),
-      catchError((error) => {
-        console.log(error);
-        return of(error);
+    return this.http.post(url, post, {
+      params,
+      headers: new HttpHeaders({
+        Authorization: `Bearer ${currentUser.getIdToken()}`,
+        'Content-Type': 'application/json',
       }),
-    );
+    });
   }
 
   public deletePost(id: string): Observable<any> {
@@ -74,7 +61,6 @@ export class PostService {
   public updatePost(post: Post) {
     const url = `${this.postsUrl}${post.id}`;
     post.updatedAt = new Date();
-    post.image = this.checkImage(post.image);
 
     return this.http.put(url, post, httpOptions).pipe(
       tap((response) => {

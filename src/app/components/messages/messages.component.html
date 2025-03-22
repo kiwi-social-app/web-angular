@@ -1,11 +1,13 @@
 <div class="messages-component" id="messages">
   <ol>
-    @for(message of messages | async ; track $index){
-      <div class="message">
-        <p>{{message.sender}}</p>
-        <p>{{message.content}}</p>
-      </div>
+    @if(messages){
+      @for(message of messages | async ; track $index){
+        <div class="message">
+          <app-message [message]="message"></app-message>
+        </div>
+      }
     }
+
   </ol>
   <form [formGroup]="messageForm">
     <label for="message"></label>

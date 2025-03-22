@@ -1,7 +1,4 @@
 <div routerLink="/posts/{{post.id}}" class="post-card">
-    <p>{{ post.author.username }}</p>
+    <p>{{ (author | async)?.username }}</p>
     <p>{{ post.body }}</p>
-  @if(post.image){
-    <img class="image" src="{{ post.image}}" alt="" />
-  }
 </div>

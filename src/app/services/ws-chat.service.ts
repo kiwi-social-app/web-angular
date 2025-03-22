@@ -4,6 +4,7 @@ import { myRxStompConfig } from '../rx-stomp.config';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { BehaviorSubject, Observable, tap } from 'rxjs';
 import { HttpClient } from '@angular/common/http';
+import { User } from '../models/user.model';
 
 @Injectable({
   providedIn: 'root',
@@ -60,8 +61,8 @@ export class WsChatService extends RxStomp {
       });
   }
 
-  public sendMessage(sender: string, content: string): void {
-    const message = { sender, content };
+  public sendMessage(senderId: string, content: string): void {
+    const message = { senderId, content };
     this.publish({
       destination: '/app/sendMessage',
       body: JSON.stringify(message),
