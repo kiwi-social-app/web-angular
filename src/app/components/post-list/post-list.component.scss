@@ -7,6 +7,8 @@
   justify-content: center;
   overflow: scroll;
   scrollbar-width: none;
+  margin: auto;
+  gap:.5rem;
 }
 
 @media (max-width: 600px) {

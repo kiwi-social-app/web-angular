@@ -10,9 +10,8 @@ import { User } from '../models/user.model';
   providedIn: 'root',
 })
 export class WsChatService extends RxStomp {
-  private messagesSubject: BehaviorSubject<any[]> = new BehaviorSubject<any[]>(
-    this.loadMessagesFromStorage(),
-  );
+  private messagesMap: Map<string, BehaviorSubject<any[]>> = new Map();
+
   private readonly destroyRef: DestroyRef = inject(DestroyRef);
   private readonly http: HttpClient = inject(HttpClient);
 
@@ -20,56 +19,81 @@ export class WsChatService extends RxStomp {
     super();
     this.configure(myRxStompConfig);
     this.activate();
-    this.fetchMessagesFromBackend();
-    this.subscribeToMessages();
   }
 
-  private loadMessagesFromStorage(): any[] {
-    const storedMessages = localStorage.getItem('chatMessages');
+  private loadMessagesFromStorage(conversationId: string): any[] {
+    const storedMessages = localStorage.getItem(
+      `chatMessages_${conversationId}`,
+    );
     return storedMessages ? JSON.parse(storedMessages) : [];
   }
 
-  private saveMessagesToStorage(messages: any[]): void {
-    localStorage.setItem('chatMessages', JSON.stringify(messages));
+  private saveMessagesToStorage(conversationId: string, messages: any[]): void {
+    localStorage.setItem(
+      `chatMessages_${conversationId}`,
+      JSON.stringify(messages),
+    );
   }
 
-  private fetchMessagesFromBackend(): void {
-    this.http.get<any[]>('http://localhost:8080/chat/messages').subscribe({
-      next: (messages) => {
-        if (messages && Array.isArray(messages)) {
-          this.messagesSubject.next(messages);
-          this.saveMessagesToStorage(messages);
-        } else {
-          console.error('Unexpected response format:', messages);
-        }
-      },
-      error: (error) => {
-        console.error('Failed to fetch messages from backend:', error);
-      },
-    });
-  }
-
-  private subscribeToMessages(): void {
-    this.watch('/topic/messages')
-      .pipe(takeUntilDestroyed(this.destroyRef))
-      .subscribe((message) => {
-        const parsedMessage = JSON.parse(message.body);
-        const updatedMessages = [...this.messagesSubject.value, parsedMessage];
-
-        this.messagesSubject.next(updatedMessages);
-        this.saveMessagesToStorage(updatedMessages);
+  public fetchMessagesFromBackend(conversationId: string): void {
+    this.http
+      .get<any[]>(`http://localhost:8080/chat/messages/${conversationId}`)
+      .subscribe({
+        next: (messages) => {
+          if (messages && Array.isArray(messages)) {
+            this.getMessageSubject(conversationId).next(messages);
+            this.saveMessagesToStorage(conversationId, messages);
+          } else {
+            console.error('Unexpected response format:', messages);
+          }
+        },
+        error: (error) => {
+          console.error(
+            `Failed to fetch messages for conversation ${conversationId}:`,
+            error,
+          );
+        },
       });
   }
 
-  public sendMessage(senderId: string, content: string): void {
-    const message = { senderId, content };
+  public subscribeToMessages(conversationId: string): void {
+    this.watch(`/topic/conversations/${conversationId}`)
+      .pipe(takeUntilDestroyed(this.destroyRef))
+      .subscribe((message) => {
+        const parsedMessage = JSON.parse(message.body);
+        const messagesSubject = this.getMessageSubject(conversationId);
+        const updatedMessages = [...messagesSubject.value, parsedMessage];
+
+        messagesSubject.next(updatedMessages);
+        this.saveMessagesToStorage(conversationId, updatedMessages);
+      });
+  }
+
+  public sendMessage(
+    conversationId: string,
+    senderId: string,
+    content: string,
+  ): void {
+    const message = { conversationId, senderId, content };
     this.publish({
       destination: '/app/sendMessage',
       body: JSON.stringify(message),
     });
   }
 
-  public getMessages(): Observable<any[]> {
-    return this.messagesSubject.asObservable();
+  public getMessages(conversationId: string): Observable<any[]> {
+    return this.getMessageSubject(conversationId).asObservable();
+  }
+
+  private getMessageSubject(conversationId: string): BehaviorSubject<any[]> {
+    if (!this.messagesMap.has(conversationId)) {
+      this.messagesMap.set(
+        conversationId,
+        new BehaviorSubject<any[]>(
+          this.loadMessagesFromStorage(conversationId),
+        ),
+      );
+    }
+    return this.messagesMap.get(conversationId)!;
   }
 }

@@ -6,6 +6,7 @@ import { Post } from '../../models/post.model';
 import { toSignal } from '@angular/core/rxjs-interop';
 import { User } from '../../models/user.model';
 import { Observable, of } from 'rxjs';
+import { CommentListComponent } from '../comment-list/comment-list.component';
 
 @Component({
   selector: 'app-post-card',

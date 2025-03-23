@@ -7,7 +7,7 @@ import { PostEditComponent } from './components/post-edit/post-edit.component';
 import { PostListComponent } from './components/post-list/post-list.component';
 import { AuthGuard } from './services/auth.guard';
 import { SignupComponent } from './components/signup/signup.component';
-import { MessagesComponent } from './components/messages/messages.component';
+import { ChatComponent } from './components/chat/chat.component';
 import { FirebaseChatComponent } from './components/firebase-chat/firebase-chat.component';
 
 export const routes: Routes = [
@@ -32,13 +32,8 @@ export const routes: Routes = [
     canActivate: [AuthGuard],
   },
   {
-    path: 'wschat',
-    component: MessagesComponent,
-    canActivate: [AuthGuard],
-  },
-  {
-    path: 'firechat',
-    component: FirebaseChatComponent,
+    path: 'chat',
+    component: ChatComponent,
     canActivate: [AuthGuard],
   },
 ];

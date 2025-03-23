@@ -1,0 +1,40 @@
+<div class="chat-component">
+  @if(currentUser){
+    <div class="conversation-list">
+      <div class="contact-search">
+        <input type="text">
+      </div>
+      <div class="list">
+        @if(contacts){
+          @for(contact of contacts ; track $index){
+            <div class="contact-card" (click)="onContactClick(contact)">
+              {{getContactUsername(currentUser.uid, contact)}}
+            </div>
+          }
+        }
+
+      </div>
+    </div>  }
+  <div class="chat-section">
+    @if(currentContact){
+      <div class="message-list">
+        @if(currentContact.conversationId){
+          @for(message of messages | async ; track $index){
+            <app-message [message]="message"></app-message>
+          }
+        }
+
+      </div>
+
+    } @else {
+      <p>Select a contact</p>
+    }
+    <form [formGroup]="messageForm">
+      <label for="message"></label>
+      <input id="message" formControlName="message" placeholder="Type a message..." type="text">
+    </form>
+    <button (click)="onSendMessage()">Send</button>
+  </div>
+
+
+</div>

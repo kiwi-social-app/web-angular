@@ -5,6 +5,7 @@ import { toSignal } from '@angular/core/rxjs-interop';
 import { PostCardComponent } from '../post-card/post-card.component';
 import { RouterLink } from '@angular/router';
 import { FormsModule } from '@angular/forms';
+import { CommentListComponent } from '../comment-list/comment-list.component';
 
 @Component({
   selector: 'app-post-list',

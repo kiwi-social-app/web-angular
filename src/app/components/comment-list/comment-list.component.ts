@@ -1,4 +1,4 @@
-import { Component, inject, OnInit } from '@angular/core';
+import { Component, inject, input, InputSignal, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { Observable } from 'rxjs';
 import { CommentService } from 'src/app/services/comment.service';
@@ -14,17 +14,17 @@ import { AsyncPipe, DatePipe } from '@angular/common';
   imports: [NewCommentComponent, AsyncPipe, DatePipe],
 })
 export class CommentListComponent implements OnInit {
+  public postID: InputSignal<string> = input.required<string>();
+
   private readonly commentService: CommentService = inject(CommentService);
-  private readonly route: ActivatedRoute = inject(ActivatedRoute);
 
   public comments$!: Observable<Comment[]>;
-  public postID: string = String(this.route.snapshot.paramMap.get('id'));
 
   ngOnInit(): void {
     this.getComments();
   }
 
   protected getComments(): void {
-    this.comments$ = this.commentService.fetchCommentsByPostID(this.postID);
+    this.comments$ = this.commentService.fetchCommentsByPostID(this.postID());
   }
 }

@@ -3,6 +3,8 @@ import { inject, Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { catchError, Observable, of, tap } from 'rxjs';
 import { User } from '../models/user.model';
+import { AuthService } from './auth.service';
+import { Auth } from '@angular/fire/auth';
 
 const httpOptions = {
   headers: new HttpHeaders({
@@ -15,6 +17,7 @@ const httpOptions = {
 })
 export class UserService {
   private readonly http: HttpClient = inject(HttpClient);
+  private readonly auth: Auth = inject(Auth);
 
   private usersUrl: string = 'http://localhost:8080/users/';
 
@@ -49,5 +52,15 @@ export class UserService {
 
   public fetchUsers(): Observable<User[]> {
     return this.http.get<User[]>(this.usersUrl);
+  }
+
+  public getCurrentUser(): Observable<User | null> {
+    const user = this.auth.currentUser;
+
+    if (user !== null) {
+      return this.getUserByID(user.uid);
+    } else {
+      return of(null);
+    }
   }
 }
