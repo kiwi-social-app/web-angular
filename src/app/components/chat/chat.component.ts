@@ -11,9 +11,6 @@ import { Observable } from 'rxjs';
 import { MessageComponent } from '../message/message.component';
 import { ContactService } from '../../services/contact.service';
 import { Contact } from '../../models/contact.model';
-import { ConversationService } from '../../services/conversation.service';
-import { Conversation } from '../../models/conversation.model';
-import { UserService } from '../../services/user.service';
 import { User } from '@angular/fire/auth';
 import { AsyncPipe } from '@angular/common';
 
@@ -27,18 +24,13 @@ import { AsyncPipe } from '@angular/common';
 export class ChatComponent implements OnInit {
   private readonly wsChatService: WsChatService = inject(WsChatService);
   private readonly authService: AuthService = inject(AuthService);
-  private readonly userService: UserService = inject(UserService);
-  private readonly conversationService: ConversationService =
-    inject(ConversationService);
-
   private contactService: ContactService = inject(ContactService);
+
   protected contacts!: Contact[];
   protected messages!: Observable<any[]>;
   protected messageForm!: FormGroup;
   protected currentUser!: User | null;
   protected currentContact!: Contact;
-  protected conversation!: Conversation;
-  protected contactUsername!: string;
 
   ngOnInit(): void {
     this.messageForm = new FormGroup({

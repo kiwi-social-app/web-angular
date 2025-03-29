@@ -17,6 +17,11 @@
     </div>  }
   <div class="chat-section">
     @if(currentContact){
+      <form [formGroup]="messageForm">
+        <label for="message"></label>
+        <input id="message" formControlName="message" placeholder="Type a message..." type="text">
+      </form>
+      <button (click)="onSendMessage()">Send</button>
       <div class="message-list">
         @if(currentContact.conversationId){
           @for(message of messages | async ; track $index){
@@ -29,12 +34,6 @@
     } @else {
       <p>Select a contact</p>
     }
-    <form [formGroup]="messageForm">
-      <label for="message"></label>
-      <input id="message" formControlName="message" placeholder="Type a message..." type="text">
-    </form>
-    <button (click)="onSendMessage()">Send</button>
+
   </div>
-
-
 </div>
