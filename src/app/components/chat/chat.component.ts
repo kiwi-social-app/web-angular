@@ -13,10 +13,11 @@ import { ContactService } from '../../services/contact.service';
 import { Contact } from '../../models/contact.model';
 import { User } from '@angular/fire/auth';
 import { AsyncPipe } from '@angular/common';
+import { MatButton } from '@angular/material/button';
 
 @Component({
   selector: 'app-chat',
-  imports: [ReactiveFormsModule, MessageComponent, AsyncPipe],
+  imports: [ReactiveFormsModule, MessageComponent, AsyncPipe, MatButton],
   templateUrl: './chat.component.html',
   styleUrl: './chat.component.scss',
   standalone: true,
@@ -26,7 +27,7 @@ export class ChatComponent implements OnInit {
   private readonly authService: AuthService = inject(AuthService);
   private contactService: ContactService = inject(ContactService);
 
-  protected contacts!: Contact[];
+  protected contacts!: Observable<Contact[]>;
   protected messages!: Observable<any[]>;
   protected messageForm!: FormGroup;
   protected currentUser!: User | null;
@@ -39,12 +40,9 @@ export class ChatComponent implements OnInit {
     this.currentUser = this.authService.getCurrentUser();
 
     if (this.currentUser) {
-      this.contactService
-        .getContactsByUser(this.currentUser.uid)
-        .subscribe((contacts) => {
-          this.contacts = contacts;
-          console.log(contacts);
-        });
+      this.contacts = this.contactService.getContactsByUser(
+        this.currentUser.uid,
+      );
     }
   }
 

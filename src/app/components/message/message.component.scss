@@ -1,5 +1,18 @@
-.message-component{
-    border-radius: 0.5rem;
-    padding: 1rem;
+.message-component {
+  display: flex;
+  flex-direction: column;
+  padding: 1rem;
+  border-bottom: 0.1rem solid;
+  background-color: var(--main-card-bg-color);
+  border-radius: .5rem;
 
+  .image {
+    height: 5rem;
+    width: 10rem;
+  }
+
+  .card-content {
+    margin: auto;
+    text-align: center;
+  }
 }

@@ -6,31 +6,30 @@
       </div>
       <div class="list">
         @if(contacts){
-          @for(contact of contacts ; track $index){
+          @for(contact of contacts | async; track $index){
             <div class="contact-card" (click)="onContactClick(contact)">
               {{getContactUsername(currentUser.uid, contact)}}
             </div>
           }
         }
-
       </div>
     </div>  }
   <div class="chat-section">
     @if(currentContact){
-      <form [formGroup]="messageForm">
-        <label for="message"></label>
-        <input id="message" formControlName="message" placeholder="Type a message..." type="text">
-      </form>
-      <button (click)="onSendMessage()">Send</button>
       <div class="message-list">
         @if(currentContact.conversationId){
           @for(message of messages | async ; track $index){
             <app-message [message]="message"></app-message>
           }
         }
-
       </div>
-
+      <div class="message-creation">
+        <form class="message-form" [formGroup]="messageForm" >
+          <label for="message"></label>
+          <textarea id="message" formControlName="message" placeholder="Type a message..." rows="5" cols="35" type="text"></textarea>
+          <button mat-button mat-stroked-button (click)="onSendMessage()">Send</button>
+        </form>
+      </div>
     } @else {
       <p>Select a contact</p>
     }
