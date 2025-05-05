@@ -18,13 +18,14 @@ import { User } from '../../models/user.model';
 import { AuthService } from '../../services/auth.service';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { UserPostsComponent } from '../user-posts/user-posts.component';
+import { MatButton } from '@angular/material/button';
 
 @Component({
   selector: 'app-dashboard',
   templateUrl: './dashboard.component.html',
   styleUrls: ['./dashboard.component.scss'],
   standalone: true,
-  imports: [UserPostsComponent, ReactiveFormsModule],
+  imports: [UserPostsComponent, ReactiveFormsModule, MatButton],
 })
 export class DashboardComponent implements OnInit {
   @Output() onUpdateProfile: EventEmitter<User> = new EventEmitter();

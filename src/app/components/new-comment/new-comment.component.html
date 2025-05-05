@@ -1,5 +1,7 @@
 <div class="new-comment-component">
-  <h2>Comment this post</h2>
+  <div class="top-row">
+    <mat-icon (click)="closeInput()">close</mat-icon>
+  </div>
   <form
     class="new-comment-form"
     [formGroup]="newCommentForm"

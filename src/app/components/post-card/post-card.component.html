@@ -1,4 +1,18 @@
-<div routerLink="/posts/{{post.id}}" class="post-card">
-    <p>{{ (author | async)?.username }}</p>
-    <p>{{ post.body }}</p>
+<div class="post-card">
+  <p>{{ (author | async)?.username }}</p>
+  <p>{{ post.body }}</p>
+  <div class="actions">
+    <div>
+      <mat-icon>bookmark</mat-icon>
+      <span>save</span>
+    </div>
+    <div (click)="goToPostDetail()">
+      <mat-icon>chat_bubble_outline</mat-icon>
+      <span>comment</span>
+    </div>
+    <div>
+      <mat-icon>share</mat-icon>
+      <span>share</span>
+    </div>
+  </div>
 </div>

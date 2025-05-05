@@ -1,9 +1,12 @@
 .dashboard-component {
   display: flex;
   flex-direction: column;
-  padding: 4rem 2rem;
-  width: calc(100% - 12.5rem);
+  width: 45rem;
   max-width: 30rem;
+  background-color: white;
+  border-radius: 1rem;
+  height: 90vh;
+  margin: 1rem;
 
   .dashboard-header {
     display: flex;
@@ -71,17 +74,17 @@
         border-radius: 0.5rem;
         cursor: pointer;
 
-        &:disabled{
+        &:disabled {
           opacity: 50%;
-           cursor: default;
-         }
+          cursor: default;
+        }
       }
     }
   }
 }
 
 @media (max-width: 600px) {
-  .dashboard-component{
+  .dashboard-component {
     width: calc(100% - 10rem);
   }
 }

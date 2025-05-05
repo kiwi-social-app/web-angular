@@ -1,27 +1,21 @@
 <div class="comment-list-component">
-  <h2 class="list-title">Comments</h2>
   <div class="list">
-
-    @if(comments$ | async; as comments){
+    @if (comments()) {
       <div>
-        @for(comment of comments; track $index){
+        @for (comment of comments(); track $index) {
           <div class="comment-card">
             <div class="comment-header">
               <p class="header-content">{{ comment.author.username }}</p>
               <p class="header-content">
-                {{ comment.created_at | date : 'medium' }}
+                {{ comment.created_at | date: "medium" }}
               </p>
             </div>
             <p class="comment-text">{{ comment.body }}</p>
           </div>
-
         }
       </div>
-    }
-    @else{
+    } @else {
       <p class="no-comment-msg">Be the first to leave a comment!</p>
     }
   </div>
-  <app-new-comment (onNewComment)="getComments()"></app-new-comment>
-
 </div>

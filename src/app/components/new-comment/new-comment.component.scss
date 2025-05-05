@@ -1,11 +1,20 @@
 .new-comment-component {
   display: flex;
   flex-direction: column;
+  gap: 1rem;
   padding: 4rem 2rem;
   margin: auto;
   max-width: 30rem;
-  .title {
+
+  .top-row {
+    display: flex;
+    justify-content: flex-end;
+
+    & > * {
+      cursor: pointer;
+    }
   }
+
   .new-comment-form {
     display: flex;
     flex-direction: column;
@@ -18,24 +27,24 @@
 
       .body-input {
         width: 100%;
-        height: 20rem;
-        border: 1px solid skyblue;
+        height: 12rem;
         border-radius: 0.5rem;
         resize: none;
       }
     }
-    .publish-btn{
+    .publish-btn {
       width: 10rem;
       height: 2rem;
       color: white;
-      background-color:skyblue;
+      background-color: skyblue;
       border: none;
       border-radius: 0.5rem;
+      cursor: pointer;
 
-      &:disabled{
+      &:disabled {
         opacity: 50%;
-         cursor: default;
-       }
+        cursor: default;
+      }
     }
   }
 }

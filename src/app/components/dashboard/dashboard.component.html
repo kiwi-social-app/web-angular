@@ -2,80 +2,89 @@
   <div class="dashboard-header">
     <h2>Dashboard</h2>
     <div class="buttons">
-      <button class="edit-btn" (click)="editBtn()">Edit Profile</button>
-      <button class="signout-btn" (click)="signOut()">Sign Out</button>
+      <button mat-button mat-flat-button color="primary" (click)="editBtn()">
+        Edit Profile
+      </button>
+      <button mat-button mat-flat-button color="primary" (click)="signOut()">
+        Sign Out
+      </button>
     </div>
   </div>
-@if(currentUser){
-  <div class="profile-data-block">
-    @if(!editMode){
-      <div class="profile-read">
-        <p>{{ currentUser.username }}</p>
-        <p>{{ currentUser.email }}</p>
-        <p>{{ currentUser.firstname }}</p>
-        <p>{{ currentUser.lastname }}</p>
-      </div>
-    }
-    @else{
-      <form
-        class="edit-profile-form"
-        [formGroup]="editProfileForm"
-        (ngSubmit)="updateProfile()"
-      >
-        <div class="form-block">
-          <label for="username">Username:</label>
-          <input
-            class="edit-input"
-            id="username"
-            type="text"
-            formControlName="username"
-            value="{{ currentUser.username }}"
-            required
-          />
+  @if (currentUser) {
+    <div class="profile-data-block">
+      @if (!editMode) {
+        <div class="profile-read">
+          <p>{{ currentUser.username }}</p>
+          <p>{{ currentUser.email }}</p>
+          <p>{{ currentUser.firstname }}</p>
+          <p>{{ currentUser.lastname }}</p>
         </div>
+      } @else {
+        <form
+          class="edit-profile-form"
+          [formGroup]="editProfileForm"
+          (ngSubmit)="updateProfile()"
+        >
+          <div class="form-block">
+            <label for="username">Username:</label>
+            <input
+              class="edit-input"
+              id="username"
+              type="text"
+              formControlName="username"
+              value="{{ currentUser.username }}"
+              required
+            />
+          </div>
 
-        <div class="form-block">
-          <label for="email">Email:</label>
-          <input
-            class="edit-input"
-            id="email"
-            type="text"
-            formControlName="email"
-            value="{{ currentUser.email }}"
-          />
-        </div>
+          <div class="form-block">
+            <label for="email">Email:</label>
+            <input
+              class="edit-input"
+              id="email"
+              type="text"
+              formControlName="email"
+              value="{{ currentUser.email }}"
+            />
+          </div>
 
-        <div class="form-block">
-          <label for="firstname">Firstname:</label>
-          <input
-            class="edit-input"
-            id="firstname"
-            type="text"
-            formControlName="firstname"
-            value="{{ currentUser.firstname }}"
-          />
-        </div>
+          <div class="form-block">
+            <label for="firstname">Firstname:</label>
+            <input
+              class="edit-input"
+              id="firstname"
+              type="text"
+              formControlName="firstname"
+              value="{{ currentUser.firstname }}"
+            />
+          </div>
 
-        <div class="form-block">
-          <label for="lastname">lastname:</label>
-          <input
-            class="edit-input"
-            id="lastname"
-            type="text"
-            formControlName="lastname"
-            value="{{ currentUser.lastname }}"
-          />
-        </div>
+          <div class="form-block">
+            <label for="lastname">lastname:</label>
+            <input
+              class="edit-input"
+              id="lastname"
+              type="text"
+              formControlName="lastname"
+              value="{{ currentUser.lastname }}"
+            />
+          </div>
 
-        <button class="publish-btn" type="submit">Update Profile</button>
-      </form>
+          <button
+            class="publish-btn"
+            mat-button
+            mat-stroked-button
+            type="submit"
+          >
+            Update Profile
+          </button>
+        </form>
+      }
+    </div>
 
-    }
-  </div>
-
-  <app-user-posts
-    (onPostChange)="getUser()"
-    [userPosts]="currentUser.posts"
-  ></app-user-posts>
-}
+    <app-user-posts
+      (onPostChange)="getUser()"
+      [userPosts]="currentUser.posts"
+    ></app-user-posts>
+  }
 </div>

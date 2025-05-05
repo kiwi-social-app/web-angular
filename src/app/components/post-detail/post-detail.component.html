@@ -1,13 +1,38 @@
-@if(post){
+@if (post) {
   <div class="post-detail-component">
-<div class="post-container">
-<div class="text-content">
-<p>{{ post.createdAt | date : "medium" }}</p>
-<p>{{ post.body }}</p>
-<p>{{ (author | async)?.username ?? (author | async)?.email  }}</p>
-</div>
-</div>
-<div>
-<app-comment-list [postID]="post.id"></app-comment-list>
-</div>
-</div>}
+    <div class="post-container">
+      <div class="text-content">
+        <p>{{ post.createdAt | date: "medium" }}</p>
+        <p>{{ post.body }}</p>
+        <p>{{ (author | async)?.username ?? (author | async)?.email }}</p>
+      </div>
+      <div class="actions">
+        <div>
+          <mat-icon>bookmark</mat-icon>
+          <span>save</span>
+        </div>
+        <div (click)="onReplyInputDisplayChange()">
+          <mat-icon>chat_bubble_outline</mat-icon>
+          <span>comment</span>
+        </div>
+        <div>
+          <mat-icon>share</mat-icon>
+          <span>share</span>
+        </div>
+      </div>
+    </div>
+    @if (replyInput) {
+      <app-new-comment
+        [replyInputDisplay]="replyInput"
+        (onNewComment)="getComments()"
+        (replyInputDisplayChange)="onReplyInputDisplayChange()"
+      ></app-new-comment>
+    }
+    <div class="scroll-container">
+      <app-comment-list
+        [comments]="comments$ | async"
+        [postID]="post.id"
+      ></app-comment-list>
+    </div>
+  </div>
+}

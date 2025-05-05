@@ -1,10 +1,10 @@
 <div class="post-list-component">
-    @for(post of posts(); track $index){
-      <div class="card-container">
-        <app-post-card
-          [post]="post"
-          routerLink="['/posts', post.id]"
-        ></app-post-card>
-      </div>
-    }
+  @for (post of posts(); track $index) {
+    <div class="card-container">
+      <app-post-card
+        [post]="post"
+        routerLink="['/posts', post.id]"
+      ></app-post-card>
+    </div>
+  }
 </div>

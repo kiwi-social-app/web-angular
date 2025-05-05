@@ -1,7 +1,6 @@
-:root{
-  --main-bg-color: #78aeec;
-  --main-navbar-bg-color: #1f4b8c;
-  --main-card-bg-color: #2e82b6;
+:root {
+  --main-bg-color: #e6e6e6;
+  --highlight-color: #91def6;
 }
 
 html {
@@ -17,16 +16,9 @@ html {
     min-height: 100vh;
     height: 100%;
     overflow-x: hidden;
-    color: white;
-
-
 
     a {
       text-decoration: none;
     }
-  }
-
-  * {
-    border-color: #77d5ea !important;
   }
 }

@@ -8,7 +8,6 @@ import { PostListComponent } from './components/post-list/post-list.component';
 import { AuthGuard } from './services/auth.guard';
 import { SignupComponent } from './components/signup/signup.component';
 import { ChatComponent } from './components/chat/chat.component';
-import { FirebaseChatComponent } from './components/firebase-chat/firebase-chat.component';
 
 export const routes: Routes = [
   { path: '', component: PostListComponent, canActivate: [AuthGuard] },

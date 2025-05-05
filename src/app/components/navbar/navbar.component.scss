@@ -1,99 +1,79 @@
 .navbar-component {
   display: flex;
-  position: fixed;
-  z-index: 2;
-  flex-direction: row;
-  background-color: var(--main-navbar-bg-color);
+  flex-direction: column;
+  height: 100vh;
 
-  .top-bar {
+  .side-bar {
     display: flex;
-    flex-direction: row;
-    z-index: 2;
-    justify-content: space-between;
-    padding: 1rem;
-    width: 98vw;
-    margin: auto;
-    height: 1.4rem;
-    align-items: center;
+    flex-direction: column;
+    align-items: flex-end;
+    padding: 1rem 1rem;
+    overflow-y: auto;
+    background-color: white;
+    gap: 2rem;
 
-    .navbar-brand > * {
+    .navbar-brand {
       display: flex;
-      flex-direction: row;
       height: auto;
-      color: white;
       gap: 1rem;
+      padding: 1rem 0.5rem;
+      cursor: pointer;
+      color: black;
 
       svg {
         height: 100%;
         width: auto;
         padding-right: 1rem;
-        color: white;
       }
+
       span {
         margin: auto;
       }
     }
 
-    .top-bar-buttons{
-      display: flex;
-      gap:.5rem;
-      padding: 0 1rem;
-
-
-    .top-bar-button{
-      border: solid white 0.1rem;
-      border-radius: .5rem;
-      height: 2rem;
-      color: white;
-      background-color: transparent;
-    }
-    }
-  }
-
-  .side-bar {
-    position: fixed;
-    display: flex;
-    flex-direction: column;
-    align-items: flex-end;
-    height: calc(100vh - 5.4rem);
-    padding: 2rem .5rem 0 .5rem;
-    right: 0;
-    bottom: 0;
-    background-color: var(--main-navbar-bg-color);
-
     .nav-links {
       display: flex;
       flex-direction: column;
       justify-content: space-around;
-      gap: 2rem;
+      gap: 1rem;
+
+      .nav-link {
+        display: flex;
+        padding: 1rem 0.5rem;
+        cursor: pointer;
+        align-items: flex-start;
+        gap: 0.5rem;
+        color: black;
+
+        mat-icon {
+          font-size: 1.5rem;
+        }
+
+        &:hover {
+        }
+      }
     }
   }
 
-  .nav-link {
+  .main-content {
     display: flex;
-    padding-left: 1rem;
-    padding-right: 1rem;
-    color: white;
-    cursor: pointer;
-    align-items: center;
-    gap: 0.5rem;
-
-    mat-icon{
-      font-size: 1.5rem;
-    }
-
-    &:hover {
-      color: rgba(255, 255, 255, 0.5);
-    }
+    flex: 1;
+    overflow: hidden;
   }
 
-  a  {
+  .scroll-container {
+    display: flex;
+    flex: 1;
+    overflow: auto;
+  }
+
+  a {
     vertical-align: middle;
   }
 
   @media (max-width: 600px) {
-    .sidebar-link-text{
-      display:none;
+    .sidebar-link-text {
+      display: none;
     }
   }
 }

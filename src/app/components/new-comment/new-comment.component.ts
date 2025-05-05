@@ -1,4 +1,12 @@
-import { Component, EventEmitter, inject, OnInit, Output } from '@angular/core';
+import {
+  Component,
+  EventEmitter,
+  inject,
+  model,
+  ModelSignal,
+  OnInit,
+  Output,
+} from '@angular/core';
 import {
   FormBuilder,
   FormGroup,
@@ -8,23 +16,21 @@ import {
 import { ActivatedRoute } from '@angular/router';
 import { CommentService } from 'src/app/services/comment.service';
 import { Comment } from '../../models/comment.model';
-import { AuthService } from '../../services/auth.service';
-import firebase from 'firebase/compat';
-import User = firebase.User;
+import { MatIcon } from '@angular/material/icon';
 
 @Component({
   selector: 'app-new-comment',
   templateUrl: './new-comment.component.html',
   styleUrls: ['./new-comment.component.scss'],
   standalone: true,
-  imports: [ReactiveFormsModule],
+  imports: [ReactiveFormsModule, MatIcon],
 })
 export class NewCommentComponent implements OnInit {
   @Output() onNewComment: EventEmitter<Comment> = new EventEmitter();
+  public replyInputDisplay: ModelSignal<boolean> = model.required();
 
   private readonly commentService: CommentService = inject(CommentService);
   private readonly fb: FormBuilder = inject(FormBuilder);
-  private readonly authService: AuthService = inject(AuthService);
   private readonly route: ActivatedRoute = inject(ActivatedRoute);
 
   protected newCommentForm!: FormGroup;
@@ -47,5 +53,9 @@ export class NewCommentComponent implements OnInit {
       .createComment(this.newComment, this.postID)
       .subscribe((response) => this.onNewComment.emit(response));
     this.newCommentForm.reset();
+  }
+
+  closeInput() {
+    this.replyInputDisplay.set(false);
   }
 }

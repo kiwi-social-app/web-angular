@@ -1,26 +1,36 @@
 <nav class="navbar-component">
-  <div class="top-bar">
-    <div class="navbar-brand">
-      <a routerLink="/">Kiwi Social</a>
-    </div>
-    <div class="top-bar-buttons">
-      <button class="nav-link top-bar-button" type="button"><mat-icon>search</mat-icon></button>
-      <a routerLink="/new-post" class="nav-link top-bar-button"><mat-icon>add</mat-icon>New Post</a>
-      @if(authService.getCurrentUser()){
-        <a routerLink="/dashboard" class="nav-link top-bar-button"><mat-icon>person</mat-icon></a>
-      } @else{
-        <a routerLink="/login" class="nav-link top-bar-button">Log in</a>
-      }
-    </div>
-  </div>
-  <div
-    class="side-bar"
-  >
-    <div class="nav-links">
-      <a routerLink="" class="nav-link"><mat-icon>home</mat-icon><span class="sidebar-link-text">Home</span></a>
-      <a routerLink="chat" class="nav-link"><mat-icon>chat_bubble</mat-icon><span class="sidebar-link-text">Chat</span></a>
+  <div class="main-content">
+    <aside class="side-bar">
+      <a class="navbar-brand" routerLink="/">Kiwi Social</a>
+      <div class="nav-links">
+        <button mat-button class="nav-link" type="button">
+          <mat-icon>search</mat-icon>
+          <span class="sidebar-link-text">Search</span>
+        </button>
+        <a routerLink="" class="nav-link">
+          <mat-icon>home</mat-icon>
+          <span class="sidebar-link-text">Home</span></a
+        >
+        <a routerLink="chat" class="nav-link">
+          <mat-icon>chat_bubble</mat-icon>
+          <span class="sidebar-link-text">Chat</span></a
+        >
+        <a routerLink="/new-post" class="nav-link top-bar-button">
+          <mat-icon>add</mat-icon>
+          New Post</a
+        >
+        @if (authService.getCurrentUser()) {
+          <a routerLink="/dashboard" class="nav-link top-bar-button">
+            <mat-icon>person</mat-icon>
+            <span class="sidebar-link-text">Account</span>
+          </a>
+        } @else {
+          <a routerLink="/login" class="nav-link top-bar-button">Log in</a>
+        }
+      </div>
+    </aside>
+    <div class="scroll-container">
+      <ng-content></ng-content>
     </div>
   </div>
 </nav>
-<ng-content></ng-content>
-

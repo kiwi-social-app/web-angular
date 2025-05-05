@@ -1,30 +1,17 @@
-import { Component, inject, input, InputSignal, OnInit } from '@angular/core';
-import { ActivatedRoute } from '@angular/router';
-import { Observable } from 'rxjs';
-import { CommentService } from 'src/app/services/comment.service';
+import { Component, input, InputSignal } from '@angular/core';
 import { Comment } from '../../models/comment.model';
-import { NewCommentComponent } from '../new-comment/new-comment.component';
-import { AsyncPipe, DatePipe } from '@angular/common';
+import { DatePipe } from '@angular/common';
 
 @Component({
   selector: 'app-comment-list',
   templateUrl: './comment-list.component.html',
   styleUrls: ['./comment-list.component.scss'],
   standalone: true,
-  imports: [NewCommentComponent, AsyncPipe, DatePipe],
+  imports: [DatePipe],
 })
-export class CommentListComponent implements OnInit {
+export class CommentListComponent {
   public postID: InputSignal<string> = input.required<string>();
-
-  private readonly commentService: CommentService = inject(CommentService);
-
-  public comments$!: Observable<Comment[]>;
-
-  ngOnInit(): void {
-    this.getComments();
-  }
-
-  protected getComments(): void {
-    this.comments$ = this.commentService.fetchCommentsByPostID(this.postID());
-  }
+  public comments: InputSignal<Comment[] | null> = input.required<
+    Comment[] | null
+  >();
 }
