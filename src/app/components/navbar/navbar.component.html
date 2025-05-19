@@ -3,10 +3,6 @@
     <aside class="side-bar">
       <a class="navbar-brand" routerLink="/">Kiwi Social</a>
       <div class="nav-links">
-        <button mat-button class="nav-link" type="button">
-          <mat-icon>search</mat-icon>
-          <span class="sidebar-link-text">Search</span>
-        </button>
         <a routerLink="" class="nav-link">
           <mat-icon>home</mat-icon>
           <span class="sidebar-link-text">Home</span></a
@@ -17,7 +13,7 @@
         >
         <a routerLink="/new-post" class="nav-link top-bar-button">
           <mat-icon>add</mat-icon>
-          New Post</a
+          <span class="sidebar-link-text">New Post</span></a
         >
         @if (authService.getCurrentUser()) {
           <a routerLink="/dashboard" class="nav-link top-bar-button">

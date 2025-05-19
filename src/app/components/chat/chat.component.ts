@@ -7,7 +7,7 @@ import {
   ReactiveFormsModule,
   Validators,
 } from '@angular/forms';
-import { Observable } from 'rxjs';
+import { Observable, take } from 'rxjs';
 import { MessageComponent } from '../message/message.component';
 import { ContactService } from '../../services/contact.service';
 import { Contact } from '../../models/contact.model';
@@ -28,6 +28,7 @@ export class ChatComponent implements OnInit {
   private contactService: ContactService = inject(ContactService);
 
   protected contacts!: Observable<Contact[]>;
+  protected pendingRequests!: Observable<Contact[]>;
   protected messages!: Observable<any[]>;
   protected messageForm!: FormGroup;
   protected currentUser!: User | null;
@@ -40,7 +41,10 @@ export class ChatComponent implements OnInit {
     this.currentUser = this.authService.getCurrentUser();
 
     if (this.currentUser) {
-      this.contacts = this.contactService.getContactsByUser(
+      this.contacts = this.contactService.getAcceptedContactsByUser(
+        this.currentUser.uid,
+      );
+      this.pendingRequests = this.contactService.getPendingContactsByUser(
         this.currentUser.uid,
       );
     }
@@ -75,5 +79,16 @@ export class ChatComponent implements OnInit {
 
       this.wsChatService.subscribeToMessages(contact.conversationId);
     }
+  }
+
+  protected acceptContactRequest(
+    userId1: string,
+    userId2: string,
+    contactId: string,
+  ) {
+    this.contactService
+      .acceptContactRequest(userId1, userId2, contactId)
+      .pipe(take(1))
+      .subscribe();
   }
 }

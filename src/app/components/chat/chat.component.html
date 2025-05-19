@@ -1,40 +1,69 @@
-<div class="chat-component">
-  @if (currentUser) {
-    <div class="conversation-list">
-      <div class="contact-search">
-        <input type="text">
-      </div>
-      <div class="list">
-        @if (contacts) {
-          @for (contact of contacts | async; track $index) {
-            <div class="contact-card" (click)="onContactClick(contact)">
-              {{ getContactUsername(currentUser.uid, contact) }}
-            </div>
+@if (currentUser) {
+  <div class="main-container">
+    <div class="chat-component">
+      <div class="conversation-list">
+        <button mat-button mat-flat-button color="primary">
+          Add a contact
+        </button>
+        <div class="list">
+          @if (contacts) {
+            @for (contact of pendingRequests | async; track $index) {
+              <div class="contact-card" (click)="onContactClick(contact)">
+                {{ getContactUsername(currentUser.uid, contact) }}
+              </div>
+            }
           }
+        </div>
+      </div>
+      <div class="chat-section">
+        @if (currentContact) {
+          <div class="message-list">
+            @if (currentContact.conversationId) {
+              @for (message of messages | async; track $index) {
+                <app-message [message]="message"></app-message>
+              }
+            }
+          </div>
+          <div class="message-creation">
+            <form class="message-form" [formGroup]="messageForm">
+              <label for="message"></label>
+              <textarea
+                id="message"
+                formControlName="message"
+                placeholder="Type a message..."
+                rows="5"
+                cols="35"
+                type="text"
+              ></textarea>
+              <button mat-button mat-stroked-button (click)="onSendMessage()">
+                Send
+              </button>
+            </form>
+          </div>
+        } @else {
+          <p>Select a contact</p>
         }
       </div>
     </div>
-  }
-  <div class="chat-section">
-    @if (currentContact) {
-      <div class="message-list">
-        @if (currentContact.conversationId) {
-          @for (message of messages | async; track $index) {
-            <app-message [message]="message"></app-message>
-          }
-        }
-      </div>
-      <div class="message-creation">
-        <form class="message-form" [formGroup]="messageForm">
-          <label for="message"></label>
-          <textarea id="message" formControlName="message" placeholder="Type a message..." rows="5" cols="35"
-                    type="text"></textarea>
-          <button mat-button mat-stroked-button (click)="onSendMessage()">Send</button>
-        </form>
-      </div>
-    } @else {
-      <p>Select a contact</p>
-    }
-
+    <div class="contact-request-list">
+      @for (contact of pendingRequests | async; track $index) {
+        <div class="contact-card">
+          <p>
+            {{ getContactUsername(currentUser.uid, contact) }}
+          </p>
+          <button
+            mat-button
+            mat-flat-button
+            color="primary"
+            type="button"
+            (click)="
+              acceptContactRequest(contact.user1Id, contact.user2Id, contact.id)
+            "
+          >
+            Accept
+          </button>
+        </div>
+      }
+    </div>
   </div>
-</div>
+}

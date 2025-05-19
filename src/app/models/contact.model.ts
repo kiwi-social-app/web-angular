@@ -1,5 +1,3 @@
-import { Conversation } from './conversation.model';
-
 export interface Contact {
   id: string;
   user1Id: string;
@@ -10,7 +8,7 @@ export interface Contact {
   conversationId: string;
 }
 
-enum ContactStatus {
+export enum ContactStatus {
   ACCEPTED = 'ACCEPTED',
   PENDING = 'PENDING',
   BLOCKED = 'BLOCKED',
