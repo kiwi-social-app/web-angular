@@ -19,16 +19,25 @@ import { Observable, take } from 'rxjs';
 import { MessageComponent } from '../message/message.component';
 import { User } from '@angular/fire/auth';
 import { AsyncPipe } from '@angular/common';
-import { MatButton } from '@angular/material/button';
+import { MatButton, MatButtonModule } from '@angular/material/button';
 import { ChatService } from '../../services/chat.service';
 import { Chat } from '../../models/chat.model';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { MatDialog } from '@angular/material/dialog';
 import { NewChatModalComponent } from '../modals/new-chat-modal/new-chat-modal.component';
+import { MatCard, MatCardContent } from '@angular/material/card';
 
 @Component({
   selector: 'app-chat',
-  imports: [ReactiveFormsModule, MessageComponent, AsyncPipe, MatButton],
+  imports: [
+    MatButtonModule,
+    ReactiveFormsModule,
+    MessageComponent,
+    AsyncPipe,
+    MatButton,
+    MatCard,
+    MatCardContent,
+  ],
   templateUrl: './chat.component.html',
   styleUrl: './chat.component.scss',
   standalone: true,
@@ -83,12 +92,23 @@ export class ChatComponent implements OnInit, AfterViewChecked {
   }
 
   protected startNewChat(userId: string): void {
-    this.dialog
-      .open(NewChatModalComponent, { data: { userId } })
+    const dialogRef = this.dialog.open(NewChatModalComponent, {
+      data: { userId },
+      height: '40rem',
+      width: '30rem',
+    });
+
+    dialogRef
       .afterClosed()
       .pipe(take(1))
       .subscribe((result) => {
-        this.chatService.startChat(userId, result).subscribe();
+        if (result.length > 0) {
+          this.chatService.startChat(userId, result).subscribe(() => {
+            this.chats$ = this.chatService
+              .getChatsByUser(userId)
+              .pipe(takeUntilDestroyed(this.destroyRef));
+          });
+        }
       });
   }
 

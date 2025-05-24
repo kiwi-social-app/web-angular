@@ -11,7 +11,6 @@ import { UserService } from '../../../services/user.service';
 import { map, Observable } from 'rxjs';
 import { User } from '../../../models/user.model';
 import { AsyncPipe } from '@angular/common';
-import { MatCheckbox } from '@angular/material/checkbox';
 import { MatListOption, MatSelectionList } from '@angular/material/list';
 import { FormsModule } from '@angular/forms';
 
@@ -23,7 +22,6 @@ import { FormsModule } from '@angular/forms';
     MatButton,
     MatDialogClose,
     AsyncPipe,
-    MatCheckbox,
     MatSelectionList,
     MatListOption,
     FormsModule,
@@ -33,14 +31,13 @@ import { FormsModule } from '@angular/forms';
   standalone: true,
 })
 export class NewChatModalComponent {
-  protected readonly data: any = inject(MAT_DIALOG_DATA);
+  protected readonly data: { userId: string } = inject(MAT_DIALOG_DATA);
   protected readonly userService: UserService = inject(UserService);
   private readonly dialogRef: MatDialogRef<NewChatModalComponent> = inject(
     MatDialogRef<NewChatModalComponent>,
   );
 
   protected users$: Observable<User[]>;
-  protected selectedUsers: string[] = [];
 
   constructor() {
     this.users$ = this.userService
@@ -50,7 +47,7 @@ export class NewChatModalComponent {
       );
   }
 
-  protected confirm() {
-    this.dialogRef.close(this.selectedUsers);
+  protected confirm(selectedUsers: any) {
+    this.dialogRef.close(selectedUsers.map((opt: any) => opt.value));
   }
 }

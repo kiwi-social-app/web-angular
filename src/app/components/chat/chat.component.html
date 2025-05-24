@@ -1,9 +1,9 @@
 @if (currentUser) {
   <div class="main-container">
     <div class="chat-component">
-      <div class="conversation-list">
+      <div class="chat-list">
         <button
-          mat-button
+          class="new-chat-btn"
           mat-flat-button
           color="primary"
           (click)="startNewChat(currentUser.uid)"
@@ -12,13 +12,19 @@
         </button>
         <div class="list">
           @for (chat of chats$ | async; track $index) {
-            <div class="chat-card" (click)="onChatClick(chat)">
-              @for (participant of chat.participants; track $index) {
-                @if (participant.id !== currentUser.uid) {
-                  <span>{{ participant.username }}</span>
+            <mat-card
+              appearance="outlined"
+              class="chat-card"
+              (click)="onChatClick(chat)"
+            >
+              <mat-card-content class="chat-card-content">
+                @for (participant of chat.participants; track $index) {
+                  @if (participant.id !== currentUser.uid) {
+                    <span>{{ participant.username }}</span>
+                  }
                 }
-              }
-            </div>
+              </mat-card-content>
+            </mat-card>
           }
         </div>
       </div>
@@ -42,7 +48,12 @@
                 cols="35"
                 type="text"
               ></textarea>
-              <button mat-button mat-stroked-button (click)="onSendMessage()">
+              <button
+                mat-button
+                mat-flat-button
+                color="primary"
+                (click)="onSendMessage()"
+              >
                 Send
               </button>
             </form>

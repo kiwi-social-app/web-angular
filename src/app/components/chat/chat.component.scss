@@ -50,36 +50,42 @@
             border-radius: 0.5rem;
             resize: none;
           }
+        }
 
-          button {
-            background-color: #1f4b8c;
-            border-radius: 0.5rem;
-            width: fit-content;
-            color: white;
-          }
+        button {
+          width: fit-content;
         }
       }
     }
 
-    .conversation-list {
+    .chat-list {
       display: flex;
       flex-direction: column;
       gap: 2rem;
       overflow-y: scroll;
       scrollbar-width: none;
 
+      .new-chat-btn {
+        padding: 0.5rem 1rem;
+        width: fit-content;
+      }
+
       .list {
         display: flex;
         flex-direction: column;
         gap: 1rem;
+        width: 10rem;
 
         .chat-card {
-          display: flex;
-          gap: 0.5rem;
-          flex-wrap: wrap;
-          padding: 1rem;
-          background-color: var(--main-card-bg-color);
+          background-color: #637db1;
           cursor: pointer;
+          color: white;
+
+          .chat-card-content {
+            display: flex;
+            gap: 0.5rem;
+            flex-wrap: wrap;
+          }
         }
       }
     }
@@ -91,7 +97,7 @@
     gap: 0.5rem;
     background-color: white;
     border-radius: 1rem;
-    width: 20rem;
+    min-width: 15rem;
     height: 90vh;
     margin: 1rem;
     padding: 2rem;
