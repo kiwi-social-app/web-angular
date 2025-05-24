@@ -2,23 +2,30 @@
   <div class="main-container">
     <div class="chat-component">
       <div class="conversation-list">
-        <button mat-button mat-flat-button color="primary">
-          Add a contact
+        <button
+          mat-button
+          mat-flat-button
+          color="primary"
+          (click)="startNewChat(currentUser.uid)"
+        >
+          New chat
         </button>
         <div class="list">
-          @if (contacts) {
-            @for (contact of pendingRequests | async; track $index) {
-              <div class="contact-card" (click)="onContactClick(contact)">
-                {{ getContactUsername(currentUser.uid, contact) }}
-              </div>
-            }
+          @for (chat of chats$ | async; track $index) {
+            <div class="chat-card" (click)="onChatClick(chat)">
+              @for (participant of chat.participants; track $index) {
+                @if (participant.id !== currentUser.uid) {
+                  <span>{{ participant.username }}</span>
+                }
+              }
+            </div>
           }
         </div>
       </div>
       <div class="chat-section">
-        @if (currentContact) {
-          <div class="message-list">
-            @if (currentContact.conversationId) {
+        @if (selectedChat) {
+          <div class="message-list" #messageList>
+            @if (selectedChat.id) {
               @for (message of messages | async; track $index) {
                 <app-message [message]="message"></app-message>
               }
@@ -45,25 +52,6 @@
         }
       </div>
     </div>
-    <div class="contact-request-list">
-      @for (contact of pendingRequests | async; track $index) {
-        <div class="contact-card">
-          <p>
-            {{ getContactUsername(currentUser.uid, contact) }}
-          </p>
-          <button
-            mat-button
-            mat-flat-button
-            color="primary"
-            type="button"
-            (click)="
-              acceptContactRequest(contact.user1Id, contact.user2Id, contact.id)
-            "
-          >
-            Accept
-          </button>
-        </div>
-      }
-    </div>
+    <div class="contact-request-list"></div>
   </div>
 }

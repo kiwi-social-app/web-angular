@@ -1,9 +1,8 @@
 import { inject, Injectable } from '@angular/core';
 
 import { HttpClient, HttpHeaders } from '@angular/common/http';
-import { catchError, Observable, of, tap } from 'rxjs';
+import { catchError, Observable, of } from 'rxjs';
 import { User } from '../models/user.model';
-import { AuthService } from './auth.service';
 import { Auth } from '@angular/fire/auth';
 
 const httpOptions = {
@@ -50,8 +49,13 @@ export class UserService {
     );
   }
 
-  public fetchUsers(): Observable<User[]> {
-    return this.http.get<User[]>(this.usersUrl);
+  public getUsers(): Observable<User[]> {
+    return this.http.get<User[]>(this.usersUrl).pipe(
+      catchError((error) => {
+        console.log(error);
+        return of(error);
+      }),
+    );
   }
 
   public getCurrentUser(): Observable<User | null> {

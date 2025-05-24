@@ -1,0 +1,30 @@
+<div class="new-chat-modal">
+  <h2>New Chat</h2>
+  <mat-dialog-content>
+    Start a new chat
+
+    <div class="user-list">
+      <mat-selection-list [(ngModel)]="selectedUsers">
+        @for (user of users$ | async; track $index) {
+          <mat-list-option [value]="user.id">
+            {{ user.username }}
+          </mat-list-option>
+        }
+      </mat-selection-list>
+    </div>
+  </mat-dialog-content>
+  <mat-dialog-actions>
+    <button
+      type="button"
+      mat-button
+      mat-raised-button
+      (click)="confirm()"
+      [disabled]="!selectedUsers.length"
+    >
+      Confirm
+    </button>
+    <button type="button" mat-button mat-raised-button mat-dialog-close>
+      Cancel
+    </button></mat-dialog-actions
+  >
+</div>

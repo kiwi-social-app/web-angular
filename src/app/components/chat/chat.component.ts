@@ -1,4 +1,12 @@
-import { Component, inject, OnInit } from '@angular/core';
+import {
+  AfterViewChecked,
+  Component,
+  DestroyRef,
+  ElementRef,
+  inject,
+  OnInit,
+  ViewChild,
+} from '@angular/core';
 import { WsChatService } from '../../services/ws-chat.service';
 import { AuthService } from '../../services/auth.service';
 import {
@@ -9,11 +17,14 @@ import {
 } from '@angular/forms';
 import { Observable, take } from 'rxjs';
 import { MessageComponent } from '../message/message.component';
-import { ContactService } from '../../services/contact.service';
-import { Contact } from '../../models/contact.model';
 import { User } from '@angular/fire/auth';
 import { AsyncPipe } from '@angular/common';
 import { MatButton } from '@angular/material/button';
+import { ChatService } from '../../services/chat.service';
+import { Chat } from '../../models/chat.model';
+import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
+import { MatDialog } from '@angular/material/dialog';
+import { NewChatModalComponent } from '../modals/new-chat-modal/new-chat-modal.component';
 
 @Component({
   selector: 'app-chat',
@@ -22,17 +33,21 @@ import { MatButton } from '@angular/material/button';
   styleUrl: './chat.component.scss',
   standalone: true,
 })
-export class ChatComponent implements OnInit {
+export class ChatComponent implements OnInit, AfterViewChecked {
+  @ViewChild('messageList') private messageListContainer!: ElementRef;
+
   private readonly wsChatService: WsChatService = inject(WsChatService);
   private readonly authService: AuthService = inject(AuthService);
-  private contactService: ContactService = inject(ContactService);
+  private readonly chatService: ChatService = inject(ChatService);
+  private readonly destroyRef: DestroyRef = inject(DestroyRef);
+  private readonly dialog: MatDialog = inject(MatDialog);
 
-  protected contacts!: Observable<Contact[]>;
-  protected pendingRequests!: Observable<Contact[]>;
   protected messages!: Observable<any[]>;
   protected messageForm!: FormGroup;
   protected currentUser!: User | null;
-  protected currentContact!: Contact;
+  protected chats$!: Observable<Chat[]>;
+  protected selectedChat!: Chat;
+  private shouldScroll = false;
 
   ngOnInit(): void {
     this.messageForm = new FormGroup({
@@ -41,26 +56,47 @@ export class ChatComponent implements OnInit {
     this.currentUser = this.authService.getCurrentUser();
 
     if (this.currentUser) {
-      this.contacts = this.contactService.getAcceptedContactsByUser(
-        this.currentUser.uid,
-      );
-      this.pendingRequests = this.contactService.getPendingContactsByUser(
-        this.currentUser.uid,
-      );
+      this.chats$ = this.chatService
+        .getChatsByUser(this.currentUser.uid)
+        .pipe(takeUntilDestroyed(this.destroyRef));
     }
   }
 
-  protected getContactUsername(userId: string, contact: Contact) {
-    return userId === contact.user1Id
-      ? contact.user2Username
-      : contact.user1Username;
+  ngAfterViewChecked(): void {
+    if (this.shouldScroll) {
+      this.scrollToBottom();
+      this.shouldScroll = false;
+    }
+  }
+
+  protected onChatClick(chat: Chat): void {
+    this.selectedChat = chat;
+    if (this.currentUser) {
+      this.wsChatService.fetchMessagesFromBackend(this.selectedChat.id);
+      this.messages = this.wsChatService.getMessages(this.selectedChat.id);
+
+      this.wsChatService.subscribeToMessages(this.selectedChat.id);
+      this.messages.pipe(takeUntilDestroyed(this.destroyRef)).subscribe(() => {
+        this.shouldScroll = true;
+      });
+    }
+  }
+
+  protected startNewChat(userId: string): void {
+    this.dialog
+      .open(NewChatModalComponent, { data: { userId } })
+      .afterClosed()
+      .pipe(take(1))
+      .subscribe((result) => {
+        this.chatService.startChat(userId, result).subscribe();
+      });
   }
 
   protected onSendMessage(): void {
     if (this.wsChatService.connected()) {
       if (!this.messageForm.invalid) {
         this.wsChatService.sendMessage(
-          this.currentContact.conversationId,
+          this.selectedChat.id,
           this.authService.getCurrentUser()!.uid,
           this.messageForm.controls['message'].value,
         );
@@ -71,24 +107,12 @@ export class ChatComponent implements OnInit {
     }
   }
 
-  protected onContactClick(contact: Contact) {
-    this.currentContact = contact;
-    if (this.currentUser) {
-      this.wsChatService.fetchMessagesFromBackend(contact.conversationId);
-      this.messages = this.wsChatService.getMessages(contact.conversationId);
-
-      this.wsChatService.subscribeToMessages(contact.conversationId);
+  private scrollToBottom(): void {
+    try {
+      this.messageListContainer.nativeElement.scrollTop =
+        this.messageListContainer.nativeElement.scrollHeight;
+    } catch (err) {
+      console.error('Scroll to bottom failed:', err);
     }
-  }
-
-  protected acceptContactRequest(
-    userId1: string,
-    userId2: string,
-    contactId: string,
-  ) {
-    this.contactService
-      .acceptContactRequest(userId1, userId2, contactId)
-      .pipe(take(1))
-      .subscribe();
   }
 }

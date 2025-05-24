@@ -1,13 +1,13 @@
 import { TestBed } from '@angular/core/testing';
 
-import { FirebaseChatService } from './firebase-chat.service';
+import { ChatService } from './chat.service';
 
-describe('FirebaseChatService', () => {
-  let service: FirebaseChatService;
+describe('ChatService', () => {
+  let service: ChatService;
 
   beforeEach(() => {
     TestBed.configureTestingModule({});
-    service = TestBed.inject(FirebaseChatService);
+    service = TestBed.inject(ChatService);
   });
 
   it('should be created', () => {

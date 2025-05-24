@@ -1,7 +1,7 @@
 import { Post } from './post.model';
 import firebase from 'firebase/compat';
+import { Chat } from './chat.model';
 import FireBaseUser = firebase.User;
-import { Contact } from './contact.model';
 
 export interface User extends FireBaseUser {
   id: string;
@@ -10,4 +10,5 @@ export interface User extends FireBaseUser {
   firstname?: string;
   lastname?: string;
   posts: Post[];
+  chats: Chat[];
 }

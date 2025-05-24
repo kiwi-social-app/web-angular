@@ -5,7 +5,7 @@ export interface Contact {
   user1Username: string;
   user2Username: string;
   status: ContactStatus;
-  conversationId: string;
+  chatId: string;
 }
 
 export enum ContactStatus {
