@@ -1,7 +1,6 @@
 import { Routes } from '@angular/router';
 import { DashboardComponent } from './components/dashboard/dashboard.component';
 import { LoginComponent } from './components/login/login.component';
-import { NewPostComponent } from './components/new-post/new-post.component';
 import { PostDetailComponent } from './components/post-detail/post-detail.component';
 import { PostEditComponent } from './components/post-edit/post-edit.component';
 import { PostListComponent } from './components/post-list/post-list.component';
@@ -19,7 +18,6 @@ export const routes: Routes = [
     component: DashboardComponent,
     canActivate: [AuthGuard],
   },
-  { path: 'new-post', component: NewPostComponent, canActivate: [AuthGuard] },
   {
     path: 'post-edit/:id',
     component: PostEditComponent,

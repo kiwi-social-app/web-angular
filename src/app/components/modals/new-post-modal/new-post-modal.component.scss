@@ -1,12 +1,9 @@
-.new-post-component {
+.new-post-modal {
   display: flex;
   flex-direction: column;
-  padding: 2rem;
-  height: 90vh;
-  width: 40rem;
-  background-color: white;
-  border-radius: 1rem;
-  margin: 1rem;
+  justify-content: space-between;
+  height: 100%;
+  padding: 1rem;
 
   .new-post-form {
     display: flex;

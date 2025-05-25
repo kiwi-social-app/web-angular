@@ -1,0 +1,38 @@
+<div class="new-post-modal">
+  <h2>New Post</h2>
+  <mat-dialog-content>
+    <form class="new-post-form" [formGroup]="newPostForm">
+      <div class="form-block">
+        <label for="body">Body:</label>
+        <textarea
+          class="body-input"
+          id="body"
+          type="text"
+          formControlName="body"
+        ></textarea>
+        @if (
+          newPostForm.get("body")?.invalid &&
+          (newPostForm.get("body")?.dirty || newPostForm.get("body")?.touched)
+        ) {
+          @if (newPostForm.controls["body"].invalid) {
+            <div>Please enter post body</div>
+          }
+        }
+      </div>
+    </form>
+  </mat-dialog-content>
+  <mat-dialog-actions>
+    <button
+      type="button"
+      color="primary"
+      mat-flat-button
+      (click)="confirm()"
+      [disabled]="newPostForm.invalid"
+    >
+      Confirm
+    </button>
+    <button type="button" color="primary" mat-stroked-button mat-dialog-close>
+      Cancel
+    </button>
+  </mat-dialog-actions>
+</div>

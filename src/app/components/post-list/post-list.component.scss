@@ -7,4 +7,9 @@
   overflow: scroll;
   scrollbar-width: none;
   gap: 0.5rem;
+
+  .new-post-btn {
+    padding: 0.5rem 1rem;
+    width: fit-content;
+  }
 }

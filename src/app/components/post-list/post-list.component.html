@@ -1,5 +1,15 @@
 @if (currentUser()?.id) {
   <div class="post-list-component">
+    <button
+      class="new-post-btn"
+      color="primary"
+      mat-button
+      mat-stroked-button
+      type="button"
+      (click)="openNewPostModal()"
+    >
+      New Post
+    </button>
     @for (post of posts(); track $index) {
       <div class="card-container">
         <app-post-card
