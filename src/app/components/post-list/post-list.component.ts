@@ -17,7 +17,7 @@ import { User } from '../../models/user.model';
 })
 export class PostListComponent {
   protected posts: Signal<Post[] | undefined> = toSignal(
-    inject(PostService).fetchPosts(),
+    inject(PostService).getPosts(),
   );
 
   protected currentUser: Signal<User | null | undefined> = toSignal(

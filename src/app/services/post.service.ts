@@ -26,11 +26,11 @@ export class PostService {
 
   private postsApiUrl: string = 'http://localhost:8080/posts';
 
-  public fetchPosts(): Observable<Post[]> {
+  public getPosts(): Observable<Post[]> {
     return this.http.get<Post[]>(`${this.postsApiUrl}/`);
   }
 
-  public fetchPostByID(id: string): Observable<Post> {
+  public getPostByID(id: string): Observable<Post> {
     return this.http.get<Post>(`${this.postsApiUrl}/${id}`, httpOptions);
   }
 

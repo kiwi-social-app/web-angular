@@ -1,5 +1,5 @@
 <div class="post-card">
-  <p>{{ (author | async)?.username }}</p>
+  <p>{{ post.author.username }}</p>
   <p>{{ post.body }}</p>
   <div class="actions">
     @if (currentUserId) {

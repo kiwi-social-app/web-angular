@@ -50,7 +50,7 @@ export class PostEditComponent implements OnInit {
 
   protected getPost() {
     if (this.postID != null) {
-      this.postService.fetchPostByID(this.postID).subscribe((post: any) => {
+      this.postService.getPostByID(this.postID).subscribe((post: any) => {
         this.post = post;
         this.initialiseForm();
         this.updatePostForm.patchValue({ body: post.body });

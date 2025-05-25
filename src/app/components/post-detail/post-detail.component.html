@@ -1,10 +1,13 @@
-@if (post) {
+@if (post.hasValue() && comments.hasValue()) {
+  @let currentPost = post.value()!;
+  @let currentComments = comments.value()!;
+
   <div class="post-detail-component">
     <div class="post-container">
       <div class="text-content">
-        <p>{{ post.createdAt | date: "medium" }}</p>
-        <p>{{ post.body }}</p>
-        <p>{{ (author | async)?.username ?? (author | async)?.email }}</p>
+        <p>{{ currentPost.createdAt | date: "medium" }}</p>
+        <p>{{ currentPost.body }}</p>
+        <p>{{ currentPost.author.username ?? "no username" }}</p>
       </div>
       <div class="actions">
         <div>
@@ -24,14 +27,14 @@
     @if (replyInput) {
       <app-new-comment
         [replyInputDisplay]="replyInput"
-        (onNewComment)="getComments()"
+        (onNewComment)="handleNewComment()"
         (replyInputDisplayChange)="onReplyInputDisplayChange()"
       ></app-new-comment>
     }
     <div class="scroll-container">
       <app-comment-list
-        [comments]="comments$ | async"
-        [postID]="post.id"
+        [comments]="currentComments"
+        [postID]="currentPost.id"
       ></app-comment-list>
     </div>
   </div>

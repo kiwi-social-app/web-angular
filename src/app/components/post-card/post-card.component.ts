@@ -1,7 +1,5 @@
 import { Component, inject, Input, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
-import { UserService } from '../../services/user.service';
-import { AsyncPipe } from '@angular/common';
 import { Post } from '../../models/post.model';
 import { User } from '../../models/user.model';
 import { Observable, of, take } from 'rxjs';
@@ -13,13 +11,12 @@ import { PostService } from '../../services/post.service';
   templateUrl: './post-card.component.html',
   styleUrls: ['./post-card.component.scss'],
   standalone: true,
-  imports: [AsyncPipe, MatIcon],
+  imports: [MatIcon],
 })
 export class PostCardComponent implements OnInit {
   @Input() post!: Post;
   @Input() currentUserId?: string;
 
-  private readonly userService: UserService = inject(UserService);
   private readonly postService: PostService = inject(PostService);
   private readonly router: Router = inject(Router);
 
@@ -27,8 +24,6 @@ export class PostCardComponent implements OnInit {
   protected isFavorite: boolean = false;
 
   ngOnInit(): void {
-    this.author = this.userService.getUserByID(this.post.authorId);
-
     if (this.currentUserId) {
       this.isFavorite = this.checkIfFavorite(this.currentUserId);
     }
