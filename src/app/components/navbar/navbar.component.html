@@ -15,6 +15,10 @@
           <mat-icon>add</mat-icon>
           <span class="sidebar-link-text">New Post</span></a
         >
+        <a routerLink="/saved-posts" class="nav-link top-bar-button">
+          <mat-icon>bookmark</mat-icon>
+          <span class="sidebar-link-text">Saved Posts</span></a
+        >
         @if (authService.getCurrentUser()) {
           <a routerLink="/dashboard" class="nav-link top-bar-button">
             <mat-icon>person</mat-icon>

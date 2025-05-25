@@ -5,7 +5,8 @@ import { toSignal } from '@angular/core/rxjs-interop';
 import { PostCardComponent } from '../post-card/post-card.component';
 import { RouterLink } from '@angular/router';
 import { FormsModule } from '@angular/forms';
-import { CommentListComponent } from '../comment-list/comment-list.component';
+import { UserService } from '../../services/user.service';
+import { User } from '../../models/user.model';
 
 @Component({
   selector: 'app-post-list',
@@ -17,5 +18,9 @@ import { CommentListComponent } from '../comment-list/comment-list.component';
 export class PostListComponent {
   protected posts: Signal<Post[] | undefined> = toSignal(
     inject(PostService).fetchPosts(),
+  );
+
+  protected currentUser: Signal<User | null | undefined> = toSignal(
+    inject(UserService).getCurrentUser(),
   );
 }

@@ -1,0 +1,10 @@
+.saved-posts-component {
+  display: flex;
+  flex-direction: column;
+  width: 30rem;
+  padding: 1rem;
+  justify-content: center;
+  overflow: scroll;
+  scrollbar-width: none;
+  gap: 0.5rem;
+}

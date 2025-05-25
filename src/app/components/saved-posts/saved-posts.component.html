@@ -1,9 +1,9 @@
 @if (currentUser()?.id) {
-  <div class="post-list-component">
-    @for (post of posts(); track $index) {
+  <div class="saved-posts-component">
+    <h1>Favorites</h1>
+    @for (post of favoritePosts(); track $index) {
       <div class="card-container">
         <app-post-card
-          [currentUserId]="currentUser()?.id ?? undefined"
           [post]="post"
           routerLink="['/posts', post.id]"
         ></app-post-card>

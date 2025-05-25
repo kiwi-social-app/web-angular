@@ -2,11 +2,20 @@
   <p>{{ (author | async)?.username }}</p>
   <p>{{ post.body }}</p>
   <div class="actions">
-    <div>
-      <mat-icon>bookmark</mat-icon>
-      <span>save</span>
-    </div>
-    <div (click)="goToPostDetail()">
+    @if (currentUserId) {
+      @if (isFavorite) {
+        <div (click)="removeFromFavorites(post.id, currentUserId)">
+          <mat-icon>bookmark</mat-icon>
+          <span>save</span>
+        </div>
+      } @else {
+        <div (click)="addToFavorites(post.id, currentUserId)">
+          <mat-icon>bookmark_border</mat-icon>
+          <span>save</span>
+        </div>
+      }
+    }
+    <div (click)="goToPostDetail(post.id)">
       <mat-icon>chat_bubble_outline</mat-icon>
       <span>comment</span>
     </div>

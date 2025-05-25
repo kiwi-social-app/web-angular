@@ -1,6 +1,11 @@
 import { inject, Injectable } from '@angular/core';
 
-import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
+import {
+  HttpClient,
+  HttpHeaders,
+  HttpParams,
+  HttpResponse,
+} from '@angular/common/http';
 import { catchError, map, Observable, of, tap, throwError } from 'rxjs';
 import { Post } from '../models/post.model';
 import { AuthService } from './auth.service';
@@ -19,14 +24,14 @@ export class PostService {
   private readonly http: HttpClient = inject(HttpClient);
   private readonly authService: AuthService = inject(AuthService);
 
-  private postsUrl: string = 'http://localhost:8080/posts/';
+  private postsApiUrl: string = 'http://localhost:8080/posts';
 
   public fetchPosts(): Observable<Post[]> {
-    return this.http.get<Post[]>(this.postsUrl);
+    return this.http.get<Post[]>(`${this.postsApiUrl}/`);
   }
 
   public fetchPostByID(id: string): Observable<Post> {
-    return this.http.get<Post>(`${this.postsUrl}${id}`, httpOptions);
+    return this.http.get<Post>(`${this.postsApiUrl}/${id}`, httpOptions);
   }
 
   public createPost(post: PostCreation): Observable<any> {
@@ -35,12 +40,9 @@ export class PostService {
     if (!currentUser) {
       return throwError(() => new Error('User is not authenticated'));
     }
+    const params: HttpParams = new HttpParams().set('userId', currentUser.uid);
 
-    const url = `${this.postsUrl}`;
-
-    const params = new HttpParams().set('userId', currentUser.uid);
-
-    return this.http.post(url, post, {
+    return this.http.post(`${this.postsApiUrl}`, post, {
       params,
       headers: new HttpHeaders({
         Authorization: `Bearer ${currentUser.getIdToken()}`,
@@ -50,7 +52,7 @@ export class PostService {
   }
 
   public deletePost(id: string): Observable<any> {
-    const url = `${this.postsUrl}${id}`;
+    const url = `${this.postsApiUrl}/${id}`;
 
     return this.http.delete(url).pipe(
       map((response) => response),
@@ -59,7 +61,7 @@ export class PostService {
   }
 
   public updatePost(post: Post) {
-    const url = `${this.postsUrl}${post.id}`;
+    const url = `${this.postsApiUrl}/${post.id}`;
     post.updatedAt = new Date();
 
     return this.http.put(url, post, httpOptions).pipe(
@@ -70,6 +72,45 @@ export class PostService {
         console.log(error);
         return of(error);
       }),
+    );
+  }
+
+  public favoritePost(
+    postId: string,
+    userId: string,
+  ): Observable<HttpResponse<void>> {
+    return this.http.post<void>(
+      `${this.postsApiUrl}/${postId}/favorite`,
+      null,
+      {
+        params: { userId },
+        observe: 'response',
+      },
+    );
+  }
+
+  public unfavoritePost(
+    postId: string,
+    userId: string,
+  ): Observable<HttpResponse<void>> {
+    return this.http.delete<void>(`${this.postsApiUrl}/${postId}/favorite`, {
+      params: { userId },
+      observe: 'response',
+    });
+  }
+
+  public getUserFavorites(userId: string): Observable<Post[]> {
+    return this.http.get<Post[]>(`${this.postsApiUrl}/favorites`, {
+      params: { userId },
+    });
+  }
+
+  public isPostFavorited(postId: string, userId: string): Observable<boolean> {
+    return this.http.get<boolean>(
+      `${this.postsApiUrl}/${postId}/is-favorited`,
+      {
+        params: { userId },
+      },
     );
   }
 }

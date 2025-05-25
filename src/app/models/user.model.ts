@@ -11,4 +11,5 @@ export interface User extends FireBaseUser {
   lastname?: string;
   posts: Post[];
   chats: Chat[];
+  favorites: string[];
 }

@@ -8,6 +8,7 @@ import { PostListComponent } from './components/post-list/post-list.component';
 import { AuthGuard } from './services/auth.guard';
 import { SignupComponent } from './components/signup/signup.component';
 import { ChatComponent } from './components/chat/chat.component';
+import { SavedPostsComponent } from './components/saved-posts/saved-posts.component';
 
 export const routes: Routes = [
   { path: '', component: PostListComponent, canActivate: [AuthGuard] },
@@ -33,6 +34,11 @@ export const routes: Routes = [
   {
     path: 'chat',
     component: ChatComponent,
+    canActivate: [AuthGuard],
+  },
+  {
+    path: 'saved-posts',
+    component: SavedPostsComponent,
     canActivate: [AuthGuard],
   },
 ];

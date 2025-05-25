@@ -5,4 +5,5 @@ export interface Post {
   updatedAt?: any;
   authorId: string;
   published: boolean;
+  favoritedBy: string[];
 }

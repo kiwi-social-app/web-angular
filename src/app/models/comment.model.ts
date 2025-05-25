@@ -1,10 +1,10 @@
-import { User } from "./user.model";
+import { UserBasic } from './userBasic.model';
 
 export interface Comment {
   id: string;
   body: string;
   postID: string;
   created_at: Date;
-  author: User;
+  author: UserBasic;
   userID: string;
 }
