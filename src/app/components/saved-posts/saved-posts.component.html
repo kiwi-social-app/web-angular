@@ -1,6 +1,6 @@
 @if (currentUser()?.id) {
   <div class="saved-posts-component">
-    <h1>Favorites</h1>
+    <h1>Saved Posts</h1>
     @for (post of favoritePosts(); track $index) {
       <div class="card-container">
         <app-post-card

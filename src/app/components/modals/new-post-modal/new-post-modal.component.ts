@@ -1,5 +1,4 @@
 import { Component, inject, OnInit } from '@angular/core';
-import { AsyncPipe } from '@angular/common';
 import { MatButton } from '@angular/material/button';
 import {
   MAT_DIALOG_DATA,
@@ -8,7 +7,6 @@ import {
   MatDialogContent,
   MatDialogRef,
 } from '@angular/material/dialog';
-import { MatListOption, MatSelectionList } from '@angular/material/list';
 import {
   FormBuilder,
   FormGroup,
@@ -20,13 +18,10 @@ import { PostCreation } from '../../../models/postCreation.model';
 @Component({
   selector: 'app-new-post-modal',
   imports: [
-    AsyncPipe,
     MatButton,
     MatDialogActions,
     MatDialogClose,
     MatDialogContent,
-    MatListOption,
-    MatSelectionList,
     ReactiveFormsModule,
   ],
   templateUrl: './new-post-modal.component.html',

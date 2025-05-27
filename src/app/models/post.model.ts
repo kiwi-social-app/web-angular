@@ -8,4 +8,6 @@ export interface Post {
   author: UserBasic;
   published: boolean;
   favoritedBy: string[];
+  likedByUsers: string[];
+  dislikedByUsers: string[];
 }

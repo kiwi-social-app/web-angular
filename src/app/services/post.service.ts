@@ -113,4 +113,44 @@ export class PostService {
       },
     );
   }
+
+  public addLike(
+    postId: string,
+    userId: string,
+  ): Observable<HttpResponse<void>> {
+    return this.http.post<void>(`${this.postsApiUrl}/${postId}/like`, null, {
+      params: { userId },
+      observe: 'response',
+    });
+  }
+
+  public removeLike(
+    postId: string,
+    userId: string,
+  ): Observable<HttpResponse<void>> {
+    return this.http.delete<void>(`${this.postsApiUrl}/${postId}/like`, {
+      params: { userId },
+      observe: 'response',
+    });
+  }
+
+  public addDislike(
+    postId: string,
+    userId: string,
+  ): Observable<HttpResponse<void>> {
+    return this.http.post<void>(`${this.postsApiUrl}/${postId}/dislike`, null, {
+      params: { userId },
+      observe: 'response',
+    });
+  }
+
+  public removeDislike(
+    postId: string,
+    userId: string,
+  ): Observable<HttpResponse<void>> {
+    return this.http.delete<void>(`${this.postsApiUrl}/${postId}/dislike`, {
+      params: { userId },
+      observe: 'response',
+    });
+  }
 }

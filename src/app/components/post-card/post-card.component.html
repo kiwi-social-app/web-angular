@@ -14,7 +14,26 @@
           <span>save</span>
         </div>
       }
+      @if (isLiked) {
+        <div (click)="removeLike(post.id, currentUserId)">
+          <mat-icon class="like-btn">arrow_upward</mat-icon>
+        </div>
+      } @else {
+        <div (click)="addLike(post.id, currentUserId)">
+          <mat-icon>arrow_upward</mat-icon>
+        </div>
+      }
+      @if (isDisliked) {
+        <div (click)="removeDislike(post.id, currentUserId)">
+          <mat-icon class="dislike-btn">arrow_downward</mat-icon>
+        </div>
+      } @else {
+        <div (click)="addDislike(post.id, currentUserId)">
+          <mat-icon>arrow_downward</mat-icon>
+        </div>
+      }
     }
+
     <div (click)="goToPostDetail(post.id)">
       <mat-icon>chat_bubble_outline</mat-icon>
       <span>comment</span>

@@ -22,10 +22,14 @@ export class PostCardComponent implements OnInit {
 
   protected author: Observable<User | undefined> = of();
   protected isFavorite: boolean = false;
+  protected isLiked: boolean = false;
+  protected isDisliked: boolean = false;
 
   ngOnInit(): void {
     if (this.currentUserId) {
       this.isFavorite = this.checkIfFavorite(this.currentUserId);
+      this.isLiked = this.checkIfLiked(this.currentUserId);
+      this.isDisliked = this.checkIfDisliked(this.currentUserId);
     }
   }
 
@@ -75,7 +79,101 @@ export class PostCardComponent implements OnInit {
       });
   }
 
+  protected addLike(postId: string, userId: string): void {
+    this.postService
+      .addLike(postId, userId)
+      .pipe(take(1))
+      .subscribe({
+        next: (response) => {
+          if (response.status === 204) {
+            console.log('✅ Post successfully liked (204 No Content)');
+            if (!this.post.likedByUsers.includes(userId)) {
+              this.post.likedByUsers.push(userId);
+            }
+            this.isLiked = true;
+            this.isDisliked = false;
+          }
+        },
+        error: (err) => {
+          console.error('❌ Error liking post:', err);
+        },
+      });
+  }
+
+  protected addDislike(postId: string, userId: string): void {
+    this.postService
+      .addDislike(postId, userId)
+      .pipe(take(1))
+      .subscribe({
+        next: (response) => {
+          if (response.status === 204) {
+            console.log('✅ Post successfully disliked (204 No Content)');
+            if (!this.post.dislikedByUsers.includes(userId)) {
+              this.post.dislikedByUsers.push(userId);
+            }
+            this.isDisliked = true;
+            this.isLiked = false;
+          }
+        },
+        error: (err) => {
+          console.error('❌ Error disliking post:', err);
+        },
+      });
+  }
+
+  protected removeLike(postId: string, userId: string): void {
+    this.postService
+      .removeLike(postId, userId)
+      .pipe(take(1))
+      .subscribe({
+        next: (response) => {
+          if (response.status === 204) {
+            console.log(
+              '✅ Post successfully removed from liked posts (204 No Content)',
+            );
+            if (!this.post.likedByUsers.includes(userId)) {
+              this.post.likedByUsers.filter((id) => id !== userId);
+            }
+            this.isLiked = false;
+          }
+        },
+        error: (err) => {
+          console.error('❌ Error removing post from liked posts:', err);
+        },
+      });
+  }
+
+  protected removeDislike(postId: string, userId: string): void {
+    this.postService
+      .removeDislike(postId, userId)
+      .pipe(take(1))
+      .subscribe({
+        next: (response) => {
+          if (response.status === 204) {
+            console.log(
+              '✅ Post successfully removed from disliked posts (204 No Content)',
+            );
+            if (!this.post.dislikedByUsers.includes(userId)) {
+              this.post.dislikedByUsers.filter((id) => id !== userId);
+            }
+            this.isDisliked = false;
+          }
+        },
+        error: (err) => {
+          console.error('❌ Error removing post from disliked posts:', err);
+        },
+      });
+  }
+
   private checkIfFavorite(currentUserId: string): boolean {
     return this.post.favoritedBy.includes(currentUserId);
+  }
+
+  private checkIfLiked(currentUserId: string): boolean {
+    return this.post.likedByUsers.includes(currentUserId);
+  }
+
+  private checkIfDisliked(currentUserId: string): boolean {
+    return this.post.dislikedByUsers.includes(currentUserId);
   }
 }
