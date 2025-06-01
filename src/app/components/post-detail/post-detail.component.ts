@@ -4,7 +4,6 @@ import {
   inject,
   resource,
   ResourceRef,
-  signal,
   Signal,
 } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
@@ -16,8 +15,8 @@ import { firstValueFrom } from 'rxjs';
 import { MatIcon } from '@angular/material/icon';
 import { NewCommentComponent } from '../new-comment/new-comment.component';
 import { CommentService } from '../../services/comment.service';
-import { Comment } from '../../models/comment.model';
 import { Post } from '../../models/post.model';
+import { Comment } from '../../models/comment.model';
 
 @Component({
   selector: 'app-post-detail',
@@ -35,18 +34,19 @@ export class PostDetailComponent {
     () => this.route.snapshot.paramMap.get('id') ?? '',
   );
   readonly post: ResourceRef<Post | undefined> = resource({
-    request: () => ({ id: this.postID() }),
-    loader: ({ request }) =>
-      firstValueFrom(this.postService.getPostByID(request.id)),
+    loader: () => firstValueFrom(this.postService.getPostByID(this.postID())),
   });
 
   readonly comments: ResourceRef<Comment[] | undefined> = resource({
-    request: () => ({ id: this.postID(), refresh: this.refreshTrigger() }),
-    loader: ({ request }) =>
-      firstValueFrom(this.commentService.fetchCommentsByPostID(request.id)),
+    params: () => ({
+      id: this.postID(),
+    }),
+    loader: ({ params }) => {
+      return firstValueFrom(
+        this.commentService.fetchCommentsByPostID(params.id),
+      );
+    },
   });
-
-  readonly refreshTrigger = signal(0);
 
   protected replyInput = false;
 
@@ -55,6 +55,6 @@ export class PostDetailComponent {
   }
 
   protected handleNewComment(): void {
-    this.refreshTrigger.update((n) => n + 1);
+    this.comments.reload();
   }
 }
