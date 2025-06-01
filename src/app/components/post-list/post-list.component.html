@@ -1,5 +1,4 @@
 @if (posts.hasValue() && currentUser.hasValue()) {
-  @let postList = posts.value()!;
   @let user = currentUser.value()!;
 
   <div class="post-list-component">
@@ -13,10 +12,10 @@
     >
       New Post
     </button>
-    @for (post of postList; track $index) {
+    @for (post of sortedPosts(); track $index) {
       <div class="card-container">
         <app-post-card
-          [currentUserId]="user.id ?? undefined"
+          [currentUserId]="user.id"
           [post]="post"
           routerLink="['/posts', post.id]"
         ></app-post-card>

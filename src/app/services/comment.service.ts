@@ -29,7 +29,7 @@ export class CommentService {
       return throwError(() => new Error('User is not authenticated'));
     }
     const url = `${this.commentsUrl}`;
-    comment.created_at = new Date();
+    comment.createdAt = new Date();
 
     const params = new HttpParams()
       .set('userId', currentUser.uid)

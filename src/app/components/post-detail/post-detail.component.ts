@@ -48,6 +48,15 @@ export class PostDetailComponent {
     },
   });
 
+  protected readonly sortedComments: Signal<Comment[]> = computed(() => {
+    let comments: Comment[] | undefined = this.comments.value();
+    if (!comments) return [];
+    return comments.toSorted(
+      (a, b) =>
+        new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime(),
+    );
+  });
+
   protected replyInput = false;
 
   protected onReplyInputDisplayChange() {

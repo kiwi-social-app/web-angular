@@ -1,4 +1,11 @@
-import { Component, inject, resource, ResourceRef } from '@angular/core';
+import {
+  Component,
+  computed,
+  inject,
+  resource,
+  ResourceRef,
+  Signal,
+} from '@angular/core';
 import { PostService } from 'src/app/services/post.service';
 import { Post } from '../../models/post.model';
 import { PostCardComponent } from '../post-card/post-card.component';
@@ -31,6 +38,17 @@ export class PostListComponent {
     resource({
       loader: () => firstValueFrom(this.userService.getCurrentUser()),
     });
+
+  protected readonly sortedPosts: Signal<Post[]> = computed(() => {
+    let posts: Post[] | undefined = this.posts.value();
+    if (!posts) {
+      return [];
+    }
+    return posts.toSorted(
+      (a, b) =>
+        new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime(),
+    );
+  });
 
   protected openNewPostModal() {
     const dialogRef: MatDialogRef<NewPostModalComponent> = this.dialog.open(

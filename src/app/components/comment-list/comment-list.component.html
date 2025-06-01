@@ -7,7 +7,7 @@
             <div class="comment-header">
               <p class="header-content">{{ comment.author.username }}</p>
               <p class="header-content">
-                {{ comment.created_at | date: "medium" }}
+                {{ comment.createdAt | date: "medium" }}
               </p>
             </div>
             <p class="comment-text">{{ comment.body }}</p>
