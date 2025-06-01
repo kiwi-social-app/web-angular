@@ -13,17 +13,25 @@ import { RouterLink } from '@angular/router';
 import { FormsModule } from '@angular/forms';
 import { UserService } from '../../services/user.service';
 import { User } from '../../models/user.model';
-import { MatButton } from '@angular/material/button';
+import { MatButton, MatIconButton } from '@angular/material/button';
 import { MatDialog, MatDialogRef } from '@angular/material/dialog';
 import { NewPostModalComponent } from '../modals/new-post-modal/new-post-modal.component';
 import { firstValueFrom, take } from 'rxjs';
+import { MatIcon } from '@angular/material/icon';
 
 @Component({
   selector: 'app-post-list',
   templateUrl: './post-list.component.html',
   styleUrls: ['./post-list.component.scss'],
   standalone: true,
-  imports: [PostCardComponent, RouterLink, FormsModule, MatButton],
+  imports: [
+    PostCardComponent,
+    RouterLink,
+    FormsModule,
+    MatButton,
+    MatIcon,
+    MatIconButton,
+  ],
 })
 export class PostListComponent {
   private readonly dialog: MatDialog = inject(MatDialog);
@@ -71,4 +79,6 @@ export class PostListComponent {
         }
       });
   }
+
+  protected filterSelect() {}
 }

@@ -2,16 +2,22 @@
   @let user = currentUser.value()!;
 
   <div class="post-list-component">
-    <button
-      class="new-post-btn"
-      color="primary"
-      mat-button
-      mat-stroked-button
-      type="button"
-      (click)="openNewPostModal()"
-    >
-      New Post
-    </button>
+    <div class="controls">
+      <button
+        class="new-post-btn"
+        color="primary"
+        mat-button
+        mat-flat-button
+        type="button"
+        (click)="openNewPostModal()"
+      >
+        New Post
+      </button>
+      <button type="button" mat-icon-button (click)="filterSelect()">
+        <mat-icon>filter_list</mat-icon>
+      </button>
+    </div>
+
     @for (post of sortedPosts(); track $index) {
       <div class="card-container">
         <app-post-card

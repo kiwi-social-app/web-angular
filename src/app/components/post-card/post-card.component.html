@@ -23,7 +23,7 @@
       }
       @if (isFavorite) {
         <div (click)="removeFromFavorites(post.id, currentUserId)">
-          <mat-icon>bookmark</mat-icon>
+          <mat-icon class="save-btn">bookmark</mat-icon>
           <span>save</span>
         </div>
       } @else {
