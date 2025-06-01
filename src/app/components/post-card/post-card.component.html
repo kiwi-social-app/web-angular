@@ -3,6 +3,24 @@
   <p>{{ post.body }}</p>
   <div class="actions">
     @if (currentUserId) {
+      @if (isLiked) {
+        <div (click)="removeLike(post.id, currentUserId)">
+          <mat-icon class="like-btn">thumb_up</mat-icon>
+        </div>
+      } @else {
+        <div (click)="addLike(post.id, currentUserId)">
+          <mat-icon class="material-icons-outlined">thumb_up_outline</mat-icon>
+        </div>
+      }
+      @if (isDisliked) {
+        <div (click)="removeDislike(post.id, currentUserId)">
+          <mat-icon class="dislike-btn">thumb_down</mat-icon>
+        </div>
+      } @else {
+        <div (click)="addDislike(post.id, currentUserId)">
+          <mat-icon class="material-icons-outlined">thumb_down</mat-icon>
+        </div>
+      }
       @if (isFavorite) {
         <div (click)="removeFromFavorites(post.id, currentUserId)">
           <mat-icon>bookmark</mat-icon>
@@ -12,24 +30,6 @@
         <div (click)="addToFavorites(post.id, currentUserId)">
           <mat-icon>bookmark_border</mat-icon>
           <span>save</span>
-        </div>
-      }
-      @if (isLiked) {
-        <div (click)="removeLike(post.id, currentUserId)">
-          <mat-icon class="like-btn">arrow_upward</mat-icon>
-        </div>
-      } @else {
-        <div (click)="addLike(post.id, currentUserId)">
-          <mat-icon>arrow_upward</mat-icon>
-        </div>
-      }
-      @if (isDisliked) {
-        <div (click)="removeDislike(post.id, currentUserId)">
-          <mat-icon class="dislike-btn">arrow_downward</mat-icon>
-        </div>
-      } @else {
-        <div (click)="addDislike(post.id, currentUserId)">
-          <mat-icon>arrow_downward</mat-icon>
         </div>
       }
     }
