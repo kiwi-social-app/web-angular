@@ -33,7 +33,13 @@
           <div class="message-list" #messageList>
             @if (selectedChat.id) {
               @for (message of messages | async; track $index) {
-                <app-message [message]="message"></app-message>
+                <app-message
+                  [ngClass]="{
+                    'message-right': message.senderId === currentUser.uid,
+                    'message-left': message.senderId !== currentUser.uid,
+                  }"
+                  [message]="message"
+                ></app-message>
               }
             }
           </div>

@@ -18,7 +18,7 @@ import {
 import { Observable, take } from 'rxjs';
 import { MessageComponent } from '../message/message.component';
 import { User } from '@angular/fire/auth';
-import { AsyncPipe } from '@angular/common';
+import { AsyncPipe, NgClass } from '@angular/common';
 import { MatButton, MatButtonModule } from '@angular/material/button';
 import { ChatService } from '../../services/chat.service';
 import { Chat } from '../../models/chat.model';
@@ -37,6 +37,7 @@ import { MatCard, MatCardContent } from '@angular/material/card';
     MatButton,
     MatCard,
     MatCardContent,
+    NgClass,
   ],
   templateUrl: './chat.component.html',
   styleUrl: './chat.component.scss',

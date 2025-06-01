@@ -32,6 +32,20 @@
           black calc(100% - 48px),
           transparent 100%
         );
+
+        .message-right {
+          border-radius: 1rem;
+          background-color: aliceblue;
+          width: 20rem;
+          margin-left: auto;
+        }
+
+        .message-left {
+          border-radius: 1rem;
+          background-color: palegreen;
+          width: 20rem;
+          margin-right: auto;
+        }
       }
 
       .message-creation {
