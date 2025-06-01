@@ -1,16 +1,15 @@
-import { Component, inject, Signal } from '@angular/core';
+import { Component, inject, resource, ResourceRef } from '@angular/core';
 import { PostService } from 'src/app/services/post.service';
 import { Post } from '../../models/post.model';
-import { toSignal } from '@angular/core/rxjs-interop';
 import { PostCardComponent } from '../post-card/post-card.component';
 import { RouterLink } from '@angular/router';
 import { FormsModule } from '@angular/forms';
 import { UserService } from '../../services/user.service';
 import { User } from '../../models/user.model';
 import { MatButton } from '@angular/material/button';
-import { MatDialog } from '@angular/material/dialog';
+import { MatDialog, MatDialogRef } from '@angular/material/dialog';
 import { NewPostModalComponent } from '../modals/new-post-modal/new-post-modal.component';
-import { take } from 'rxjs';
+import { firstValueFrom, take } from 'rxjs';
 
 @Component({
   selector: 'app-post-list',
@@ -24,27 +23,33 @@ export class PostListComponent {
   private readonly postService: PostService = inject(PostService);
   private readonly userService: UserService = inject(UserService);
 
-  protected posts: Signal<Post[] | undefined> = toSignal(
-    this.postService.getPosts(),
-  );
+  protected readonly posts: ResourceRef<Post[] | undefined> = resource({
+    loader: () => firstValueFrom(this.postService.getPosts()),
+  });
 
-  protected currentUser: Signal<User | null | undefined> = toSignal(
-    this.userService.getCurrentUser(),
-  );
+  protected readonly currentUser: ResourceRef<User | null | undefined> =
+    resource({
+      loader: () => firstValueFrom(this.userService.getCurrentUser()),
+    });
 
   protected openNewPostModal() {
-    const dialogRef = this.dialog.open(NewPostModalComponent, {
-      data: {},
-      height: '40rem',
-      width: '30rem',
-    });
+    const dialogRef: MatDialogRef<NewPostModalComponent> = this.dialog.open(
+      NewPostModalComponent,
+      {
+        data: {},
+        height: '40rem',
+        width: '30rem',
+      },
+    );
 
     dialogRef
       .afterClosed()
       .pipe(take(1))
       .subscribe((result) => {
         if (result) {
-          this.postService.createPost(result).subscribe((response) => {});
+          this.postService.createPost(result).subscribe(() => {
+            this.posts.reload();
+          });
         }
       });
   }

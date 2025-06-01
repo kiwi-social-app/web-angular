@@ -30,14 +30,14 @@ export class PostDetailComponent {
   private readonly postService: PostService = inject(PostService);
   private readonly commentService: CommentService = inject(CommentService);
 
-  readonly postID: Signal<string> = computed(
+  private readonly postID: Signal<string> = computed(
     () => this.route.snapshot.paramMap.get('id') ?? '',
   );
-  readonly post: ResourceRef<Post | undefined> = resource({
+  protected readonly post: ResourceRef<Post | undefined> = resource({
     loader: () => firstValueFrom(this.postService.getPostByID(this.postID())),
   });
 
-  readonly comments: ResourceRef<Comment[] | undefined> = resource({
+  protected readonly comments: ResourceRef<Comment[] | undefined> = resource({
     params: () => ({
       id: this.postID(),
     }),
