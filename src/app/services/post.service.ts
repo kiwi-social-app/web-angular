@@ -10,6 +10,7 @@ import { catchError, map, Observable, of, tap, throwError } from 'rxjs';
 import { Post } from '../models/post.model';
 import { AuthService } from './auth.service';
 import { PostCreation } from '../models/postCreation.model';
+import { environment } from '../../environments/environment';
 
 const httpOptions = {
   headers: new HttpHeaders({
@@ -24,10 +25,10 @@ export class PostService {
   private readonly http: HttpClient = inject(HttpClient);
   private readonly authService: AuthService = inject(AuthService);
 
-  private postsApiUrl: string = 'http://localhost:8080/posts';
+  private postsApiUrl: string = `${environment.apiUrl}/posts`;
 
   public getPosts(): Observable<Post[]> {
-    return this.http.get<Post[]>(`${this.postsApiUrl}/`);
+    return this.http.get<Post[]>(`${this.postsApiUrl}`);
   }
 
   public getPostByID(id: string): Observable<Post> {

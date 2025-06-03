@@ -4,6 +4,7 @@ import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
 import { catchError, map, Observable, of, throwError } from 'rxjs';
 import { Comment } from '../models/comment.model';
 import { AuthService } from './auth.service';
+import { environment } from '../../environments/environment';
 
 @Injectable({
   providedIn: 'root',
@@ -12,10 +13,10 @@ export class CommentService {
   private readonly http: HttpClient = inject(HttpClient);
   private readonly authService: AuthService = inject(AuthService);
 
-  private commentsUrl: string = 'http://localhost:8080/comments/';
+  private commentsUrl: string = `${environment.apiUrl}/comments`;
 
   public fetchCommentsByPostID(postID: string): Observable<Comment[]> {
-    return this.http.get<Comment[]>(`${this.commentsUrl}${postID}`).pipe(
+    return this.http.get<Comment[]>(`${this.commentsUrl}/${postID}`).pipe(
       map((response) => {
         return response;
       }),

@@ -4,6 +4,7 @@ import { myRxStompConfig } from '../rx-stomp.config';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { BehaviorSubject, Observable } from 'rxjs';
 import { HttpClient } from '@angular/common/http';
+import { environment } from '../../environments/environment';
 
 @Injectable({
   providedIn: 'root',
@@ -31,7 +32,7 @@ export class WsChatService extends RxStomp {
 
   public fetchMessagesFromBackend(chatId: string): void {
     this.http
-      .get<any[]>(`http://localhost:8080/chat/messages/${chatId}`)
+      .get<any[]>(`${environment.apiUrl}/chat/messages/${chatId}`)
       .subscribe({
         next: (messages) => {
           if (messages && Array.isArray(messages)) {

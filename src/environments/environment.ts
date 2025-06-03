@@ -3,6 +3,9 @@
 // The list of file replacements can be found in `angular.json`.
 
 export const environment = {
+  production: false,
+  apiUrl: '/api',
+  wsUrl: '/ws',
   firebase: {
     projectId: 'chatter-app-33613',
     appId: '1:854298776334:web:002b2a524c9c22f813bd5f',
@@ -14,7 +17,6 @@ export const environment = {
     messagingSenderId: '854298776334',
     measurementId: 'G-5MRS52FM7G',
   },
-  production: false,
 };
 
 /*

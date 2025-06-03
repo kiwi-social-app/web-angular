@@ -4,6 +4,7 @@ import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { catchError, Observable, of } from 'rxjs';
 import { User } from '../models/user.model';
 import { Auth } from '@angular/fire/auth';
+import { environment } from '../../environments/environment';
 
 const httpOptions = {
   headers: new HttpHeaders({
@@ -18,7 +19,7 @@ export class UserService {
   private readonly http: HttpClient = inject(HttpClient);
   private readonly auth: Auth = inject(Auth);
 
-  private usersUrl: string = 'http://localhost:8080/users/';
+  private usersUrl: string = `${environment.apiUrl}/users`;
 
   public addUser(user: any): Observable<any> {
     return this.http.post<any>(this.usersUrl, user, httpOptions).pipe(
@@ -30,7 +31,7 @@ export class UserService {
   }
 
   public updateUser(userID: string, user: any): Observable<any> {
-    const url = `${this.usersUrl}${userID}`;
+    const url = `${this.usersUrl}/${userID}`;
     return this.http.put(url, user, httpOptions).pipe(
       catchError((error) => {
         console.log(error);
@@ -40,7 +41,7 @@ export class UserService {
   }
 
   public getUserByID(userID: string): Observable<User | any> {
-    const url = `${this.usersUrl}${userID}`;
+    const url = `${this.usersUrl}/${userID}`;
     return this.http.get<User>(url, httpOptions).pipe(
       catchError((error) => {
         console.log(error);
