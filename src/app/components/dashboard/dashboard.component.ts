@@ -19,6 +19,7 @@ import { AuthService } from '../../services/auth.service';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { UserPostsComponent } from '../user-posts/user-posts.component';
 import { MatButton } from '@angular/material/button';
+import { UserUpdate } from '../../models/userUpdate.model';
 
 @Component({
   selector: 'app-dashboard',
@@ -39,7 +40,7 @@ export class DashboardComponent implements OnInit {
   protected posts: Post[] = [];
 
   protected currentUser!: any;
-  protected updatedUser!: User;
+  protected updatedUser!: UserUpdate;
   protected editMode: boolean = false;
 
   ngOnInit(): void {

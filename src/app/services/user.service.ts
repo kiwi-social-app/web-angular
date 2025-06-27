@@ -5,6 +5,7 @@ import { catchError, Observable, of } from 'rxjs';
 import { User } from '../models/user.model';
 import { Auth } from '@angular/fire/auth';
 import { environment } from '../../environments/environment';
+import { UserUpdate } from '../models/userUpdate.model';
 
 const httpOptions = {
   headers: new HttpHeaders({
@@ -30,7 +31,7 @@ export class UserService {
     );
   }
 
-  public updateUser(userID: string, user: any): Observable<any> {
+  public updateUser(userID: string, user: UserUpdate): Observable<any> {
     const url = `${this.usersUrl}/${userID}`;
     return this.http.put(url, user, httpOptions).pipe(
       catchError((error) => {
