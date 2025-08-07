@@ -36,3 +36,11 @@
     }
   }
 }
+
+@media (max-width: 600px) {
+  .actions {
+    span {
+      display: none;
+    }
+  }
+}

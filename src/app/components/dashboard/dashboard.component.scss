@@ -1,8 +1,7 @@
 .dashboard-component {
   display: flex;
   flex-direction: column;
-  width: 45rem;
-  max-width: 30rem;
+  max-width: 45rem;
   background-color: white;
   border-radius: 1rem;
   height: 100%;
@@ -79,11 +78,5 @@
         }
       }
     }
-  }
-}
-
-@media (max-width: 600px) {
-  .dashboard-component {
-    width: calc(100% - 10rem);
   }
 }

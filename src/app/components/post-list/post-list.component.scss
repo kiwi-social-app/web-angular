@@ -1,7 +1,7 @@
 .post-list-component {
   display: flex;
   flex-direction: column;
-  width: 30rem;
+  max-width: 45rem;
   padding: 1rem;
   justify-content: center;
   overflow: scroll;

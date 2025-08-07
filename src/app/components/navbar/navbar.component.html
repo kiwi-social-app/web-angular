@@ -1,32 +1,30 @@
-<nav class="navbar-component">
-  <div class="main-content">
-    <aside class="side-bar">
-      <a class="navbar-brand" routerLink="/">Kiwi Social</a>
-      <div class="nav-links">
-        <a routerLink="" class="nav-link">
-          <mat-icon>home</mat-icon>
-          <span class="sidebar-link-text">Home</span></a
-        >
-        <a routerLink="chat" class="nav-link">
-          <mat-icon>chat_bubble</mat-icon>
-          <span class="sidebar-link-text">Chat</span></a
-        >
-        <a routerLink="/saved-posts" class="nav-link top-bar-button">
-          <mat-icon>bookmark</mat-icon>
-          <span class="sidebar-link-text">Saved Posts</span></a
-        >
-        @if (authService.getCurrentUser()) {
-          <a routerLink="/dashboard" class="nav-link top-bar-button">
-            <mat-icon>person</mat-icon>
-            <span class="sidebar-link-text">Account</span>
-          </a>
-        } @else {
-          <a routerLink="/login" class="nav-link top-bar-button">Log in</a>
-        }
-      </div>
-    </aside>
-    <div class="scroll-container">
-      <ng-content></ng-content>
+<div class="navbar-component">
+  <nav class="top-bar">
+    <a class="navbar-brand" routerLink="/">Kiwi Social</a>
+    <div class="nav-links">
+      <a routerLink="" class="nav-link">
+        <mat-icon>home</mat-icon>
+        <span class="sidebar-link-text">Home</span></a
+      >
+      <a routerLink="chat" class="nav-link">
+        <mat-icon>chat_bubble</mat-icon>
+        <span class="sidebar-link-text">Chat</span></a
+      >
+      <a routerLink="/saved-posts" class="nav-link top-bar-button">
+        <mat-icon>bookmark</mat-icon>
+        <span class="sidebar-link-text">Saved Posts</span></a
+      >
+      @if (authService.getCurrentUser()) {
+        <a routerLink="/dashboard" class="nav-link top-bar-button">
+          <mat-icon>person</mat-icon>
+          <span class="sidebar-link-text">Account</span>
+        </a>
+      } @else {
+        <a routerLink="/login" class="nav-link top-bar-button">Log in</a>
+      }
     </div>
+  </nav>
+  <div class="main-content">
+    <ng-content></ng-content>
   </div>
-</nav>
+</div>
