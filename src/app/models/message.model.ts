@@ -1,5 +1,7 @@
+import { UserBasic } from './userBasic.model';
+
 export interface Message {
-  senderId: string;
+  sender: UserBasic;
   content: string;
   timestamp: Date;
 }

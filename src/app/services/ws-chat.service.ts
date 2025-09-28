@@ -68,7 +68,7 @@ export class WsChatService extends RxStomp {
   }
 
   public sendMessage(chatId: string, senderId: string, content: string): void {
-    const message = { chatId, senderId, content };
+    const message = { chatId, sender: { id: senderId }, content };
     this.publish({
       destination: '/app/sendMessage',
       body: JSON.stringify(message),

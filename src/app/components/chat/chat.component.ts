@@ -18,14 +18,18 @@ import {
 import { Observable, take } from 'rxjs';
 import { MessageComponent } from '../message/message.component';
 import { User } from '@angular/fire/auth';
-import { AsyncPipe, NgClass } from '@angular/common';
-import { MatButton, MatButtonModule } from '@angular/material/button';
+import { AsyncPipe } from '@angular/common';
+import { MatButtonModule } from '@angular/material/button';
 import { ChatService } from '../../services/chat.service';
 import { Chat } from '../../models/chat.model';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { MatDialog } from '@angular/material/dialog';
 import { NewChatModalComponent } from '../modals/new-chat-modal/new-chat-modal.component';
 import { MatCard, MatCardContent } from '@angular/material/card';
+import { Message } from '../../models/message.model';
+import { CdkTextareaAutosize } from '@angular/cdk/text-field';
+import { MatInput } from '@angular/material/input';
+import { MatIcon } from '@angular/material/icon';
 
 @Component({
   selector: 'app-chat',
@@ -34,10 +38,11 @@ import { MatCard, MatCardContent } from '@angular/material/card';
     ReactiveFormsModule,
     MessageComponent,
     AsyncPipe,
-    MatButton,
     MatCard,
     MatCardContent,
-    NgClass,
+    CdkTextareaAutosize,
+    MatInput,
+    MatIcon,
   ],
   templateUrl: './chat.component.html',
   styleUrl: './chat.component.scss',
@@ -52,7 +57,7 @@ export class ChatComponent implements OnInit, AfterViewChecked {
   private readonly destroyRef: DestroyRef = inject(DestroyRef);
   private readonly dialog: MatDialog = inject(MatDialog);
 
-  protected messages!: Observable<any[]>;
+  protected messages!: Observable<Message[]>;
   protected messageForm!: FormGroup;
   protected currentUser!: User | null;
   protected chats$!: Observable<Chat[]>;
@@ -113,7 +118,9 @@ export class ChatComponent implements OnInit, AfterViewChecked {
       });
   }
 
-  protected onSendMessage(): void {
+  protected onSendMessage(event: any): void {
+    event.preventDefault();
+
     if (this.wsChatService.connected()) {
       if (!this.messageForm.invalid) {
         this.wsChatService.sendMessage(

@@ -4,11 +4,11 @@
       <div class="chat-list">
         <button
           class="new-chat-btn"
-          mat-flat-button
+          mat-icon-button
           color="primary"
           (click)="startNewChat(currentUser.uid)"
         >
-          New chat
+          <mat-icon>add</mat-icon>
         </button>
         <div class="list">
           @for (chat of chats$ | async; track $index) {
@@ -30,38 +30,58 @@
       </div>
       <div class="chat-section">
         @if (selectedChat) {
+          <div class="chat-header">
+            <h2>
+              @for (
+                participant of selectedChat.participants;
+                track $index;
+                let last = $last
+              ) {
+                @if (participant.id !== currentUser.uid) {
+                  <span>{{ participant.username }}</span>
+                  @if (!last) {
+                    <span>, </span>
+                  }
+                }
+              }
+            </h2>
+          </div>
           <div class="message-list" #messageList>
             @if (selectedChat.id) {
               @for (message of messages | async; track $index) {
-                <app-message
-                  [ngClass]="{
-                    'message-right': message.senderId === currentUser.uid,
-                    'message-left': message.senderId !== currentUser.uid,
-                  }"
-                  [message]="message"
-                ></app-message>
+                @if (message.sender.id === currentUser.uid) {
+                  <app-message
+                    class="message-right"
+                    [message]="message"
+                  ></app-message>
+                } @else {
+                  <div class="left-message-block">
+                    <div>
+                      {{ message.sender.username }}
+                    </div>
+                    <app-message
+                      class="message-left"
+                      [message]="message"
+                    ></app-message>
+                  </div>
+                }
               }
             }
           </div>
           <div class="message-creation">
             <form class="message-form" [formGroup]="messageForm">
-              <label for="message"></label>
+              <!--              <mat-form-field appearance="outline" class="full-width">-->
               <textarea
                 id="message"
                 formControlName="message"
-                placeholder="Type a message..."
-                rows="5"
-                cols="35"
+                placeholder="Message..."
+                matInput
+                cdkTextareaAutosize
+                cdkAutosizeMinRows="1"
                 type="text"
+                (keydown.enter)="onSendMessage($event)"
               ></textarea>
-              <button
-                mat-button
-                mat-flat-button
-                color="primary"
-                (click)="onSendMessage()"
-              >
-                Send
-              </button>
+              <!--              </mat-form-field>-->
             </form>
           </div>
         } @else {
@@ -69,6 +89,5 @@
         }
       </div>
     </div>
-    <!--    <div class="contact-request-list"></div>-->
   </div>
 }
