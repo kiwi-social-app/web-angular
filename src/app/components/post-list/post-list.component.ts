@@ -5,6 +5,7 @@ import {
   OnInit,
   resource,
   ResourceRef,
+  signal,
   Signal,
 } from '@angular/core';
 import { PostService } from 'src/app/services/post.service';
@@ -21,6 +22,7 @@ import {
   debounceTime,
   distinctUntilChanged,
   firstValueFrom,
+  of,
   switchMap,
   take,
 } from 'rxjs';
@@ -56,7 +58,7 @@ export class PostListComponent implements OnInit {
   );
 
   searchControl = new FormControl('');
-  results: SearchResult[] = [];
+  searchResults = signal<SearchResult[]>([]);
 
   protected readonly posts: ResourceRef<Post[] | undefined> = resource({
     loader: () => firstValueFrom(this.postService.getPosts()),
@@ -68,10 +70,21 @@ export class PostListComponent implements OnInit {
     });
 
   protected readonly sortedPosts: Signal<Post[]> = computed(() => {
-    let posts: Post[] | undefined = this.posts.value();
+    const posts: Post[] | undefined = this.posts.value();
     if (!posts) {
       return [];
     }
+
+    const results = this.searchResults();
+    if (results.length > 0) {
+      const postIdOrder = results
+        .filter((r) => r.postId != null)
+        .map((r) => r.postId!);
+      return postIdOrder
+        .map((id) => posts.find((p) => p.id === id))
+        .filter((p): p is Post => p !== undefined);
+    }
+
     return posts.toSorted(
       (a, b) =>
         new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime(),
@@ -83,19 +96,16 @@ export class PostListComponent implements OnInit {
       .pipe(
         debounceTime(300),
         distinctUntilChanged(),
-        switchMap((query) => this.semanticSearchService.search(query || '')),
+        switchMap((query) => {
+          if (!query || query.trim() === '') {
+            return of([]);
+          }
+          return this.semanticSearchService.search(query);
+        }),
       )
       .subscribe((data) => {
-        this.results = data;
-        console.log(this.results);
+        this.searchResults.set(data);
       });
-  }
-
-  protected addDoc() {
-    this.semanticSearchService.addDocument('Hello world').subscribe({
-      next: () => console.log('Document added'),
-      error: (err) => console.error(err),
-    });
   }
 
   protected openNewPostModal() {
@@ -121,11 +131,4 @@ export class PostListComponent implements OnInit {
   }
 
   protected filterSelect() {}
-
-  triggerSearch() {
-    const query = this.searchControl.value || '';
-    this.semanticSearchService.search(query).subscribe((data) => {
-      this.results = data;
-    });
-  }
 }
