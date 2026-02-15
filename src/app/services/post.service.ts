@@ -3,12 +3,10 @@ import { inject, Injectable } from '@angular/core';
 import {
   HttpClient,
   HttpHeaders,
-  HttpParams,
   HttpResponse,
 } from '@angular/common/http';
 import { catchError, map, Observable, of, tap, throwError } from 'rxjs';
 import { Post } from '../models/post.model';
-import { AuthService } from './auth.service';
 import { PostCreation } from '../models/postCreation.model';
 import { environment } from '../../environments/environment';
 
@@ -23,9 +21,16 @@ const httpOptions = {
 })
 export class PostService {
   private readonly http: HttpClient = inject(HttpClient);
-  private readonly authService: AuthService = inject(AuthService);
 
   private postsApiUrl: string = `${environment.apiUrl}/posts`;
+
+  private getAuthHeaders(): HttpHeaders {
+    const token = localStorage.getItem('firebase_jwt_token');
+    return new HttpHeaders({
+      Authorization: `Bearer ${token}`,
+      'Content-Type': 'application/json',
+    });
+  }
 
   public getPosts(): Observable<Post[]> {
     return this.http.get<Post[]>(`${this.postsApiUrl}`);
@@ -36,19 +41,8 @@ export class PostService {
   }
 
   public createPost(post: PostCreation): Observable<any> {
-    const currentUser = this.authService.getCurrentUser();
-
-    if (!currentUser) {
-      return throwError(() => new Error('User is not authenticated'));
-    }
-    const params: HttpParams = new HttpParams().set('userId', currentUser.uid);
-
     return this.http.post(`${this.postsApiUrl}`, post, {
-      params,
-      headers: new HttpHeaders({
-        Authorization: `Bearer ${currentUser.getIdToken()}`,
-        'Content-Type': 'application/json',
-      }),
+      headers: this.getAuthHeaders(),
     });
   }
 
@@ -76,81 +70,58 @@ export class PostService {
     );
   }
 
-  public favoritePost(
-    postId: string,
-    userId: string,
-  ): Observable<HttpResponse<void>> {
+  public favoritePost(postId: string): Observable<HttpResponse<void>> {
     return this.http.post<void>(
       `${this.postsApiUrl}/${postId}/favorite`,
       null,
-      {
-        params: { userId },
-        observe: 'response',
-      },
+      { headers: this.getAuthHeaders(), observe: 'response' },
     );
   }
 
-  public unfavoritePost(
-    postId: string,
-    userId: string,
-  ): Observable<HttpResponse<void>> {
+  public unfavoritePost(postId: string): Observable<HttpResponse<void>> {
     return this.http.delete<void>(`${this.postsApiUrl}/${postId}/favorite`, {
-      params: { userId },
+      headers: this.getAuthHeaders(),
       observe: 'response',
     });
   }
 
-  public getUserFavorites(userId: string): Observable<Post[]> {
+  public getUserFavorites(): Observable<Post[]> {
     return this.http.get<Post[]>(`${this.postsApiUrl}/favorites`, {
-      params: { userId },
+      headers: this.getAuthHeaders(),
     });
   }
 
-  public isPostFavorited(postId: string, userId: string): Observable<boolean> {
+  public isPostFavorited(postId: string): Observable<boolean> {
     return this.http.get<boolean>(
       `${this.postsApiUrl}/${postId}/is-favorited`,
-      {
-        params: { userId },
-      },
+      { headers: this.getAuthHeaders() },
     );
   }
 
-  public addLike(
-    postId: string,
-    userId: string,
-  ): Observable<HttpResponse<void>> {
+  public addLike(postId: string): Observable<HttpResponse<void>> {
     return this.http.post<void>(`${this.postsApiUrl}/${postId}/like`, null, {
-      params: { userId },
+      headers: this.getAuthHeaders(),
       observe: 'response',
     });
   }
 
-  public removeLike(
-    postId: string,
-    userId: string,
-  ): Observable<HttpResponse<void>> {
+  public removeLike(postId: string): Observable<HttpResponse<void>> {
     return this.http.delete<void>(`${this.postsApiUrl}/${postId}/like`, {
-      params: { userId },
+      headers: this.getAuthHeaders(),
       observe: 'response',
     });
   }
 
-  public addDislike(
-    postId: string,
-    userId: string,
-  ): Observable<HttpResponse<void>> {
+  public addDislike(postId: string): Observable<HttpResponse<void>> {
     return this.http.post<void>(`${this.postsApiUrl}/${postId}/dislike`, null, {
-      params: { userId },
+      headers: this.getAuthHeaders(),
       observe: 'response',
     });
   }
 
-  public removeDislike(
-    postId: string,
-    userId: string,
-  ): Observable<HttpResponse<void>> {
+  public removeDislike(postId: string): Observable<HttpResponse<void>> {
     return this.http.delete<void>(`${this.postsApiUrl}/${postId}/dislike`, {
-      params: { userId },
+      headers: this.getAuthHeaders(),
       observe: 'response',
     });
   }

@@ -37,17 +37,13 @@ export class PostCardComponent implements OnInit {
     this.router.navigate([`/posts/`, postId]);
   }
 
-  protected addToFavorites(postId: string, userId: string): void {
+  protected addToFavorites(postId: string): void {
     this.postService
-      .favoritePost(postId, userId)
+      .favoritePost(postId)
       .pipe(take(1))
       .subscribe({
         next: (response) => {
           if (response.status === 204) {
-            console.log('✅ Post successfully favorited (204 No Content)');
-            if (!this.post.favoritedBy.includes(userId)) {
-              this.post.favoritedBy.push(userId);
-            }
             this.isFavorite = true;
           }
         },
@@ -57,19 +53,13 @@ export class PostCardComponent implements OnInit {
       });
   }
 
-  protected removeFromFavorites(postId: string, userId: string): void {
+  protected removeFromFavorites(postId: string): void {
     this.postService
-      .unfavoritePost(postId, userId)
+      .unfavoritePost(postId)
       .pipe(take(1))
       .subscribe({
         next: (response) => {
           if (response.status === 204) {
-            console.log(
-              '✅ Post successfully removed from favorites (204 No Content)',
-            );
-            if (!this.post.favoritedBy.includes(userId)) {
-              this.post.favoritedBy.filter((id) => id !== userId);
-            }
             this.isFavorite = false;
           }
         },
@@ -79,17 +69,13 @@ export class PostCardComponent implements OnInit {
       });
   }
 
-  protected addLike(postId: string, userId: string): void {
+  protected addLike(postId: string): void {
     this.postService
-      .addLike(postId, userId)
+      .addLike(postId)
       .pipe(take(1))
       .subscribe({
         next: (response) => {
           if (response.status === 204) {
-            console.log('✅ Post successfully liked (204 No Content)');
-            if (!this.post.likedByUsers.includes(userId)) {
-              this.post.likedByUsers.push(userId);
-            }
             this.isLiked = true;
             this.isDisliked = false;
           }
@@ -100,17 +86,13 @@ export class PostCardComponent implements OnInit {
       });
   }
 
-  protected addDislike(postId: string, userId: string): void {
+  protected addDislike(postId: string): void {
     this.postService
-      .addDislike(postId, userId)
+      .addDislike(postId)
       .pipe(take(1))
       .subscribe({
         next: (response) => {
           if (response.status === 204) {
-            console.log('✅ Post successfully disliked (204 No Content)');
-            if (!this.post.dislikedByUsers.includes(userId)) {
-              this.post.dislikedByUsers.push(userId);
-            }
             this.isDisliked = true;
             this.isLiked = false;
           }
@@ -121,19 +103,13 @@ export class PostCardComponent implements OnInit {
       });
   }
 
-  protected removeLike(postId: string, userId: string): void {
+  protected removeLike(postId: string): void {
     this.postService
-      .removeLike(postId, userId)
+      .removeLike(postId)
       .pipe(take(1))
       .subscribe({
         next: (response) => {
           if (response.status === 204) {
-            console.log(
-              '✅ Post successfully removed from liked posts (204 No Content)',
-            );
-            if (!this.post.likedByUsers.includes(userId)) {
-              this.post.likedByUsers.filter((id) => id !== userId);
-            }
             this.isLiked = false;
           }
         },
@@ -143,19 +119,13 @@ export class PostCardComponent implements OnInit {
       });
   }
 
-  protected removeDislike(postId: string, userId: string): void {
+  protected removeDislike(postId: string): void {
     this.postService
-      .removeDislike(postId, userId)
+      .removeDislike(postId)
       .pipe(take(1))
       .subscribe({
         next: (response) => {
           if (response.status === 204) {
-            console.log(
-              '✅ Post successfully removed from disliked posts (204 No Content)',
-            );
-            if (!this.post.dislikedByUsers.includes(userId)) {
-              this.post.dislikedByUsers.filter((id) => id !== userId);
-            }
             this.isDisliked = false;
           }
         },

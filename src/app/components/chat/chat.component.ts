@@ -72,7 +72,7 @@ export class ChatComponent implements OnInit, AfterViewChecked {
 
     if (this.currentUser) {
       this.chats$ = this.chatService
-        .getChatsByUser(this.currentUser.uid)
+        .getChatsByUser()
         .pipe(takeUntilDestroyed(this.destroyRef));
     }
   }
@@ -109,9 +109,9 @@ export class ChatComponent implements OnInit, AfterViewChecked {
       .pipe(take(1))
       .subscribe((result) => {
         if (result.length > 0) {
-          this.chatService.startChat(userId, result).subscribe(() => {
+          this.chatService.startChat(result).subscribe(() => {
             this.chats$ = this.chatService
-              .getChatsByUser(userId)
+              .getChatsByUser()
               .pipe(takeUntilDestroyed(this.destroyRef));
           });
         }

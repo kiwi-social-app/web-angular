@@ -3,7 +3,7 @@ import { RxStomp } from '@stomp/rx-stomp';
 import { myRxStompConfig } from '../rx-stomp.config';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { BehaviorSubject, Observable } from 'rxjs';
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { environment } from '../../environments/environment';
 
 @Injectable({
@@ -30,9 +30,18 @@ export class WsChatService extends RxStomp {
     localStorage.setItem(`chatMessages_${chatId}`, JSON.stringify(messages));
   }
 
+  private getAuthHeaders(): HttpHeaders {
+    const token = localStorage.getItem('firebase_jwt_token');
+    return new HttpHeaders({
+      Authorization: `Bearer ${token}`,
+    });
+  }
+
   public fetchMessagesFromBackend(chatId: string): void {
     this.http
-      .get<any[]>(`${environment.apiUrl}/chat/messages/${chatId}`)
+      .get<any[]>(`${environment.apiUrl}/chat/messages/${chatId}`, {
+        headers: this.getAuthHeaders(),
+      })
       .subscribe({
         next: (messages) => {
           if (messages && Array.isArray(messages)) {

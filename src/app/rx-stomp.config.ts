@@ -5,9 +5,19 @@ import { environment } from '../environments/environment';
 
 export const myRxStompConfig: RxStompConfig = {
   brokerURL: `${environment.wsUrl}`,
-  heartbeatIncoming: 0, // Typical value 0 - disabled
-  heartbeatOutgoing: 20000, // Typical value 20000 - every 20 seconds
+  heartbeatIncoming: 0,
+  heartbeatOutgoing: 20000,
   reconnectDelay: 1200,
+  beforeConnect: (rxStomp) => {
+    const token = localStorage.getItem('firebase_jwt_token');
+    if (token) {
+      rxStomp.configure({
+        connectHeaders: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
+    }
+  },
 };
 
 export function provideRxStomp() {

@@ -36,10 +36,10 @@ export class SavedPostsComponent {
 
   constructor() {
     effect(() => {
-      const userId = this.currentUser()?.id;
-      if (!userId) return;
+      const user = this.currentUser();
+      if (!user) return;
 
-      this.postService.getUserFavorites(userId).subscribe({
+      this.postService.getUserFavorites().subscribe({
         next: (posts) => this.favoritePosts.set(posts),
         error: (err) => console.error('Failed to load favorites', err),
       });

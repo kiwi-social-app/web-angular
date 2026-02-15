@@ -4,30 +4,30 @@
   <div class="actions">
     @if (currentUserId) {
       @if (isLiked) {
-        <div (click)="removeLike(post.id, currentUserId)">
+        <div (click)="removeLike(post.id)">
           <mat-icon class="like-btn">thumb_up</mat-icon>
         </div>
       } @else {
-        <div (click)="addLike(post.id, currentUserId)">
+        <div (click)="addLike(post.id)">
           <mat-icon class="material-icons-outlined">thumb_up_outline</mat-icon>
         </div>
       }
       @if (isDisliked) {
-        <div (click)="removeDislike(post.id, currentUserId)">
+        <div (click)="removeDislike(post.id)">
           <mat-icon class="dislike-btn">thumb_down</mat-icon>
         </div>
       } @else {
-        <div (click)="addDislike(post.id, currentUserId)">
+        <div (click)="addDislike(post.id)">
           <mat-icon class="material-icons-outlined">thumb_down</mat-icon>
         </div>
       }
       @if (isFavorite) {
-        <div (click)="removeFromFavorites(post.id, currentUserId)">
+        <div (click)="removeFromFavorites(post.id)">
           <mat-icon class="save-btn">bookmark</mat-icon>
           <span>save</span>
         </div>
       } @else {
-        <div (click)="addToFavorites(post.id, currentUserId)">
+        <div (click)="addToFavorites(post.id)">
           <mat-icon>bookmark_border</mat-icon>
           <span>save</span>
         </div>
