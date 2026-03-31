@@ -83,8 +83,8 @@
     </div>
 
     <app-user-posts
-      (onPostChange)="getUser()"
-      [userPosts]="currentUser.posts"
+      (onPostChange)="fetchPosts()"
+      [userPosts]="posts"
     ></app-user-posts>
   }
 </div>

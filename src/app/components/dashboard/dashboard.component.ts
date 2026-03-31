@@ -16,6 +16,7 @@ import { Post } from 'src/app/models/post.model';
 import { UserService } from 'src/app/services/user.service';
 import { User } from '../../models/user.model';
 import { AuthService } from '../../services/auth.service';
+import { PostService } from '../../services/post.service';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { UserPostsComponent } from '../user-posts/user-posts.component';
 import { MatButton } from '@angular/material/button';
@@ -33,6 +34,7 @@ export class DashboardComponent implements OnInit {
 
   private readonly userService: UserService = inject(UserService);
   private readonly authService: AuthService = inject(AuthService);
+  private readonly postService: PostService = inject(PostService);
   private readonly fb: FormBuilder = inject(FormBuilder);
   private readonly destroyRef: DestroyRef = inject(DestroyRef);
 
@@ -72,8 +74,16 @@ export class DashboardComponent implements OnInit {
               lastname: userData.lastname,
             });
           });
+          this.fetchPosts();
         }
       });
+  }
+
+  protected fetchPosts(): void {
+    this.postService.getCurrentUserPosts().subscribe({
+      next: (posts) => (this.posts = posts),
+      error: (err) => console.error('Failed to load user posts', err),
+    });
   }
 
   protected updateProfile(): void {
