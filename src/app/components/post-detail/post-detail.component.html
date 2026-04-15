@@ -6,7 +6,9 @@
       <div class="text-content">
         <p>{{ currentPost.createdAt | date: "medium" }}</p>
         <p>{{ currentPost.body }}</p>
-        <p>{{ currentPost.author.username ?? "no username" }}</p>
+        <a class="author-link" [routerLink]="['/profile', currentPost.author.id]">
+          {{ currentPost.author.username ?? "no username" }}
+        </a>
       </div>
       <div class="actions">
         <div>

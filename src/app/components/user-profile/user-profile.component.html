@@ -1,0 +1,26 @@
+@if (user.hasValue()) {
+  @let currentUser = user.value()!;
+  <div class="user-profile-component">
+    <div class="profile-data-block">
+      <p class="username">{{ currentUser.username ?? "(no username)" }}</p>
+      <p>{{ currentUser.email }}</p>
+      @if (currentUser.firstname || currentUser.lastname) {
+        <p>{{ currentUser.firstname }} {{ currentUser.lastname }}</p>
+      }
+    </div>
+
+    <h3 class="posts-header">Posts</h3>
+    @if (posts.hasValue()) {
+      @let postList = posts.value()!;
+      @if (postList.length === 0) {
+        <p class="empty">No posts yet</p>
+      } @else {
+        <div class="posts-list">
+          @for (post of postList; track post.id) {
+            <app-post-card [post]="post"></app-post-card>
+          }
+        </div>
+      }
+    }
+  </div>
+}

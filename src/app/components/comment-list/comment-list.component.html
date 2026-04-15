@@ -5,7 +5,12 @@
         @for (comment of comments(); track $index) {
           <div class="comment-card">
             <div class="comment-header">
-              <p class="header-content">{{ comment.author.username }}</p>
+              <a
+                class="author-link header-content"
+                [routerLink]="['/profile', comment.author.id]"
+              >
+                {{ comment.author.username }}
+              </a>
               <p class="header-content">
                 {{ comment.createdAt | date: "medium" }}
               </p>

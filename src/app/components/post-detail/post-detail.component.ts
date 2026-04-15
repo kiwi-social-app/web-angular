@@ -6,7 +6,7 @@ import {
   ResourceRef,
   Signal,
 } from '@angular/core';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, RouterLink } from '@angular/router';
 
 import { PostService } from 'src/app/services/post.service';
 import { CommentListComponent } from '../comment-list/comment-list.component';
@@ -23,7 +23,13 @@ import { Comment } from '../../models/comment.model';
   templateUrl: './post-detail.component.html',
   styleUrls: ['./post-detail.component.scss'],
   standalone: true,
-  imports: [CommentListComponent, DatePipe, MatIcon, NewCommentComponent],
+  imports: [
+    CommentListComponent,
+    DatePipe,
+    MatIcon,
+    NewCommentComponent,
+    RouterLink,
+  ],
 })
 export class PostDetailComponent {
   private readonly route: ActivatedRoute = inject(ActivatedRoute);

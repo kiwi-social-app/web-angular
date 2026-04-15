@@ -91,6 +91,12 @@ export class PostService {
     });
   }
 
+  public getPostsByUser(userId: string): Observable<Post[]> {
+    return this.http.get<Post[]>(`${this.postsApiUrl}/user/${userId}`, {
+      headers: this.getAuthHeaders(),
+    });
+  }
+
   public getUserFavorites(): Observable<Post[]> {
     return this.http.get<Post[]>(`${this.postsApiUrl}/favorites`, {
       headers: this.getAuthHeaders(),

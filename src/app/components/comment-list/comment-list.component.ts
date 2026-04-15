@@ -1,4 +1,5 @@
 import { Component, input, InputSignal } from '@angular/core';
+import { RouterLink } from '@angular/router';
 import { Comment } from '../../models/comment.model';
 import { DatePipe } from '@angular/common';
 
@@ -7,7 +8,7 @@ import { DatePipe } from '@angular/common';
   templateUrl: './comment-list.component.html',
   styleUrls: ['./comment-list.component.scss'],
   standalone: true,
-  imports: [DatePipe],
+  imports: [DatePipe, RouterLink],
 })
 export class CommentListComponent {
   public postID: InputSignal<string> = input.required<string>();

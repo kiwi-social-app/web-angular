@@ -1,5 +1,5 @@
 import { Component, inject, Input, OnInit } from '@angular/core';
-import { Router } from '@angular/router';
+import { Router, RouterLink } from '@angular/router';
 import { Post } from '../../models/post.model';
 import { User } from '../../models/user.model';
 import { Observable, of, take } from 'rxjs';
@@ -11,7 +11,7 @@ import { PostService } from '../../services/post.service';
   templateUrl: './post-card.component.html',
   styleUrls: ['./post-card.component.scss'],
   standalone: true,
-  imports: [MatIcon],
+  imports: [MatIcon, RouterLink],
 })
 export class PostCardComponent implements OnInit {
   @Input() post!: Post;
