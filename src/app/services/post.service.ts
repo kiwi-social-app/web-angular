@@ -5,7 +5,7 @@ import {
   HttpHeaders,
   HttpResponse,
 } from '@angular/common/http';
-import { catchError, map, Observable, of, tap, throwError } from 'rxjs';
+import { catchError, Observable, of, tap } from 'rxjs';
 import { Post } from '../models/post.model';
 import { PostCreation } from '../models/postCreation.model';
 import { environment } from '../../environments/environment';
@@ -48,18 +48,13 @@ export class PostService {
 
   public deletePost(id: string): Observable<any> {
     const url = `${this.postsApiUrl}/${id}`;
-
-    return this.http.delete(url).pipe(
-      map((response) => response),
-      catchError((error) => error),
-    );
+    return this.http.delete(url, { headers: this.getAuthHeaders() });
   }
 
-  public updatePost(post: Post) {
-    const url = `${this.postsApiUrl}/${post.id}`;
-    post.updatedAt = new Date();
+  public updatePost(id: string, body: string) {
+    const url = `${this.postsApiUrl}/${id}`;
 
-    return this.http.put(url, post, httpOptions).pipe(
+    return this.http.put(url, { body }, { headers: this.getAuthHeaders() }).pipe(
       tap((response) => {
         console.log(response);
       }),

@@ -34,7 +34,6 @@ export class PostEditComponent implements OnInit {
   private readonly destroyRef: DestroyRef = inject(DestroyRef);
 
   protected updatePostForm!: FormGroup;
-  protected updatedPost!: any;
   public post!: Post;
   public postID: string | null = String(this.route.snapshot.paramMap.get('id'));
 
@@ -60,9 +59,9 @@ export class PostEditComponent implements OnInit {
 
   protected updatePost() {
     if (this.postID != null) {
-      this.updatedPost = { ...this.post, ...this.updatePostForm.getRawValue() };
+      const { body } = this.updatePostForm.getRawValue();
       this.postService
-        .updatePost(this.updatedPost)
+        .updatePost(this.postID, body)
         .pipe(takeUntilDestroyed(this.destroyRef))
         .subscribe((response: any) => response);
     }
