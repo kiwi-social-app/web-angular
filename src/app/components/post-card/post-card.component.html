@@ -3,7 +3,7 @@
     {{ post.author.username }}
   </a>
   <p>{{ post.body }}</p>
-  <div class="actions">
+  <div class="actions" (click)="$event.stopPropagation()">
     @if (currentUserId) {
       @if (isLiked) {
         <div (click)="removeLike(post.id)">

@@ -5,7 +5,7 @@
       <div class="card-container">
         <app-post-card
           [post]="post"
-          routerLink="['/posts', post.id]"
+          [routerLink]="['/posts', post.id]"
         ></app-post-card>
       </div>
     }
