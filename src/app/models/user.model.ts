@@ -1,9 +1,8 @@
 import { Post } from './post.model';
 import { Chat } from './chat.model';
-import firebase from 'firebase/compat/app';
-import FireBaseUser = firebase.User;
+import { User as FirebaseUser } from 'firebase/auth';
 
-export interface User extends FireBaseUser {
+export interface User extends FirebaseUser {
   id: string;
   username?: string;
   email: string;

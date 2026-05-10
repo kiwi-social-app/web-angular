@@ -10,7 +10,6 @@ import { Router } from '@angular/router';
 import { Observable } from 'rxjs';
 import { Post } from 'src/app/models/post.model';
 import { PostService } from 'src/app/services/post.service';
-import { user } from '@angular/fire/auth';
 
 @Component({
   selector: 'app-user-posts',

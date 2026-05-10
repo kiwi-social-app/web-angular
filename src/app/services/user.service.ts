@@ -3,7 +3,7 @@ import { inject, Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { catchError, Observable, of } from 'rxjs';
 import { User } from '../models/user.model';
-import { Auth } from '@angular/fire/auth';
+import { getAuth } from 'firebase/auth';
 import { environment } from '../../environments/environment';
 import { UserUpdate } from '../models/userUpdate.model';
 
@@ -18,7 +18,7 @@ const httpOptions = {
 })
 export class UserService {
   private readonly http: HttpClient = inject(HttpClient);
-  private readonly auth: Auth = inject(Auth);
+  private readonly auth = getAuth();
 
   private usersUrl: string = `${environment.apiUrl}/users`;
 

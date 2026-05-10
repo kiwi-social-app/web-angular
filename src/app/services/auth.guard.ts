@@ -6,14 +6,14 @@ import {
   UrlTree,
 } from '@angular/router';
 import { Observable } from 'rxjs';
-import { Auth } from '@angular/fire/auth';
+import { getAuth, onAuthStateChanged } from 'firebase/auth';
 
 @Injectable({
   providedIn: 'root',
 })
 export class AuthGuard {
   private readonly router: Router = inject(Router);
-  private readonly afAuth: Auth = inject(Auth);
+  private readonly auth = getAuth();
 
   public canActivate(
     route: ActivatedRouteSnapshot,
@@ -24,7 +24,7 @@ export class AuthGuard {
     | boolean
     | UrlTree {
     return new Promise((resolve) => {
-      this.afAuth.onAuthStateChanged((user: any) => {
+      onAuthStateChanged(this.auth, (user) => {
         if (user) {
           resolve(true);
         } else {

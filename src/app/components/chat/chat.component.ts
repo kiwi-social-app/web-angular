@@ -17,7 +17,7 @@ import {
 } from '@angular/forms';
 import { Observable, take } from 'rxjs';
 import { MessageComponent } from '../message/message.component';
-import { User } from '@angular/fire/auth';
+import { User } from 'firebase/auth';
 import { AsyncPipe } from '@angular/common';
 import { MatButtonModule } from '@angular/material/button';
 import { ChatService } from '../../services/chat.service';
