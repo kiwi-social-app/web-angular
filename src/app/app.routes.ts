@@ -9,6 +9,7 @@ import { SignupComponent } from './components/signup/signup.component';
 import { ChatComponent } from './components/chat/chat.component';
 import { SavedPostsComponent } from './components/saved-posts/saved-posts.component';
 import { UserProfileComponent } from './components/user-profile/user-profile.component';
+import { SearchComponent } from './components/search/search.component';
 
 export const routes: Routes = [
   { path: '', component: PostListComponent, canActivate: [AuthGuard] },
@@ -28,6 +29,12 @@ export const routes: Routes = [
     path: 'posts/:id',
     pathMatch: 'full',
     component: PostDetailComponent,
+    canActivate: [AuthGuard],
+  },
+  {
+    path: 'search',
+    pathMatch: 'full',
+    component: SearchComponent,
     canActivate: [AuthGuard],
   },
   {
