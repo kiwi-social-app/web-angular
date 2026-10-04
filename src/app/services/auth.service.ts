@@ -3,16 +3,16 @@ import { Router } from '@angular/router';
 import { Observable } from 'rxjs';
 import {
   Auth,
-  GoogleAuthProvider,
-  User,
   createUserWithEmailAndPassword,
   getAdditionalUserInfo,
   getAuth,
+  GoogleAuthProvider,
   onAuthStateChanged,
   sendEmailVerification,
   signInWithEmailAndPassword,
   signInWithPopup,
   signOut,
+  User,
 } from 'firebase/auth';
 import { UserService } from './user.service';
 
@@ -25,15 +25,7 @@ export class AuthService {
   private readonly userService: UserService = inject(UserService);
 
   constructor() {
-    onAuthStateChanged(this.auth, (user) => {
-      if (user) {
-        user.getIdToken().then((idToken) => {
-          localStorage.setItem('firebase_jwt_token', idToken);
-        });
-      } else {
-        localStorage.removeItem('firebase_jwt_token');
-      }
-    });
+    localStorage.removeItem('firebase_jwt_token');
   }
 
   public getCurrentUser(): User | null {

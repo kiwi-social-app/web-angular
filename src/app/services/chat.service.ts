@@ -1,5 +1,5 @@
 import { inject, Injectable } from '@angular/core';
-import { HttpClient, HttpHeaders } from '@angular/common/http';
+import { HttpClient } from '@angular/common/http';
 import { Chat } from '../models/chat.model';
 import { environment } from '../../environments/environment';
 
@@ -11,25 +11,11 @@ export class ChatService {
 
   private readonly chatApiUrl: string = `${environment.apiUrl}/chat`;
 
-  private getAuthHeaders(): HttpHeaders {
-    const token = localStorage.getItem('firebase_jwt_token');
-    return new HttpHeaders({
-      Authorization: `Bearer ${token}`,
-      'Content-Type': 'application/json',
-    });
-  }
-
   public getChatsByUser() {
-    return this.http.get<Chat[]>(`${this.chatApiUrl}/user/me`, {
-      headers: this.getAuthHeaders(),
-    });
+    return this.http.get<Chat[]>(`${this.chatApiUrl}/user/me`);
   }
 
   public startChat(participantIds: string[]) {
-    return this.http.post(
-      `${this.chatApiUrl}/start`,
-      { participantIds },
-      { headers: this.getAuthHeaders() },
-    );
+    return this.http.post(`${this.chatApiUrl}/start`, { participantIds });
   }
 }

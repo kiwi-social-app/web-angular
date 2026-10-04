@@ -1,10 +1,6 @@
 import { inject, Injectable } from '@angular/core';
 
-import {
-  HttpClient,
-  HttpHeaders,
-  HttpResponse,
-} from '@angular/common/http';
+import { HttpClient, HttpHeaders, HttpResponse } from '@angular/common/http';
 import { catchError, Observable, of, tap } from 'rxjs';
 import { Post } from '../models/post.model';
 import { PostCreation } from '../models/postCreation.model';
@@ -24,14 +20,6 @@ export class PostService {
 
   private postsApiUrl: string = `${environment.apiUrl}/posts`;
 
-  private getAuthHeaders(): HttpHeaders {
-    const token = localStorage.getItem('firebase_jwt_token');
-    return new HttpHeaders({
-      Authorization: `Bearer ${token}`,
-      'Content-Type': 'application/json',
-    });
-  }
-
   public getPosts(): Observable<Post[]> {
     return this.http.get<Post[]>(`${this.postsApiUrl}`);
   }
@@ -41,20 +29,18 @@ export class PostService {
   }
 
   public createPost(post: PostCreation): Observable<any> {
-    return this.http.post(`${this.postsApiUrl}`, post, {
-      headers: this.getAuthHeaders(),
-    });
+    return this.http.post(`${this.postsApiUrl}`, post);
   }
 
   public deletePost(id: string): Observable<any> {
     const url = `${this.postsApiUrl}/${id}`;
-    return this.http.delete(url, { headers: this.getAuthHeaders() });
+    return this.http.delete(url);
   }
 
   public updatePost(id: string, body: string) {
     const url = `${this.postsApiUrl}/${id}`;
 
-    return this.http.put(url, { body }, { headers: this.getAuthHeaders() }).pipe(
+    return this.http.put(url, { body }).pipe(
       tap((response) => {
         console.log(response);
       }),
@@ -69,66 +55,52 @@ export class PostService {
     return this.http.post<void>(
       `${this.postsApiUrl}/${postId}/favorite`,
       null,
-      { headers: this.getAuthHeaders(), observe: 'response' },
+      { observe: 'response' },
     );
   }
 
   public unfavoritePost(postId: string): Observable<HttpResponse<void>> {
     return this.http.delete<void>(`${this.postsApiUrl}/${postId}/favorite`, {
-      headers: this.getAuthHeaders(),
       observe: 'response',
     });
   }
 
   public getCurrentUserPosts(): Observable<Post[]> {
-    return this.http.get<Post[]>(`${this.postsApiUrl}/mine`, {
-      headers: this.getAuthHeaders(),
-    });
+    return this.http.get<Post[]>(`${this.postsApiUrl}/mine`);
   }
 
   public getPostsByUser(userId: string): Observable<Post[]> {
-    return this.http.get<Post[]>(`${this.postsApiUrl}/user/${userId}`, {
-      headers: this.getAuthHeaders(),
-    });
+    return this.http.get<Post[]>(`${this.postsApiUrl}/user/${userId}`);
   }
 
   public getUserFavorites(): Observable<Post[]> {
-    return this.http.get<Post[]>(`${this.postsApiUrl}/favorites`, {
-      headers: this.getAuthHeaders(),
-    });
+    return this.http.get<Post[]>(`${this.postsApiUrl}/favorites`);
   }
 
   public isPostFavorited(postId: string): Observable<boolean> {
-    return this.http.get<boolean>(
-      `${this.postsApiUrl}/${postId}/is-favorited`,
-      { headers: this.getAuthHeaders() },
-    );
+    return this.http.get<boolean>(`${this.postsApiUrl}/${postId}/is-favorited`);
   }
 
   public addLike(postId: string): Observable<HttpResponse<void>> {
     return this.http.post<void>(`${this.postsApiUrl}/${postId}/like`, null, {
-      headers: this.getAuthHeaders(),
       observe: 'response',
     });
   }
 
   public removeLike(postId: string): Observable<HttpResponse<void>> {
     return this.http.delete<void>(`${this.postsApiUrl}/${postId}/like`, {
-      headers: this.getAuthHeaders(),
       observe: 'response',
     });
   }
 
   public addDislike(postId: string): Observable<HttpResponse<void>> {
     return this.http.post<void>(`${this.postsApiUrl}/${postId}/dislike`, null, {
-      headers: this.getAuthHeaders(),
       observe: 'response',
     });
   }
 
   public removeDislike(postId: string): Observable<HttpResponse<void>> {
     return this.http.delete<void>(`${this.postsApiUrl}/${postId}/dislike`, {
-      headers: this.getAuthHeaders(),
       observe: 'response',
     });
   }

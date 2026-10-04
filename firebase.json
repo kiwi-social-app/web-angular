@@ -1,4 +1,4 @@
-w{
+{
   "hosting": {
     "target": "angular-app",
     "public": "dist/angular-app",
@@ -26,6 +26,10 @@ w{
       }
     ],
     "rewrites": [
+      {
+        "source": "/api/**",
+        "run": { "serviceId": "kiwi-backend", "region": "europe-west1" }
+      },
       {
         "source": "**",
         "destination": "/index.html"

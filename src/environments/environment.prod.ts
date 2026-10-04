@@ -1,7 +1,7 @@
 export const environment = {
   production: true,
   apiUrl: '/api',
-  wsUrl: '/ws',
+  wsUrl: 'wss://kiwi-backend-448989396094.europe-west1.run.app/api/ws',
   firebase: {
     apiKey: 'AIzaSyBa0jYj5WZhDU7O24ySqAoq1niJW0z-mX8',
     authDomain: 'kiwi-social.firebaseapp.com',
