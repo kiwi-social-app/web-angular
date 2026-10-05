@@ -15,8 +15,4 @@ export class SemanticSearchService {
       params: { query },
     });
   }
-
-  public addDocument(content: string) {
-    return this.http.post(`${this.searchApiUrl}/add`, { content });
-  }
 }
