@@ -2,6 +2,7 @@ import { Component, inject } from '@angular/core';
 import { RouterLink } from '@angular/router';
 import { MatIcon } from '@angular/material/icon';
 import { AuthService } from '../../services/auth.service';
+import { environment } from '../../../environments/environment';
 
 @Component({
   selector: 'app-navbar',
@@ -12,4 +13,5 @@ import { AuthService } from '../../services/auth.service';
 })
 export class NavbarComponent {
   public authService: AuthService = inject(AuthService);
+  protected readonly searchEnabled = environment.searchEnabled;
 }

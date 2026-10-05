@@ -10,6 +10,7 @@ import { ChatComponent } from './components/chat/chat.component';
 import { SavedPostsComponent } from './components/saved-posts/saved-posts.component';
 import { UserProfileComponent } from './components/user-profile/user-profile.component';
 import { SearchComponent } from './components/search/search.component';
+import { environment } from '../environments/environment';
 
 export const routes: Routes = [
   { path: '', component: PostListComponent, canActivate: [AuthGuard] },
@@ -36,6 +37,7 @@ export const routes: Routes = [
     pathMatch: 'full',
     component: SearchComponent,
     canActivate: [AuthGuard],
+    canMatch: [() => environment.searchEnabled],
   },
   {
     path: 'chat',

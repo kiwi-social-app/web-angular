@@ -2,6 +2,7 @@ export const environment = {
   production: false,
   apiUrl: '/api',
   wsUrl: '/api/ws',
+  searchEnabled: true,
   firebase: {
     apiKey: 'AIzaSyBa0jYj5WZhDU7O24ySqAoq1niJW0z-mX8',
     authDomain: 'kiwi-social.firebaseapp.com',
