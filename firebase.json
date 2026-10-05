@@ -1,7 +1,7 @@
 {
   "hosting": {
     "target": "angular-app",
-    "public": "dist/angular-app",
+    "public": "dist/angular-app/browser",
     "ignore": [
       "**/.*"
     ],
