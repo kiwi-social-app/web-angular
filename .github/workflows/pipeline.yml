@@ -1,0 +1,59 @@
+name: CI/CD
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+
+permissions:
+  contents: read
+
+jobs:
+  ci:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v7
+      - uses: actions/setup-node@v7
+        with:
+          node-version-file: .nvmrc
+          cache: npm
+      - run: npm ci
+      - run: npm run build
+      - uses: actions/upload-artifact@v7
+        with:
+          name: web-dist
+          path: dist/angular-app/browser
+
+  deploy:
+    needs: ci
+    if: github.event_name == 'push' && github.ref == 'refs/heads/main'
+    runs-on: ubuntu-latest
+    concurrency: deploy-web
+    permissions:
+      contents: read
+      id-token: write
+    steps:
+      - uses: actions/checkout@v7
+      - uses: actions/setup-node@v7
+        with:
+          node-version-file: .nvmrc
+          cache: npm
+      - run: npm ci
+
+      - uses: actions/download-artifact@v8
+        with:
+          name: web-dist
+          path: dist/angular-app/browser
+
+      - uses: google-github-actions/auth@v3
+        with:
+          workload_identity_provider: projects/448989396094/locations/global/workloadIdentityPools/github/providers/github-provider
+          service_account: github-deployer@kiwi-social.iam.gserviceaccount.com
+
+      - run: npm run deploy:hosting
+
+      - name: Smoke test
+        run: |
+          SITE=https://kiwi-social.web.app
+          test "$(curl -s -o /dev/null -w '%{http_code}' "$SITE/")" = "200"
+          test "$(curl -s -o /dev/null -w '%{http_code}' "$SITE/api/posts")" = "401"
