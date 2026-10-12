@@ -4,7 +4,6 @@ import { Observable } from 'rxjs';
 import {
   Auth,
   createUserWithEmailAndPassword,
-  getAdditionalUserInfo,
   getAuth,
   GoogleAuthProvider,
   onAuthStateChanged,
@@ -14,7 +13,6 @@ import {
   signOut,
   User,
 } from 'firebase/auth';
-import { UserService } from './user.service';
 
 @Injectable({
   providedIn: 'root',
@@ -22,7 +20,6 @@ import { UserService } from './user.service';
 export class AuthService {
   private readonly auth: Auth = getAuth();
   private readonly router: Router = inject(Router);
-  private readonly userService: UserService = inject(UserService);
 
   constructor() {
     localStorage.removeItem('firebase_jwt_token');
@@ -34,12 +31,7 @@ export class AuthService {
 
   public async googleSignin() {
     const provider = new GoogleAuthProvider();
-    const credential = await signInWithPopup(this.auth, provider);
-    if (getAdditionalUserInfo(credential)?.isNewUser) {
-      this.userService
-        .addUser(credential.user)
-        .subscribe((response) => response);
-    }
+    await signInWithPopup(this.auth, provider);
     this.router.navigate(['/']);
   }
 
@@ -56,14 +48,8 @@ export class AuthService {
         user.password,
       );
 
-      if (result.user) {
-        await sendEmailVerification(result.user);
-        if (getAdditionalUserInfo(result)?.isNewUser) {
-          return this.userService
-            .addUser(result.user)
-            .subscribe((response) => response);
-        }
-      }
+      await sendEmailVerification(result.user);
+      return { isValid: true };
     } catch (error) {
       console.log('Auth Service: signup error', error);
       if (error) {

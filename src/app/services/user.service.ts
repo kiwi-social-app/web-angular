@@ -1,7 +1,7 @@
 import { inject, Injectable } from '@angular/core';
 
 import { HttpClient, HttpHeaders } from '@angular/common/http';
-import { catchError, Observable, of } from 'rxjs';
+import { catchError, from, Observable, of, switchMap } from 'rxjs';
 import { User } from '../models/user.model';
 import { getAuth } from 'firebase/auth';
 import { environment } from '../../environments/environment';
@@ -21,15 +21,6 @@ export class UserService {
   private readonly auth = getAuth();
 
   private usersUrl: string = `${environment.apiUrl}/users`;
-
-  public addUser(user: any): Observable<any> {
-    return this.http.post<any>(this.usersUrl, user, httpOptions).pipe(
-      catchError((error: any) => {
-        console.log(error);
-        return of(error);
-      }),
-    );
-  }
 
   public updateUser(userID: string, user: UserUpdate): Observable<any> {
     const url = `${this.usersUrl}/${userID}`;
@@ -61,12 +52,16 @@ export class UserService {
   }
 
   public getCurrentUser(): Observable<User | null> {
-    const user = this.auth.currentUser;
-
-    if (user !== null) {
-      return this.getUserByID(user.uid);
-    } else {
-      return of(null);
-    }
+    return from(this.auth.authStateReady()).pipe(
+      switchMap(() =>
+        this.auth.currentUser === null
+          ? of(null)
+          : this.http.get<User>(`${this.usersUrl}/me`, httpOptions),
+      ),
+      catchError((error) => {
+        console.log(error);
+        return of(error);
+      }),
+    );
   }
 }
