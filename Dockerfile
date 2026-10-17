@@ -7,7 +7,7 @@ RUN npm install
 
 COPY . .
 
-RUN npm run build --prod
+RUN npx ng build --configuration development
 
 FROM nginx:stable-alpine
 

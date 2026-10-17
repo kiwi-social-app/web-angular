@@ -4,6 +4,8 @@
   "scripts": {
     "ng": "ng",
     "start": "ng serve",
+    "start:docker": "API_TARGET=http://localhost:18080 ng serve",
+    "start:prod": "API_TARGET=https://kiwi-backend-448989396094.europe-west1.run.app ng serve --configuration prod-api",
     "build": "ng build",
     "watch": "ng build --watch --configuration development",
     "test": "ng test",
