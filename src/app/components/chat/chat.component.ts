@@ -6,6 +6,7 @@ import {
   inject,
   OnInit,
   ViewChild,
+  ChangeDetectionStrategy,
 } from '@angular/core';
 import { WsChatService } from '../../services/ws-chat.service';
 import { AuthService } from '../../services/auth.service';
@@ -46,6 +47,7 @@ import { MatIcon } from '@angular/material/icon';
   ],
   templateUrl: './chat.component.html',
   styleUrl: './chat.component.scss',
+  changeDetection: ChangeDetectionStrategy.Eager,
   standalone: true,
 })
 export class ChatComponent implements OnInit, AfterViewChecked {

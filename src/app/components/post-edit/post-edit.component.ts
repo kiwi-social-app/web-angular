@@ -5,6 +5,7 @@ import {
   inject,
   OnInit,
   Output,
+  ChangeDetectionStrategy,
 } from '@angular/core';
 import {
   FormBuilder,
@@ -22,6 +23,7 @@ import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
   templateUrl: './post-edit.component.html',
   styleUrls: ['./post-edit.component.scss'],
   standalone: true,
+  changeDetection: ChangeDetectionStrategy.Eager,
   imports: [ReactiveFormsModule],
 })
 export class PostEditComponent implements OnInit {

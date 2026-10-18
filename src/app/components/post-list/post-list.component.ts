@@ -5,6 +5,7 @@ import {
   resource,
   ResourceRef,
   Signal,
+  ChangeDetectionStrategy,
 } from '@angular/core';
 import { PostService } from 'src/app/services/post.service';
 import { Post } from '../../models/post.model';
@@ -24,6 +25,7 @@ import { MatIcon } from '@angular/material/icon';
   templateUrl: './post-list.component.html',
   styleUrls: ['./post-list.component.scss'],
   standalone: true,
+  changeDetection: ChangeDetectionStrategy.Eager,
   imports: [
     PostCardComponent,
     RouterLink,

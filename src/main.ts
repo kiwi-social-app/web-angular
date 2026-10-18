@@ -3,7 +3,11 @@ import { environment } from './environments/environment';
 import { bootstrapApplication } from '@angular/platform-browser';
 import { AppComponent } from './app/app.component';
 import { provideRouter } from '@angular/router';
-import { provideHttpClient, withInterceptors } from '@angular/common/http';
+import {
+  provideHttpClient,
+  withInterceptors,
+  withXhr,
+} from '@angular/common/http';
 import { initializeApp } from 'firebase/app';
 import { routes } from './app/app.routes';
 import { provideRxStomp } from './app/rx-stomp.config';
@@ -19,7 +23,7 @@ bootstrapApplication(AppComponent, {
   providers: [
     provideZoneChangeDetection(),
     provideRouter(routes),
-    provideHttpClient(withInterceptors([authInterceptor])),
+    provideHttpClient(withXhr(), withInterceptors([authInterceptor])),
     provideRxStomp(),
   ],
 }).catch((err) => console.error(err));

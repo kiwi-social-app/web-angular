@@ -5,6 +5,7 @@ import {
   Signal,
   signal,
   WritableSignal,
+  ChangeDetectionStrategy,
 } from '@angular/core';
 import { toSignal } from '@angular/core/rxjs-interop';
 import { PostService } from '../../services/post.service';
@@ -19,6 +20,7 @@ import { User } from '../../models/user.model';
   templateUrl: './saved-posts.component.html',
   styleUrl: './saved-posts.component.scss',
   standalone: true,
+  changeDetection: ChangeDetectionStrategy.Eager,
   imports: [PostCardComponent, RouterLink],
 })
 export class SavedPostsComponent {

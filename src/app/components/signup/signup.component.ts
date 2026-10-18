@@ -1,4 +1,9 @@
-import { Component, inject, OnInit } from '@angular/core';
+import {
+  Component,
+  inject,
+  OnInit,
+  ChangeDetectionStrategy,
+} from '@angular/core';
 import {
   FormGroup,
   FormControl,
@@ -13,6 +18,7 @@ import { AuthService } from '../../services/auth.service';
   templateUrl: './signup.component.html',
   styleUrls: ['./signup.component.scss'],
   standalone: true,
+  changeDetection: ChangeDetectionStrategy.Eager,
   imports: [ReactiveFormsModule],
 })
 export class SignupComponent implements OnInit {

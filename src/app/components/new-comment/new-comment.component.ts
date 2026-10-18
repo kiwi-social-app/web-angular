@@ -6,6 +6,7 @@ import {
   ModelSignal,
   OnInit,
   Output,
+  ChangeDetectionStrategy,
 } from '@angular/core';
 import {
   FormBuilder,
@@ -23,6 +24,7 @@ import { MatIcon } from '@angular/material/icon';
   templateUrl: './new-comment.component.html',
   styleUrls: ['./new-comment.component.scss'],
   standalone: true,
+  changeDetection: ChangeDetectionStrategy.Eager,
   imports: [ReactiveFormsModule, MatIcon],
 })
 export class NewCommentComponent implements OnInit {

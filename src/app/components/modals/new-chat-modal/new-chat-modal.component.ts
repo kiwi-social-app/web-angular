@@ -1,4 +1,4 @@
-import { Component, inject } from '@angular/core';
+import { Component, inject, ChangeDetectionStrategy } from '@angular/core';
 import {
   MAT_DIALOG_DATA,
   MatDialogActions,
@@ -28,6 +28,7 @@ import { FormsModule } from '@angular/forms';
   ],
   templateUrl: './new-chat-modal.component.html',
   styleUrl: './new-chat-modal.component.scss',
+  changeDetection: ChangeDetectionStrategy.Eager,
   standalone: true,
 })
 export class NewChatModalComponent {

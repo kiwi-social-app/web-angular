@@ -1,4 +1,10 @@
-import { Component, inject, Input, OnInit } from '@angular/core';
+import {
+  Component,
+  inject,
+  Input,
+  OnInit,
+  ChangeDetectionStrategy,
+} from '@angular/core';
 import { Router, RouterLink } from '@angular/router';
 import { Post } from '../../models/post.model';
 import { User } from '../../models/user.model';
@@ -11,6 +17,7 @@ import { PostService } from '../../services/post.service';
   templateUrl: './post-card.component.html',
   styleUrls: ['./post-card.component.scss'],
   standalone: true,
+  changeDetection: ChangeDetectionStrategy.Eager,
   imports: [MatIcon, RouterLink],
 })
 export class PostCardComponent implements OnInit {

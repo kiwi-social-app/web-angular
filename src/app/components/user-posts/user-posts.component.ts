@@ -5,6 +5,7 @@ import {
   Input,
   OnInit,
   Output,
+  ChangeDetectionStrategy,
 } from '@angular/core';
 import { Router } from '@angular/router';
 import { Observable } from 'rxjs';
@@ -15,6 +16,7 @@ import { PostService } from 'src/app/services/post.service';
   selector: 'app-user-posts',
   templateUrl: './user-posts.component.html',
   styleUrls: ['./user-posts.component.scss'],
+  changeDetection: ChangeDetectionStrategy.Eager,
   standalone: true,
 })
 export class UserPostsComponent {

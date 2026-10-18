@@ -5,6 +5,7 @@ import {
   resource,
   ResourceRef,
   Signal,
+  ChangeDetectionStrategy,
 } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { firstValueFrom } from 'rxjs';
@@ -19,6 +20,7 @@ import { PostCardComponent } from '../post-card/post-card.component';
   templateUrl: './user-profile.component.html',
   styleUrls: ['./user-profile.component.scss'],
   standalone: true,
+  changeDetection: ChangeDetectionStrategy.Eager,
   imports: [PostCardComponent],
 })
 export class UserProfileComponent {

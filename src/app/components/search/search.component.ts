@@ -6,6 +6,7 @@ import {
   resource,
   ResourceRef,
   signal,
+  ChangeDetectionStrategy,
 } from '@angular/core';
 import { PostService } from '../../services/post.service';
 import { SemanticSearchService } from '../../services/semantic-search.service';
@@ -43,6 +44,7 @@ import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
     RouterLink,
   ],
   templateUrl: './search.component.html',
+  changeDetection: ChangeDetectionStrategy.Eager,
   styleUrl: './search.component.scss',
 })
 export class SearchComponent implements OnInit {

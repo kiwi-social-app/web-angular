@@ -1,4 +1,9 @@
-import { Component, inject, OnInit } from '@angular/core';
+import {
+  Component,
+  inject,
+  OnInit,
+  ChangeDetectionStrategy,
+} from '@angular/core';
 import { MatButton } from '@angular/material/button';
 import {
   MAT_DIALOG_DATA,
@@ -26,6 +31,7 @@ import { PostCreation } from '../../../models/postCreation.model';
   ],
   templateUrl: './new-post-modal.component.html',
   styleUrl: './new-post-modal.component.scss',
+  changeDetection: ChangeDetectionStrategy.Eager,
   standalone: true,
 })
 export class NewPostModalComponent implements OnInit {

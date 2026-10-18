@@ -5,6 +5,7 @@ import {
   inject,
   OnInit,
   Output,
+  ChangeDetectionStrategy,
 } from '@angular/core';
 import {
   FormBuilder,
@@ -27,6 +28,7 @@ import { UserUpdate } from '../../models/userUpdate.model';
   templateUrl: './dashboard.component.html',
   styleUrls: ['./dashboard.component.scss'],
   standalone: true,
+  changeDetection: ChangeDetectionStrategy.Eager,
   imports: [UserPostsComponent, ReactiveFormsModule, MatButton],
 })
 export class DashboardComponent implements OnInit {

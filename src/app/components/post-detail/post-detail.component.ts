@@ -5,6 +5,7 @@ import {
   resource,
   ResourceRef,
   Signal,
+  ChangeDetectionStrategy,
 } from '@angular/core';
 import { ActivatedRoute, RouterLink } from '@angular/router';
 
@@ -23,6 +24,7 @@ import { Comment } from '../../models/comment.model';
   templateUrl: './post-detail.component.html',
   styleUrls: ['./post-detail.component.scss'],
   standalone: true,
+  changeDetection: ChangeDetectionStrategy.Eager,
   imports: [
     CommentListComponent,
     DatePipe,

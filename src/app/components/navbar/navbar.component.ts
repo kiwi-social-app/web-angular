@@ -1,4 +1,4 @@
-import { Component, inject } from '@angular/core';
+import { Component, inject, ChangeDetectionStrategy } from '@angular/core';
 import { RouterLink } from '@angular/router';
 import { MatIcon } from '@angular/material/icon';
 import { AuthService } from '../../services/auth.service';
@@ -9,6 +9,7 @@ import { environment } from '../../../environments/environment';
   templateUrl: './navbar.component.html',
   styleUrls: ['./navbar.component.scss'],
   standalone: true,
+  changeDetection: ChangeDetectionStrategy.Eager,
   imports: [RouterLink, MatIcon],
 })
 export class NavbarComponent {
