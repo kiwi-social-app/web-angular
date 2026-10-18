@@ -7,7 +7,7 @@ import {
   Signal,
   ChangeDetectionStrategy,
 } from '@angular/core';
-import { PostService } from 'src/app/services/post.service';
+import { PostService } from '../../services/post.service';
 import { Post } from '../../models/post.model';
 import { PostCardComponent } from '../post-card/post-card.component';
 import { RouterLink } from '@angular/router';

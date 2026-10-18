@@ -14,7 +14,7 @@ import {
   Validators,
 } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
-import { PostService } from 'src/app/services/post.service';
+import { PostService } from '../../services/post.service';
 import { Post } from '../../models/post.model';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 

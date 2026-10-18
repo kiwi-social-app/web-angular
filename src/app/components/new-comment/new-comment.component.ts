@@ -15,7 +15,7 @@ import {
   Validators,
 } from '@angular/forms';
 import { ActivatedRoute } from '@angular/router';
-import { CommentService } from 'src/app/services/comment.service';
+import { CommentService } from '../../services/comment.service';
 import { Comment } from '../../models/comment.model';
 import { MatIcon } from '@angular/material/icon';
 

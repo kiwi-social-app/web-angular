@@ -13,8 +13,8 @@ import {
   ReactiveFormsModule,
   Validators,
 } from '@angular/forms';
-import { Post } from 'src/app/models/post.model';
-import { UserService } from 'src/app/services/user.service';
+import { Post } from '../../models/post.model';
+import { UserService } from '../../services/user.service';
 import { User } from '../../models/user.model';
 import { AuthService } from '../../services/auth.service';
 import { PostService } from '../../services/post.service';
