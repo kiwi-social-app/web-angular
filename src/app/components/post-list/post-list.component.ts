@@ -10,7 +10,6 @@ import {
 import { PostService } from '../../services/post.service';
 import { Post } from '../../models/post.model';
 import { PostCardComponent } from '../post-card/post-card.component';
-import { RouterLink } from '@angular/router';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { UserService } from '../../services/user.service';
 import { User } from '../../models/user.model';
@@ -28,7 +27,6 @@ import { MatIcon } from '@angular/material/icon';
   changeDetection: ChangeDetectionStrategy.Eager,
   imports: [
     PostCardComponent,
-    RouterLink,
     FormsModule,
     MatButton,
     MatIcon,

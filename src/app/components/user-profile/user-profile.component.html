@@ -2,14 +2,14 @@
   @let currentUser = user.value()!;
   <div class="user-profile-component">
     <div class="profile-data-block">
-      <p class="username">{{ currentUser.username ?? "(no username)" }}</p>
+      <h1 class="username">{{ currentUser.username ?? "(no username)" }}</h1>
       <p>{{ currentUser.email }}</p>
       @if (currentUser.firstname || currentUser.lastname) {
         <p>{{ currentUser.firstname }} {{ currentUser.lastname }}</p>
       }
     </div>
 
-    <h3 class="posts-header">Posts</h3>
+    <h2 class="posts-header">Posts</h2>
     @if (posts.hasValue()) {
       @let postList = posts.value()!;
       @if (postList.length === 0) {

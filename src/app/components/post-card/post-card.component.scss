@@ -1,46 +1,57 @@
+@use "../../../styles/a11y";
+
 .post-card {
+  position: relative;
   display: flex;
   flex-direction: column;
   padding: 1rem 1rem 0;
   background-color: var(--mat-sys-surface-container-low);
   border-radius: 0.5rem;
 
-  .image {
-    height: 5rem;
-    width: 10rem;
-  }
-
-  .card-content {
-    margin: auto;
-    text-align: center;
-  }
-
-  .actions {
-    display: flex;
-    justify-content: space-between;
-
-    & > * {
-      display: flex;
-      gap: 0.5rem;
-      padding: 0.5rem;
-      cursor: pointer;
-    }
-    .like-btn {
-      color: var(--mat-sys-primary);
-    }
-    .dislike-btn {
-      color: var(--mat-sys-error);
-    }
-    .save-btn {
-      color: var(--mat-sys-tertiary);
-    }
+  &:has(.post-link:hover) {
+    background-color: var(--mat-sys-surface-container);
   }
 }
 
-@media (max-width: 600px) {
-  .actions {
-    span {
-      display: none;
-    }
+.author-link,
+.actions {
+  position: relative;
+  z-index: 1;
+}
+
+.author-link {
+  align-self: flex-start;
+}
+
+.post-link {
+  color: inherit;
+  text-decoration: none;
+
+  &::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    border-radius: inherit;
+  }
+}
+
+.actions {
+  display: flex;
+  justify-content: space-between;
+
+  .like-btn {
+    color: var(--mat-sys-primary);
+  }
+  .dislike-btn {
+    color: var(--mat-sys-error);
+  }
+  .save-btn {
+    color: var(--mat-sys-tertiary);
+  }
+}
+
+@media (max-width: 37.5em) {
+  .action-label {
+    @include a11y.visually-hidden;
   }
 }

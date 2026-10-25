@@ -2,6 +2,7 @@
   @let user = currentUser.value()!;
 
   <div class="search-component">
+    <h1>Search</h1>
     <mat-form-field appearance="outline" class="search-bar">
       <mat-label>Search</mat-label>
       <input
@@ -16,11 +17,7 @@
     </mat-form-field>
     @for (post of searchResults(); track $index) {
       <div class="card-container">
-        <app-post-card
-          [currentUserId]="user.id"
-          [post]="post"
-          [routerLink]="['/posts', post.id]"
-        ></app-post-card>
+        <app-post-card [currentUserId]="user.id" [post]="post"></app-post-card>
       </div>
     }
   </div>

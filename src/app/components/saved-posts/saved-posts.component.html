@@ -3,10 +3,7 @@
     <h1>Saved Posts</h1>
     @for (post of favoritePosts(); track $index) {
       <div class="card-container">
-        <app-post-card
-          [post]="post"
-          [routerLink]="['/posts', post.id]"
-        ></app-post-card>
+        <app-post-card [post]="post"></app-post-card>
       </div>
     }
   </div>

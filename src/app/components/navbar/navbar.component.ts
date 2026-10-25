@@ -4,7 +4,7 @@ import {
   inject,
   ChangeDetectionStrategy,
 } from '@angular/core';
-import { RouterLink } from '@angular/router';
+import { RouterLink, RouterLinkActive } from '@angular/router';
 import { MatIcon } from '@angular/material/icon';
 import { MatIconButton } from '@angular/material/button';
 import { MatMenu, MatMenuItem, MatMenuTrigger } from '@angular/material/menu';
@@ -19,6 +19,7 @@ import { environment } from '../../../environments/environment';
   changeDetection: ChangeDetectionStrategy.Eager,
   imports: [
     RouterLink,
+    RouterLinkActive,
     MatIcon,
     MatIconButton,
     MatMenu,

@@ -1,4 +1,5 @@
 <div class="post-edit-component">
+  <h1>Edit post</h1>
 @if(updatePostForm){
   <form
     class="update-post-form"
@@ -6,7 +7,7 @@
     (ngSubmit)="updatePost()"
   >
     <div class="form-block">
-      <label for="body">Body:</label>
+      <label for="body">Post</label>
       <textarea
         id="body"
         type="text"

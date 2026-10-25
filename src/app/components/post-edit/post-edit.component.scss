@@ -57,10 +57,10 @@
         background-color: var(--mat-sys-primary);
         cursor: pointer;
 
-        &:disabled{
+        &:disabled {
           opacity: 50%;
-           cursor: default;
-         }
+          cursor: default;
+        }
       }
       .delete-btn {
         height: 2rem;

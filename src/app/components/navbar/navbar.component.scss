@@ -9,6 +9,7 @@
 
   .navbar-brand {
     display: flex;
+    text-decoration: none;
     height: auto;
     gap: 1rem;
     padding: 1rem 0.5rem;
@@ -39,6 +40,12 @@
       align-items: flex-start;
       gap: 0.5rem;
       color: var(--mat-sys-on-surface);
+      text-decoration: none;
+
+      &.active {
+        color: var(--mat-sys-primary);
+        box-shadow: inset 0 -2px 0 currentColor;
+      }
 
       mat-icon {
         font-size: 1.5rem;

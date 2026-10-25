@@ -17,6 +17,7 @@ import {
 import { ActivatedRoute } from '@angular/router';
 import { CommentService } from '../../services/comment.service';
 import { Comment } from '../../models/comment.model';
+import { MatIconButton } from '@angular/material/button';
 import { MatIcon } from '@angular/material/icon';
 
 @Component({
@@ -25,7 +26,7 @@ import { MatIcon } from '@angular/material/icon';
   styleUrls: ['./new-comment.component.scss'],
   standalone: true,
   changeDetection: ChangeDetectionStrategy.Eager,
-  imports: [ReactiveFormsModule, MatIcon],
+  imports: [ReactiveFormsModule, MatIconButton, MatIcon],
 })
 export class NewCommentComponent implements OnInit {
   @Output() onNewComment: EventEmitter<Comment> = new EventEmitter();

@@ -9,10 +9,6 @@
   .top-row {
     display: flex;
     justify-content: flex-end;
-
-    & > * {
-      cursor: pointer;
-    }
   }
 
   .new-comment-form {

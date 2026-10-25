@@ -28,7 +28,6 @@ import { MatIconButton } from '@angular/material/button';
 import { PostCardComponent } from '../post-card/post-card.component';
 import { User } from '../../models/user.model';
 import { UserService } from '../../services/user.service';
-import { RouterLink } from '@angular/router';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 
 @Component({
@@ -41,7 +40,6 @@ import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
     MatLabel,
     ReactiveFormsModule,
     PostCardComponent,
-    RouterLink,
   ],
   templateUrl: './search.component.html',
   changeDetection: ChangeDetectionStrategy.Eager,

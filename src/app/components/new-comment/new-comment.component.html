@@ -1,6 +1,13 @@
 <div class="new-comment-component">
   <div class="top-row">
-    <mat-icon (click)="closeInput()">close</mat-icon>
+    <button
+      mat-icon-button
+      type="button"
+      aria-label="Close comment form"
+      (click)="closeInput()"
+    >
+      <mat-icon>close</mat-icon>
+    </button>
   </div>
   <form
     class="new-comment-form"
@@ -11,7 +18,7 @@
       <textarea
         class="body-input"
         id="comment"
-        type="text"
+        aria-label="Comment"
         formControlName="body"
       ></textarea>
     </div>

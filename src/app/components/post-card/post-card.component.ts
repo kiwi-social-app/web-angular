@@ -5,10 +5,11 @@ import {
   OnInit,
   ChangeDetectionStrategy,
 } from '@angular/core';
-import { Router, RouterLink } from '@angular/router';
+import { RouterLink } from '@angular/router';
 import { Post } from '../../models/post.model';
 import { User } from '../../models/user.model';
 import { Observable, of, take } from 'rxjs';
+import { MatButton, MatIconButton } from '@angular/material/button';
 import { MatIcon } from '@angular/material/icon';
 import { PostService } from '../../services/post.service';
 
@@ -18,14 +19,13 @@ import { PostService } from '../../services/post.service';
   styleUrls: ['./post-card.component.scss'],
   standalone: true,
   changeDetection: ChangeDetectionStrategy.Eager,
-  imports: [MatIcon, RouterLink],
+  imports: [MatButton, MatIconButton, MatIcon, RouterLink],
 })
 export class PostCardComponent implements OnInit {
   @Input() post!: Post;
   @Input() currentUserId?: string;
 
   private readonly postService: PostService = inject(PostService);
-  private readonly router: Router = inject(Router);
 
   protected author: Observable<User | undefined> = of();
   protected isFavorite: boolean = false;
@@ -38,10 +38,6 @@ export class PostCardComponent implements OnInit {
       this.isLiked = this.checkIfLiked(this.currentUserId);
       this.isDisliked = this.checkIfDisliked(this.currentUserId);
     }
-  }
-
-  protected goToPostDetail(postId: string): void {
-    this.router.navigate([`/posts/`, postId]);
   }
 
   protected addToFavorites(postId: string): void {

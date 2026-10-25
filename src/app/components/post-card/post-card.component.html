@@ -1,48 +1,60 @@
-<div class="post-card">
+<article class="post-card">
   <a class="author-link" [routerLink]="['/profile', post.author.id]">
     {{ post.author.username }}
   </a>
-  <p>{{ post.body }}</p>
-  <div class="actions" (click)="$event.stopPropagation()">
+  <p class="post-body">
+    <a class="post-link" [routerLink]="['/posts', post.id]">{{ post.body }}</a>
+  </p>
+  <div class="actions">
     @if (currentUserId) {
-      @if (isLiked) {
-        <div (click)="removeLike(post.id)">
-          <mat-icon class="like-btn">thumb_up</mat-icon>
-        </div>
-      } @else {
-        <div (click)="addLike(post.id)">
-          <mat-icon class="material-icons-outlined">thumb_up_outline</mat-icon>
-        </div>
-      }
-      @if (isDisliked) {
-        <div (click)="removeDislike(post.id)">
-          <mat-icon class="dislike-btn">thumb_down</mat-icon>
-        </div>
-      } @else {
-        <div (click)="addDislike(post.id)">
-          <mat-icon class="material-icons-outlined">thumb_down</mat-icon>
-        </div>
-      }
-      @if (isFavorite) {
-        <div (click)="removeFromFavorites(post.id)">
-          <mat-icon class="save-btn">bookmark</mat-icon>
-          <span>save</span>
-        </div>
-      } @else {
-        <div (click)="addToFavorites(post.id)">
-          <mat-icon>bookmark_border</mat-icon>
-          <span>save</span>
-        </div>
-      }
+      <button
+        mat-icon-button
+        type="button"
+        aria-label="Like"
+        [attr.aria-pressed]="isLiked"
+        (click)="isLiked ? removeLike(post.id) : addLike(post.id)"
+      >
+        <mat-icon
+          [class.like-btn]="isLiked"
+          [fontSet]="isLiked ? 'material-icons' : 'material-icons-outlined'"
+          >thumb_up</mat-icon
+        >
+      </button>
+      <button
+        mat-icon-button
+        type="button"
+        aria-label="Dislike"
+        [attr.aria-pressed]="isDisliked"
+        (click)="isDisliked ? removeDislike(post.id) : addDislike(post.id)"
+      >
+        <mat-icon
+          [class.dislike-btn]="isDisliked"
+          [fontSet]="isDisliked ? 'material-icons' : 'material-icons-outlined'"
+          >thumb_down</mat-icon
+        >
+      </button>
+      <button
+        mat-button
+        type="button"
+        [attr.aria-pressed]="isFavorite"
+        (click)="
+          isFavorite ? removeFromFavorites(post.id) : addToFavorites(post.id)
+        "
+      >
+        <mat-icon [class.save-btn]="isFavorite">{{
+          isFavorite ? "bookmark" : "bookmark_border"
+        }}</mat-icon>
+        <span class="action-label">Save</span>
+      </button>
     }
 
-    <div (click)="goToPostDetail(post.id)">
+    <a mat-button [routerLink]="['/posts', post.id]">
       <mat-icon>chat_bubble_outline</mat-icon>
-      <span>comment</span>
-    </div>
-    <div>
+      <span class="action-label">Comment</span>
+    </a>
+    <button mat-button type="button">
       <mat-icon>share</mat-icon>
-      <span>share</span>
-    </div>
+      <span class="action-label">Share</span>
+    </button>
   </div>
-</div>
+</article>

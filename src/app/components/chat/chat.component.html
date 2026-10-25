@@ -2,10 +2,12 @@
   <div class="main-container">
     <div class="chat-component">
       <div class="chat-list">
+        <h1>Chat</h1>
         <button
           class="new-chat-btn"
           mat-icon-button
           color="primary"
+          aria-label="New chat"
           (click)="startNewChat(currentUser.uid)"
         >
           <mat-icon>add</mat-icon>
@@ -75,6 +77,7 @@
                 id="message"
                 formControlName="message"
                 placeholder="Message..."
+                aria-label="Message"
                 matInput
                 cdkTextareaAutosize
                 cdkAutosizeMinRows="1"

@@ -13,6 +13,7 @@ import { PostService } from '../../services/post.service';
 import { CommentListComponent } from '../comment-list/comment-list.component';
 import { DatePipe } from '@angular/common';
 import { firstValueFrom } from 'rxjs';
+import { MatButton } from '@angular/material/button';
 import { MatIcon } from '@angular/material/icon';
 import { NewCommentComponent } from '../new-comment/new-comment.component';
 import { CommentService } from '../../services/comment.service';
@@ -26,6 +27,7 @@ import { Comment } from '../../models/comment.model';
   standalone: true,
   changeDetection: ChangeDetectionStrategy.Eager,
   imports: [
+    MatButton,
     CommentListComponent,
     DatePipe,
     MatIcon,

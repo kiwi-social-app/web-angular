@@ -11,7 +11,6 @@ import { toSignal } from '@angular/core/rxjs-interop';
 import { PostService } from '../../services/post.service';
 import { UserService } from '../../services/user.service';
 import { PostCardComponent } from '../post-card/post-card.component';
-import { RouterLink } from '@angular/router';
 import { Post } from '../../models/post.model';
 import { User } from '../../models/user.model';
 
@@ -21,7 +20,7 @@ import { User } from '../../models/user.model';
   styleUrl: './saved-posts.component.scss',
   standalone: true,
   changeDetection: ChangeDetectionStrategy.Eager,
-  imports: [PostCardComponent, RouterLink],
+  imports: [PostCardComponent],
 })
 export class SavedPostsComponent {
   private userService: UserService = inject(UserService);

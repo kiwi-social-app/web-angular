@@ -2,27 +2,36 @@
   @let currentPost = post.value()!;
 
   <div class="post-detail-component">
+    <h1>Post</h1>
     <div class="post-container">
       <div class="text-content">
         <p>{{ currentPost.createdAt | date: "medium" }}</p>
         <p>{{ currentPost.body }}</p>
-        <a class="author-link" [routerLink]="['/profile', currentPost.author.id]">
+        <a
+          class="author-link"
+          [routerLink]="['/profile', currentPost.author.id]"
+        >
           {{ currentPost.author.username ?? "no username" }}
         </a>
       </div>
       <div class="actions">
-        <div>
-          <mat-icon>bookmark</mat-icon>
-          <span>save</span>
-        </div>
-        <div (click)="onReplyInputDisplayChange()">
+        <button mat-button type="button">
+          <mat-icon>bookmark_border</mat-icon>
+          Save
+        </button>
+        <button
+          mat-button
+          type="button"
+          [attr.aria-expanded]="replyInput"
+          (click)="onReplyInputDisplayChange()"
+        >
           <mat-icon>chat_bubble_outline</mat-icon>
-          <span>comment</span>
-        </div>
-        <div>
+          Comment
+        </button>
+        <button mat-button type="button">
           <mat-icon>share</mat-icon>
-          <span>share</span>
-        </div>
+          Share
+        </button>
       </div>
     </div>
     @if (replyInput) {

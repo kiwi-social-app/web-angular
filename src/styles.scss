@@ -41,8 +41,13 @@ body {
   background-color: var(--mat-sys-surface);
   color: var(--mat-sys-on-surface);
   font: var(--mat-sys-body-medium);
+}
 
-  a {
-    text-decoration: none;
-  }
+a {
+  color: var(--mat-sys-primary);
+  text-underline-offset: 0.15em;
+}
+
+h1 {
+  font: var(--mat-sys-headline-small);
 }

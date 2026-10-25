@@ -1,21 +1,42 @@
 <nav class="top-bar">
   <a class="navbar-brand" routerLink="/">Kiwi Social</a>
   <div class="nav-links">
-    <a routerLink="" class="nav-link">
+    <a
+      routerLink=""
+      class="nav-link"
+      routerLinkActive="active"
+      [routerLinkActiveOptions]="{ exact: true }"
+      ariaCurrentWhenActive="page"
+    >
       <mat-icon>home</mat-icon>
       <span class="sidebar-link-text">Home</span></a
     >
     @if (searchEnabled) {
-      <a routerLink="search" class="nav-link">
+      <a
+        routerLink="search"
+        routerLinkActive="active"
+        ariaCurrentWhenActive="page"
+        class="nav-link"
+      >
         <mat-icon>search</mat-icon>
         <span class="sidebar-link-text">Search</span>
       </a>
     }
-    <a routerLink="chat" class="nav-link">
+    <a
+      routerLink="chat"
+      routerLinkActive="active"
+      ariaCurrentWhenActive="page"
+      class="nav-link"
+    >
       <mat-icon>chat_bubble</mat-icon>
       <span class="sidebar-link-text">Chat</span></a
     >
-    <a routerLink="/saved-posts" class="nav-link top-bar-button">
+    <a
+      routerLink="/saved-posts"
+      routerLinkActive="active"
+      ariaCurrentWhenActive="page"
+      class="nav-link top-bar-button"
+    >
       <mat-icon>bookmark</mat-icon>
       <span class="sidebar-link-text">Saved Posts</span></a
     >
@@ -43,7 +64,12 @@
         </button>
       }
     </mat-menu>
-    <a routerLink="/dashboard" class="nav-link top-bar-button">
+    <a
+      routerLink="/dashboard"
+      routerLinkActive="active"
+      ariaCurrentWhenActive="page"
+      class="nav-link top-bar-button"
+    >
       <mat-icon>person</mat-icon>
       <span class="sidebar-link-text">Account</span>
     </a>
