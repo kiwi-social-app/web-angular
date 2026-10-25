@@ -5,7 +5,6 @@ import { PostDetailComponent } from './components/post-detail/post-detail.compon
 import { PostEditComponent } from './components/post-edit/post-edit.component';
 import { PostListComponent } from './components/post-list/post-list.component';
 import { AuthGuard } from './services/auth.guard';
-import { SignupComponent } from './components/signup/signup.component';
 import { ChatComponent } from './components/chat/chat.component';
 import { SavedPostsComponent } from './components/saved-posts/saved-posts.component';
 import { UserProfileComponent } from './components/user-profile/user-profile.component';
@@ -14,7 +13,6 @@ import { environment } from '../environments/environment';
 
 export const routes: Routes = [
   { path: '', component: PostListComponent, canActivate: [AuthGuard] },
-  { path: 'signup', component: SignupComponent },
   { path: 'login', component: LoginComponent },
   {
     path: 'dashboard',

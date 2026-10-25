@@ -3,11 +3,9 @@ import { Router } from '@angular/router';
 import { Observable } from 'rxjs';
 import {
   Auth,
-  createUserWithEmailAndPassword,
   getAuth,
   GoogleAuthProvider,
   onAuthStateChanged,
-  sendEmailVerification,
   signInWithEmailAndPassword,
   signInWithPopup,
   signOut,
@@ -29,10 +27,8 @@ export class AuthService {
     return this.auth.currentUser;
   }
 
-  public async googleSignin() {
-    const provider = new GoogleAuthProvider();
-    await signInWithPopup(this.auth, provider);
-    this.router.navigate(['/']);
+  public async googleSignin(): Promise<void> {
+    await signInWithPopup(this.auth, new GoogleAuthProvider());
   }
 
   public async signOut() {
@@ -40,39 +36,8 @@ export class AuthService {
     return this.router.navigate(['/']);
   }
 
-  public async signupUser(user: any): Promise<any> {
-    try {
-      const result = await createUserWithEmailAndPassword(
-        this.auth,
-        user.email,
-        user.password,
-      );
-
-      await sendEmailVerification(result.user);
-      return { isValid: true };
-    } catch (error) {
-      console.log('Auth Service: signup error', error);
-      if (error) {
-        return { isValid: false, message: error };
-      }
-      return;
-    }
-  }
-
-  public loginUser(email: string, password: string): Promise<any> {
-    return signInWithEmailAndPassword(this.auth, email, password)
-      .then(() => {
-        console.log('Auth Service: loginUser: success');
-      })
-      .catch((error: any) => {
-        console.log('Auth Service: login error...');
-        console.log('error code', error.code);
-        console.log('error', error);
-        if (error.code) {
-          return { isValid: false, message: error.message };
-        }
-        return;
-      });
+  public async loginUser(email: string, password: string): Promise<void> {
+    await signInWithEmailAndPassword(this.auth, email, password);
   }
 
   public authState(): Observable<User | null> {

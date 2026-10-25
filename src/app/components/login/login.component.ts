@@ -1,18 +1,30 @@
 import {
-  Component,
-  inject,
-  OnInit,
   ChangeDetectionStrategy,
+  Component,
+  ElementRef,
+  inject,
+  signal,
 } from '@angular/core';
 import {
-  FormGroup,
-  FormControl,
-  Validators,
+  NonNullableFormBuilder,
   ReactiveFormsModule,
+  Validators,
 } from '@angular/forms';
 import { Router } from '@angular/router';
+import { MatButton, MatIconButton } from '@angular/material/button';
+import { MatCard } from '@angular/material/card';
+import {
+  MatError,
+  MatFormField,
+  MatLabel,
+  MatSuffix,
+} from '@angular/material/form-field';
+import { MatIcon } from '@angular/material/icon';
+import { MatInput } from '@angular/material/input';
+import { MatProgressSpinner } from '@angular/material/progress-spinner';
 import { AuthService } from '../../services/auth.service';
-import { SignupComponent } from '../signup/signup.component';
+import { authErrorMessage } from '../../services/auth-error-messages';
+import { GoogleSignInButtonComponent } from '../google-sign-in-button/google-sign-in-button.component';
 
 @Component({
   selector: 'app-login',
@@ -20,42 +32,68 @@ import { SignupComponent } from '../signup/signup.component';
   styleUrls: ['./login.component.scss'],
   standalone: true,
   changeDetection: ChangeDetectionStrategy.Eager,
-  imports: [SignupComponent, ReactiveFormsModule],
+  imports: [
+    ReactiveFormsModule,
+    MatButton,
+    MatIconButton,
+    MatCard,
+    MatError,
+    MatFormField,
+    MatLabel,
+    MatSuffix,
+    MatIcon,
+    MatInput,
+    MatProgressSpinner,
+    GoogleSignInButtonComponent,
+  ],
 })
-export class LoginComponent implements OnInit {
-  private readonly authService: AuthService = inject(AuthService);
-  private readonly router: Router = inject(Router);
+export class LoginComponent {
+  private readonly authService = inject(AuthService);
+  private readonly router = inject(Router);
+  private readonly host = inject<ElementRef<HTMLElement>>(ElementRef);
 
-  protected loginForm!: FormGroup;
-  protected firebaseErrorMessage!: string;
+  protected readonly loginForm = inject(NonNullableFormBuilder).group({
+    email: ['', [Validators.required, Validators.email]],
+    password: ['', Validators.required],
+  });
 
-  ngOnInit(): void {
-    this.loginForm = new FormGroup({
-      email: new FormControl('', [Validators.required, Validators.email]),
-      password: new FormControl('', [Validators.required]),
-    });
-    this.firebaseErrorMessage = '';
-  }
+  protected readonly pending = signal(false);
+  protected readonly errorMessage = signal<string | null>(null);
+  protected readonly passwordVisible = signal(false);
 
-  protected loginUser(): void {
+  protected async loginUser(): Promise<void> {
     if (this.loginForm.invalid) {
+      this.loginForm.markAllAsTouched();
+      this.host.nativeElement
+        .querySelector<HTMLElement>('input.ng-invalid')
+        ?.focus();
       return;
     }
 
-    this.authService
-      .loginUser(this.loginForm.value.email, this.loginForm.value.password)
-      .then((result) => {
-        if (result == null) {
-          console.log('logging in...');
-          this.router.navigate(['/dashboard']);
-        } else if (result.isValid == false) {
-          console.log('login error', result);
-          this.firebaseErrorMessage = result.message;
-        }
-      });
+    const { email, password } = this.loginForm.getRawValue();
+    await this.signIn(() => this.authService.loginUser(email, password));
   }
 
-  protected googleSignin(): void {
-    this.authService.googleSignin();
+  protected async googleSignin(): Promise<void> {
+    await this.signIn(() => this.authService.googleSignin());
+  }
+
+  protected togglePasswordVisibility(): void {
+    this.passwordVisible.update((visible) => !visible);
+  }
+
+  private async signIn(attempt: () => Promise<void>): Promise<void> {
+    this.pending.set(true);
+    this.errorMessage.set(null);
+    try {
+      await attempt();
+    } catch (error) {
+      console.error(error);
+      this.errorMessage.set(authErrorMessage(error));
+      return;
+    } finally {
+      this.pending.set(false);
+    }
+    await this.router.navigate(['/']);
   }
 }

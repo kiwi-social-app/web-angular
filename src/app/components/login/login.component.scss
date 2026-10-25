@@ -1,7 +1,85 @@
-.login-component {
-    display: flex;
-    flex-direction: column;
-    padding: 4rem 2rem;
-    margin: auto;
-    max-width: 45rem;
+.login-page {
+  display: flex;
+  justify-content: center;
+  padding: var(--space-6) var(--space-4);
+}
+
+.login-card {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-4);
+  width: 100%;
+  max-width: 25rem;
+  padding: var(--space-6) var(--space-5);
+  box-sizing: border-box;
+}
+
+.header {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-1);
+  text-align: center;
+}
+
+.title {
+  margin: 0;
+  font: var(--mat-sys-headline-small);
+}
+
+.subtitle,
+.note {
+  margin: 0;
+  color: var(--mat-sys-on-surface-variant);
+  text-align: center;
+}
+
+.subtitle {
+  font: var(--mat-sys-body-large);
+}
+
+.note {
+  font: var(--mat-sys-body-small);
+}
+
+.error-banner {
+  display: flex;
+  align-items: flex-start;
+  gap: var(--space-2);
+  padding: var(--space-3);
+  border-radius: var(--mat-sys-corner-small);
+  background-color: var(--mat-sys-error-container);
+  color: var(--mat-sys-on-error-container);
+  font: var(--mat-sys-body-medium);
+}
+
+.login-form {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-1);
+}
+
+.submit-button {
+  height: var(--touch-target-min);
+  margin-top: var(--space-2);
+
+  mat-progress-spinner {
+    display: inline-block;
+    margin-right: var(--space-2);
+    vertical-align: middle;
   }
+}
+
+.divider {
+  display: flex;
+  align-items: center;
+  gap: var(--space-3);
+  color: var(--mat-sys-on-surface-variant);
+  font: var(--mat-sys-label-medium);
+
+  &::before,
+  &::after {
+    content: "";
+    flex: 1;
+    border-top: 1px solid var(--mat-sys-outline-variant);
+  }
+}
