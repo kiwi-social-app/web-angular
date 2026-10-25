@@ -35,8 +35,8 @@
     .publish-btn {
       width: 10rem;
       height: 2rem;
-      color: white;
-      background-color: skyblue;
+      color: var(--mat-sys-on-primary);
+      background-color: var(--mat-sys-primary);
       border: none;
       border-radius: 0.5rem;
       cursor: pointer;

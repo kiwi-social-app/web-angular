@@ -22,10 +22,10 @@
       border: none;
       border-radius: 0.5rem;
       box-shadow: none;
-      border: 0.1rem solid lightgray;
+      border: 0.1rem solid var(--mat-sys-outline-variant);
 
       &:hover {
-        box-shadow: 0px 0px 5px lightgrey;
+        box-shadow: var(--mat-sys-level2);
       }
       .card-content {
         display:flex;
@@ -41,22 +41,22 @@
               height: 2rem;
               width: 4rem;
               border: none;
-              color: white;
+              color: var(--mat-sys-on-primary);
               border-radius: 0.5rem;
               justify-content: flex-end;
               margin: auto 0 auto 0;
-              background-color: green;
+              background-color: var(--mat-sys-primary);
               cursor: pointer;
             }
             .delete-btn {
               height: 2rem;
               width: 4rem;
               border: none;
-              color: white;
+              color: var(--mat-sys-on-error);
               border-radius: 0.5rem;
               justify-content: flex-end;
               margin: auto 0 auto 0;
-              background-color: red;
+              background-color: var(--mat-sys-error);
               cursor: pointer;
             }
           }

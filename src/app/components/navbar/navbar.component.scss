@@ -8,7 +8,7 @@
     flex-direction: row;
     justify-content: space-between;
     padding: 1rem 1rem;
-    background-color: white;
+    background-color: var(--mat-sys-surface-container);
     gap: 2rem;
     width: 97vw;
 
@@ -18,7 +18,7 @@
       gap: 1rem;
       padding: 1rem 0.5rem;
       cursor: pointer;
-      color: black;
+      color: var(--mat-sys-on-surface);
 
       svg {
         height: 100%;
@@ -43,7 +43,7 @@
         cursor: pointer;
         align-items: flex-start;
         gap: 0.5rem;
-        color: black;
+        color: var(--mat-sys-on-surface);
 
         mat-icon {
           font-size: 1.5rem;
@@ -57,6 +57,10 @@
 
   a {
     vertical-align: middle;
+  }
+
+  .theme-toggle {
+    align-self: center;
   }
 
   .main-content {

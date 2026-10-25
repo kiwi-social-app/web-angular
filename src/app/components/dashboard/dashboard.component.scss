@@ -2,7 +2,7 @@
   display: flex;
   flex-direction: column;
   max-width: 45rem;
-  background-color: white;
+  background-color: var(--mat-sys-surface-container-low);
   border-radius: 1rem;
   height: 100%;
 
@@ -20,22 +20,22 @@
         height: 2rem;
         width: 6rem;
         border: none;
-        color: white;
+        color: var(--mat-sys-on-primary);
         border-radius: 0.5rem;
         justify-content: flex-end;
         margin: auto 0 auto 0;
-        background-color: green;
+        background-color: var(--mat-sys-primary);
         cursor: pointer;
       }
       .signout-btn {
         height: 2rem;
         width: 6rem;
         border: none;
-        color: white;
+        color: var(--mat-sys-on-error);
         border-radius: 0.5rem;
         justify-content: flex-end;
         margin: auto 0 auto 0;
-        background-color: red;
+        background-color: var(--mat-sys-error);
         cursor: pointer;
       }
     }
@@ -59,15 +59,15 @@
         .edit-input {
           width: 15rem;
           height: 2rem;
-          border: 1px solid skyblue;
+          border: 1px solid var(--mat-sys-outline);
           border-radius: 0.5rem;
         }
       }
       .publish-btn {
         width: 10rem;
         height: 2rem;
-        color: white;
-        background-color: skyblue;
+        color: var(--mat-sys-on-primary);
+        background-color: var(--mat-sys-primary);
         border: none;
         border-radius: 0.5rem;
         cursor: pointer;
