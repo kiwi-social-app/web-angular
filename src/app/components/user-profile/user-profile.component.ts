@@ -38,6 +38,10 @@ export class UserProfileComponent {
       firstValueFrom(this.userService.getUserByID(params.id)),
   });
 
+  protected readonly viewer = resource({
+    loader: () => firstValueFrom(this.userService.getCurrentUser()),
+  });
+
   protected readonly posts: ResourceRef<Post[] | undefined> = resource({
     params: () => ({ id: this.userId() }),
     loader: ({ params }) =>

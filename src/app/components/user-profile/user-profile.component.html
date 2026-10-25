@@ -17,7 +17,11 @@
       } @else {
         <div class="posts-list">
           @for (post of postList; track post.id) {
-            <app-post-card [post]="post"></app-post-card>
+            <app-post-card
+              [currentUserId]="viewer.value()?.id"
+              [post]="post"
+              (deleted)="posts.reload()"
+            />
           }
         </div>
       }

@@ -14,6 +14,7 @@ import { CommentListComponent } from '../comment-list/comment-list.component';
 import { DatePipe } from '@angular/common';
 import { firstValueFrom } from 'rxjs';
 import { MatButton } from '@angular/material/button';
+import { AvatarComponent } from '../avatar/avatar.component';
 import { MatIcon } from '@angular/material/icon';
 import { NewCommentComponent } from '../new-comment/new-comment.component';
 import { CommentService } from '../../services/comment.service';
@@ -27,6 +28,7 @@ import { Comment } from '../../models/comment.model';
   standalone: true,
   changeDetection: ChangeDetectionStrategy.Eager,
   imports: [
+    AvatarComponent,
     MatButton,
     CommentListComponent,
     DatePipe,

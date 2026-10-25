@@ -1,7 +1,39 @@
 <article class="post-card">
-  <a class="author-link" [routerLink]="['/profile', post.author.id]">
-    {{ post.author.username }}
-  </a>
+  <header class="header">
+    <app-avatar [name]="post.author.username" />
+    <div class="meta">
+      <a class="author-link" [routerLink]="['/profile', post.author.id]">
+        {{ post.author.username }}
+      </a>
+      <time
+        class="time"
+        [attr.datetime]="post.createdAt"
+        [matTooltip]="post.createdAt | date: 'medium'"
+        >{{ post.createdAt | relativeTime }}</time
+      >
+    </div>
+    @if (isOwner) {
+      <button
+        mat-icon-button
+        type="button"
+        class="owner-menu"
+        aria-label="Post options"
+        [matMenuTriggerFor]="ownerMenu"
+      >
+        <mat-icon>more_vert</mat-icon>
+      </button>
+      <mat-menu #ownerMenu="matMenu" xPosition="before">
+        <a mat-menu-item [routerLink]="['/post-edit', post.id]">
+          <mat-icon>edit</mat-icon>
+          <span>Edit</span>
+        </a>
+        <button mat-menu-item type="button" (click)="deletePost()">
+          <mat-icon>delete</mat-icon>
+          <span>Delete</span>
+        </button>
+      </mat-menu>
+    }
+  </header>
   <p class="post-body">
     <a class="post-link" [routerLink]="['/posts', post.id]">{{ post.body }}</a>
   </p>

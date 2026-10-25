@@ -13,14 +13,14 @@
           <mat-icon>add</mat-icon>
         </button>
         <div class="list">
-          @for (chat of chats$ | async; track $index) {
+          @for (chat of chats$ | async; track chat.id) {
             <mat-card
               appearance="outlined"
               class="chat-card"
               (click)="onChatClick(chat)"
             >
               <mat-card-content class="chat-card-content">
-                @for (participant of chat.participants; track $index) {
+                @for (participant of chat.participants; track participant.id) {
                   @if (participant.id !== currentUser.uid) {
                     <span>{{ participant.username }}</span>
                   }
@@ -36,7 +36,7 @@
             <h2>
               @for (
                 participant of selectedChat.participants;
-                track $index;
+                track participant.id;
                 let last = $last
               ) {
                 @if (participant.id !== currentUser.uid) {

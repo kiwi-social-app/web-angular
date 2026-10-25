@@ -15,9 +15,13 @@
         <mat-icon>search</mat-icon>
       </button>
     </mat-form-field>
-    @for (post of searchResults(); track $index) {
+    @for (post of searchResults(); track post.id) {
       <div class="card-container">
-        <app-post-card [currentUserId]="user.id" [post]="post"></app-post-card>
+        <app-post-card
+          [currentUserId]="user.id"
+          [post]="post"
+          (deleted)="removeResult($event)"
+        />
       </div>
     }
   </div>

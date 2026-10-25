@@ -19,9 +19,13 @@
       </button>
     </div>
 
-    @for (post of sortedPosts(); track $index) {
+    @for (post of sortedPosts(); track post.id) {
       <div class="card-container">
-        <app-post-card [currentUserId]="user.id" [post]="post"></app-post-card>
+        <app-post-card
+          [currentUserId]="user.id"
+          [post]="post"
+          (deleted)="posts.reload()"
+        />
       </div>
     }
   </div>

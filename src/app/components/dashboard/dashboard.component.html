@@ -75,9 +75,17 @@
       }
     </div>
 
-    <app-user-posts
-      (onPostChange)="fetchPosts()"
-      [userPosts]="posts"
-    ></app-user-posts>
+    <section class="your-posts">
+      <h2>Your posts</h2>
+      @for (post of posts; track post.id) {
+        <app-post-card
+          [currentUserId]="currentUser.id"
+          [post]="post"
+          (deleted)="fetchPosts()"
+        />
+      } @empty {
+        <p class="empty">You haven't posted anything yet.</p>
+      }
+    </section>
   }
 </div>

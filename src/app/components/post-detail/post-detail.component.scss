@@ -29,9 +29,30 @@
       width: 100%;
       margin: auto;
 
-      & > * {
-        padding-left: 2rem;
-        padding-right: 2rem;
+      .post-header {
+        display: flex;
+        align-items: center;
+        gap: var(--space-3);
+      }
+
+      .meta {
+        display: flex;
+        flex-direction: column;
+      }
+
+      .author-link {
+        font: var(--mat-sys-title-small);
+      }
+
+      .time {
+        color: var(--mat-sys-on-surface-variant);
+        font: var(--mat-sys-body-small);
+      }
+
+      .post-body {
+        margin: 0;
+        font: var(--mat-sys-body-large);
+        overflow-wrap: anywhere;
       }
     }
 

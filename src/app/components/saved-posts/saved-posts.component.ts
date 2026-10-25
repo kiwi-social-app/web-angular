@@ -46,4 +46,10 @@ export class SavedPostsComponent {
       });
     });
   }
+
+  protected removeFavorite(postId: string): void {
+    this.favoritePosts.update((posts) =>
+      posts.filter((post) => post.id !== postId),
+    );
+  }
 }

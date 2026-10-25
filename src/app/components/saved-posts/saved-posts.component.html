@@ -1,9 +1,13 @@
 @if (currentUser()?.id) {
   <div class="saved-posts-component">
     <h1>Saved Posts</h1>
-    @for (post of favoritePosts(); track $index) {
+    @for (post of favoritePosts(); track post.id) {
       <div class="card-container">
-        <app-post-card [post]="post"></app-post-card>
+        <app-post-card
+          [currentUserId]="currentUser()!.id"
+          [post]="post"
+          (deleted)="removeFavorite($event)"
+        />
       </div>
     }
   </div>

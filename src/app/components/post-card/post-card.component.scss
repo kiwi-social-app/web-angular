@@ -4,23 +4,58 @@
   position: relative;
   display: flex;
   flex-direction: column;
-  padding: 1rem 1rem 0;
+  gap: var(--space-2);
+  padding: var(--space-4) var(--space-4) var(--space-1);
   background-color: var(--mat-sys-surface-container-low);
-  border-radius: 0.5rem;
+  border-radius: var(--mat-sys-corner-medium);
 
   &:has(.post-link:hover) {
     background-color: var(--mat-sys-surface-container);
   }
 }
 
-.author-link,
+.header,
 .actions {
   position: relative;
   z-index: 1;
 }
 
+.header {
+  display: flex;
+  align-items: center;
+  gap: var(--space-3);
+  align-self: stretch;
+  pointer-events: none;
+}
+
+.author-link,
+.time,
+.owner-menu {
+  pointer-events: auto;
+}
+
+.meta {
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+  min-width: 0;
+}
+
 .author-link {
   align-self: flex-start;
+  font: var(--mat-sys-title-small);
+}
+
+.time {
+  align-self: flex-start;
+  color: var(--mat-sys-on-surface-variant);
+  font: var(--mat-sys-body-small);
+}
+
+.post-body {
+  margin: 0;
+  font: var(--mat-sys-body-large);
+  overflow-wrap: anywhere;
 }
 
 .post-link {
@@ -38,6 +73,7 @@
 .actions {
   display: flex;
   justify-content: space-between;
+  margin-inline: calc(-1 * var(--space-2));
 
   .like-btn {
     color: var(--mat-sys-primary);

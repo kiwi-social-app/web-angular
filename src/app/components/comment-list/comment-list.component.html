@@ -2,7 +2,7 @@
   <div class="list">
     @if (comments()?.length) {
       <div>
-        @for (comment of comments(); track $index) {
+        @for (comment of comments(); track comment.id) {
           <div class="comment-card">
             <div class="comment-header">
               <a

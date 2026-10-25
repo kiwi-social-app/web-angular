@@ -19,7 +19,7 @@ import { User } from '../../models/user.model';
 import { AuthService } from '../../services/auth.service';
 import { PostService } from '../../services/post.service';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
-import { UserPostsComponent } from '../user-posts/user-posts.component';
+import { PostCardComponent } from '../post-card/post-card.component';
 import { MatButton } from '@angular/material/button';
 import { UserUpdate } from '../../models/userUpdate.model';
 
@@ -29,7 +29,7 @@ import { UserUpdate } from '../../models/userUpdate.model';
   styleUrls: ['./dashboard.component.scss'],
   standalone: true,
   changeDetection: ChangeDetectionStrategy.Eager,
-  imports: [UserPostsComponent, ReactiveFormsModule, MatButton],
+  imports: [PostCardComponent, ReactiveFormsModule, MatButton],
 })
 export class DashboardComponent implements OnInit {
   @Output() onUpdateProfile: EventEmitter<User> = new EventEmitter();

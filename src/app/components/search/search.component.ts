@@ -89,4 +89,10 @@ export class SearchComponent implements OnInit {
         this.searchResults.set(data);
       });
   }
+
+  protected removeResult(postId: string): void {
+    this.searchResults.update((posts) =>
+      posts.filter((post) => post.id !== postId),
+    );
+  }
 }

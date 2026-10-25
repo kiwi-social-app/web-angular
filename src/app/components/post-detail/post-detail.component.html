@@ -5,14 +5,21 @@
     <h1>Post</h1>
     <div class="post-container">
       <div class="text-content">
-        <p>{{ currentPost.createdAt | date: "medium" }}</p>
-        <p>{{ currentPost.body }}</p>
-        <a
-          class="author-link"
-          [routerLink]="['/profile', currentPost.author.id]"
-        >
-          {{ currentPost.author.username ?? "no username" }}
-        </a>
+        <header class="post-header">
+          <app-avatar [name]="currentPost.author.username" />
+          <div class="meta">
+            <a
+              class="author-link"
+              [routerLink]="['/profile', currentPost.author.id]"
+            >
+              {{ currentPost.author.username ?? "no username" }}
+            </a>
+            <time class="time" [attr.datetime]="currentPost.createdAt">{{
+              currentPost.createdAt | date: "medium"
+            }}</time>
+          </div>
+        </header>
+        <p class="post-body">{{ currentPost.body }}</p>
       </div>
       <div class="actions">
         <button mat-button type="button">

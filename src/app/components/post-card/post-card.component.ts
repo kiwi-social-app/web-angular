@@ -3,15 +3,22 @@ import {
   inject,
   Input,
   OnInit,
+  output,
   ChangeDetectionStrategy,
 } from '@angular/core';
+import { DatePipe } from '@angular/common';
 import { RouterLink } from '@angular/router';
-import { Post } from '../../models/post.model';
-import { User } from '../../models/user.model';
-import { Observable, of, take } from 'rxjs';
+import { filter, switchMap, take } from 'rxjs';
 import { MatButton, MatIconButton } from '@angular/material/button';
+import { MatDialog } from '@angular/material/dialog';
 import { MatIcon } from '@angular/material/icon';
+import { MatMenu, MatMenuItem, MatMenuTrigger } from '@angular/material/menu';
+import { MatTooltip } from '@angular/material/tooltip';
+import { Post } from '../../models/post.model';
 import { PostService } from '../../services/post.service';
+import { RelativeTimePipe } from '../../pipes/relative-time.pipe';
+import { AvatarComponent } from '../avatar/avatar.component';
+import { confirmPostDeletion } from '../modals/confirm-dialog/confirm-dialog.component';
 
 @Component({
   selector: 'app-post-card',
@@ -19,15 +26,28 @@ import { PostService } from '../../services/post.service';
   styleUrls: ['./post-card.component.scss'],
   standalone: true,
   changeDetection: ChangeDetectionStrategy.Eager,
-  imports: [MatButton, MatIconButton, MatIcon, RouterLink],
+  imports: [
+    AvatarComponent,
+    DatePipe,
+    MatButton,
+    MatIconButton,
+    MatIcon,
+    MatMenu,
+    MatMenuItem,
+    MatMenuTrigger,
+    MatTooltip,
+    RelativeTimePipe,
+    RouterLink,
+  ],
 })
 export class PostCardComponent implements OnInit {
   @Input() post!: Post;
   @Input() currentUserId?: string;
+  readonly deleted = output<string>();
 
   private readonly postService: PostService = inject(PostService);
+  private readonly dialog = inject(MatDialog);
 
-  protected author: Observable<User | undefined> = of();
   protected isFavorite: boolean = false;
   protected isLiked: boolean = false;
   protected isDisliked: boolean = false;
@@ -38,6 +58,19 @@ export class PostCardComponent implements OnInit {
       this.isLiked = this.checkIfLiked(this.currentUserId);
       this.isDisliked = this.checkIfDisliked(this.currentUserId);
     }
+  }
+
+  protected get isOwner(): boolean {
+    return !!this.currentUserId && this.currentUserId === this.post.author.id;
+  }
+
+  protected deletePost(): void {
+    confirmPostDeletion(this.dialog)
+      .pipe(
+        filter(Boolean),
+        switchMap(() => this.postService.deletePost(this.post.id)),
+      )
+      .subscribe(() => this.deleted.emit(this.post.id));
   }
 
   protected addToFavorites(postId: string): void {
