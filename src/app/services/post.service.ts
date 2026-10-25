@@ -1,7 +1,7 @@
 import { inject, Injectable } from '@angular/core';
 
 import { HttpClient, HttpHeaders, HttpResponse } from '@angular/common/http';
-import { catchError, Observable, of, tap } from 'rxjs';
+import { Observable } from 'rxjs';
 import { Post } from '../models/post.model';
 import { PostCreation } from '../models/postCreation.model';
 import { environment } from '../../environments/environment';
@@ -40,15 +40,7 @@ export class PostService {
   public updatePost(id: string, body: string) {
     const url = `${this.postsApiUrl}/${id}`;
 
-    return this.http.put(url, { body }).pipe(
-      tap((response) => {
-        console.log(response);
-      }),
-      catchError((error) => {
-        console.log(error);
-        return of(error);
-      }),
-    );
+    return this.http.put(url, { body });
   }
 
   public favoritePost(postId: string): Observable<HttpResponse<void>> {

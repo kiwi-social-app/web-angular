@@ -17,9 +17,13 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { PostService } from '../../services/post.service';
 import { Post } from '../../models/post.model';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
+import { MatButton } from '@angular/material/button';
 import { MatDialog } from '@angular/material/dialog';
 import { filter, switchMap } from 'rxjs';
 import { confirmPostDeletion } from '../modals/confirm-dialog/confirm-dialog.component';
+import { LoadingStateComponent } from '../loading-state/loading-state.component';
+import { StateMessageComponent } from '../state-message/state-message.component';
+import { NotificationService } from '../../services/notification.service';
 
 @Component({
   selector: 'app-post-edit',
@@ -27,7 +31,12 @@ import { confirmPostDeletion } from '../modals/confirm-dialog/confirm-dialog.com
   styleUrls: ['./post-edit.component.scss'],
   standalone: true,
   changeDetection: ChangeDetectionStrategy.Eager,
-  imports: [ReactiveFormsModule],
+  imports: [
+    LoadingStateComponent,
+    MatButton,
+    ReactiveFormsModule,
+    StateMessageComponent,
+  ],
 })
 export class PostEditComponent implements OnInit {
   @Output() onUpdatePost: EventEmitter<Post> = new EventEmitter();
@@ -38,9 +47,11 @@ export class PostEditComponent implements OnInit {
   private readonly route: ActivatedRoute = inject(ActivatedRoute);
   private readonly destroyRef: DestroyRef = inject(DestroyRef);
   private readonly dialog = inject(MatDialog);
+  private readonly notifications = inject(NotificationService);
 
   protected updatePostForm!: FormGroup;
   public post!: Post;
+  protected loadFailed = false;
   public postID: string | null = String(this.route.snapshot.paramMap.get('id'));
 
   ngOnInit(): void {
@@ -55,10 +66,14 @@ export class PostEditComponent implements OnInit {
 
   protected getPost() {
     if (this.postID != null) {
-      this.postService.getPostByID(this.postID).subscribe((post: any) => {
-        this.post = post;
-        this.initialiseForm();
-        this.updatePostForm.patchValue({ body: post.body });
+      this.loadFailed = false;
+      this.postService.getPostByID(this.postID).subscribe({
+        next: (post) => {
+          this.post = post;
+          this.initialiseForm();
+          this.updatePostForm.patchValue({ body: post.body });
+        },
+        error: () => (this.loadFailed = true),
       });
     }
   }
@@ -69,7 +84,14 @@ export class PostEditComponent implements OnInit {
       this.postService
         .updatePost(this.postID, body)
         .pipe(takeUntilDestroyed(this.destroyRef))
-        .subscribe((response: any) => response);
+        .subscribe({
+          next: () => {
+            this.notifications.show('Post updated');
+            this.router.navigate(['/posts', this.postID]);
+          },
+          error: () =>
+            this.notifications.show("Couldn't update the post. Try again."),
+        });
     }
   }
 
@@ -79,6 +101,10 @@ export class PostEditComponent implements OnInit {
         filter(Boolean),
         switchMap(() => this.postService.deletePost(postID)),
       )
-      .subscribe(() => this.router.navigate(['/']));
+      .subscribe({
+        next: () => this.router.navigate(['/']),
+        error: () =>
+          this.notifications.show("Couldn't delete the post. Try again."),
+      });
   }
 }

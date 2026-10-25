@@ -1,4 +1,15 @@
-@if (user.hasValue()) {
+@if (user.error()) {
+  <app-state-message
+    role="alert"
+    icon="error_outline"
+    heading="Couldn't load this profile"
+    message="The user may not exist, or there was a connection problem."
+  >
+    <button mat-stroked-button type="button" (click)="user.reload()">
+      Try again
+    </button>
+  </app-state-message>
+} @else if (user.hasValue()) {
   @let currentUser = user.value()!;
   <div class="user-profile-component">
     <div class="profile-data-block">
@@ -10,21 +21,32 @@
     </div>
 
     <h2 class="posts-header">Posts</h2>
-    @if (posts.hasValue()) {
-      @let postList = posts.value()!;
-      @if (postList.length === 0) {
-        <p class="empty">No posts yet</p>
-      } @else {
-        <div class="posts-list">
-          @for (post of postList; track post.id) {
-            <app-post-card
-              [currentUserId]="viewer.value()?.id"
-              [post]="post"
-              (deleted)="posts.reload()"
-            />
-          }
-        </div>
-      }
+    @if (posts.error()) {
+      <app-state-message
+        role="alert"
+        icon="error_outline"
+        heading="Couldn't load posts"
+      >
+        <button mat-stroked-button type="button" (click)="posts.reload()">
+          Try again
+        </button>
+      </app-state-message>
+    } @else if (posts.hasValue()) {
+      <div class="posts-list">
+        @for (post of posts.value(); track post.id) {
+          <app-post-card
+            [currentUserId]="viewerId()"
+            [post]="post"
+            (deleted)="posts.reload()"
+          />
+        } @empty {
+          <p class="empty">No posts yet</p>
+        }
+      </div>
+    } @else {
+      <app-loading-state label="Loading posts…" />
     }
   </div>
+} @else {
+  <app-loading-state label="Loading profile…" />
 }

@@ -87,5 +87,18 @@
         <p class="empty">You haven't posted anything yet.</p>
       }
     </section>
+  } @else if (loadFailed) {
+    <app-state-message
+      role="alert"
+      icon="error_outline"
+      heading="Couldn't load your profile"
+      message="Check your connection and try again."
+    >
+      <button mat-stroked-button type="button" (click)="getUser()">
+        Try again
+      </button>
+    </app-state-message>
+  } @else {
+    <app-loading-state label="Loading your profile…" />
   }
 </div>

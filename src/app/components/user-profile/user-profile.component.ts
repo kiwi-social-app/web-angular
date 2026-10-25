@@ -13,7 +13,10 @@ import { PostService } from '../../services/post.service';
 import { UserService } from '../../services/user.service';
 import { User } from '../../models/user.model';
 import { Post } from '../../models/post.model';
+import { MatButton } from '@angular/material/button';
 import { PostCardComponent } from '../post-card/post-card.component';
+import { LoadingStateComponent } from '../loading-state/loading-state.component';
+import { StateMessageComponent } from '../state-message/state-message.component';
 
 @Component({
   selector: 'app-user-profile',
@@ -21,7 +24,12 @@ import { PostCardComponent } from '../post-card/post-card.component';
   styleUrls: ['./user-profile.component.scss'],
   standalone: true,
   changeDetection: ChangeDetectionStrategy.Eager,
-  imports: [PostCardComponent],
+  imports: [
+    LoadingStateComponent,
+    MatButton,
+    PostCardComponent,
+    StateMessageComponent,
+  ],
 })
 export class UserProfileComponent {
   private readonly route: ActivatedRoute = inject(ActivatedRoute);
@@ -38,9 +46,13 @@ export class UserProfileComponent {
       firstValueFrom(this.userService.getUserByID(params.id)),
   });
 
-  protected readonly viewer = resource({
+  private readonly viewer = resource({
     loader: () => firstValueFrom(this.userService.getCurrentUser()),
   });
+
+  protected readonly viewerId = computed(() =>
+    this.viewer.hasValue() ? this.viewer.value()?.id : undefined,
+  );
 
   protected readonly posts: ResourceRef<Post[] | undefined> = resource({
     params: () => ({ id: this.userId() }),

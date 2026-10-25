@@ -1,7 +1,7 @@
 import { inject, Injectable } from '@angular/core';
 
 import { HttpClient, HttpParams } from '@angular/common/http';
-import { catchError, map, Observable, of } from 'rxjs';
+import { map, Observable } from 'rxjs';
 import { Comment } from '../models/comment.model';
 import { environment } from '../../environments/environment';
 
@@ -26,16 +26,6 @@ export class CommentService {
 
     const params = new HttpParams().set('postId', postID);
 
-    return this.http
-      .post(this.commentsUrl, comment, {
-        params,
-      })
-      .pipe(
-        map((response) => response),
-        catchError((error) => {
-          console.log(error);
-          return of(error);
-        }),
-      );
+    return this.http.post(this.commentsUrl, comment, { params });
   }
 }

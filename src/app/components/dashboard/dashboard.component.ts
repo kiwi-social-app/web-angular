@@ -22,6 +22,9 @@ import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { PostCardComponent } from '../post-card/post-card.component';
 import { MatButton } from '@angular/material/button';
 import { UserUpdate } from '../../models/userUpdate.model';
+import { LoadingStateComponent } from '../loading-state/loading-state.component';
+import { StateMessageComponent } from '../state-message/state-message.component';
+import { NotificationService } from '../../services/notification.service';
 
 @Component({
   selector: 'app-dashboard',
@@ -29,7 +32,13 @@ import { UserUpdate } from '../../models/userUpdate.model';
   styleUrls: ['./dashboard.component.scss'],
   standalone: true,
   changeDetection: ChangeDetectionStrategy.Eager,
-  imports: [PostCardComponent, ReactiveFormsModule, MatButton],
+  imports: [
+    LoadingStateComponent,
+    MatButton,
+    PostCardComponent,
+    ReactiveFormsModule,
+    StateMessageComponent,
+  ],
 })
 export class DashboardComponent implements OnInit {
   @Output() onUpdateProfile: EventEmitter<User> = new EventEmitter();
@@ -39,6 +48,7 @@ export class DashboardComponent implements OnInit {
   private readonly postService: PostService = inject(PostService);
   private readonly fb: FormBuilder = inject(FormBuilder);
   private readonly destroyRef: DestroyRef = inject(DestroyRef);
+  private readonly notifications = inject(NotificationService);
 
   protected editProfileForm!: FormGroup;
   protected posts: Post[] = [];
@@ -46,6 +56,7 @@ export class DashboardComponent implements OnInit {
   protected currentUser!: any;
   protected updatedUser!: UserUpdate;
   protected editMode: boolean = false;
+  protected loadFailed = false;
 
   ngOnInit(): void {
     this.getUser();
@@ -61,20 +72,24 @@ export class DashboardComponent implements OnInit {
   }
 
   protected getUser(): void {
+    this.loadFailed = false;
     this.authService
       .authState()
       .pipe(takeUntilDestroyed(this.destroyRef))
       .subscribe((user) => {
         if (user) {
-          this.userService.getUserByID(user.uid).subscribe((userData: User) => {
-            this.currentUser = userData;
-            this.initialiseForm();
-            this.editProfileForm.patchValue({
-              username: userData.username,
-              email: userData.email,
-              firstname: userData.firstname,
-              lastname: userData.lastname,
-            });
+          this.userService.getUserByID(user.uid).subscribe({
+            next: (userData: User) => {
+              this.currentUser = userData;
+              this.initialiseForm();
+              this.editProfileForm.patchValue({
+                username: userData.username,
+                email: userData.email,
+                firstname: userData.firstname,
+                lastname: userData.lastname,
+              });
+            },
+            error: () => (this.loadFailed = true),
           });
           this.fetchPosts();
         }
@@ -84,7 +99,8 @@ export class DashboardComponent implements OnInit {
   protected fetchPosts(): void {
     this.postService.getCurrentUserPosts().subscribe({
       next: (posts) => (this.posts = posts),
-      error: (err) => console.error('Failed to load user posts', err),
+      error: () =>
+        this.notifications.show("Couldn't load your posts. Try again later."),
     });
   }
 
@@ -92,7 +108,15 @@ export class DashboardComponent implements OnInit {
     this.updatedUser = this.editProfileForm.getRawValue();
     this.userService
       .updateUser(this.currentUser.id, this.updatedUser)
-      .subscribe((response: any) => response);
+      .subscribe({
+        next: () => {
+          this.currentUser = { ...this.currentUser, ...this.updatedUser };
+          this.editMode = false;
+          this.notifications.show('Profile updated');
+        },
+        error: () =>
+          this.notifications.show("Couldn't update your profile. Try again."),
+      });
   }
 
   protected editBtn(): void {

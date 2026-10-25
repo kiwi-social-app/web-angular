@@ -17,6 +17,8 @@ import { MatButton } from '@angular/material/button';
 import { AvatarComponent } from '../avatar/avatar.component';
 import { MatIcon } from '@angular/material/icon';
 import { NewCommentComponent } from '../new-comment/new-comment.component';
+import { LoadingStateComponent } from '../loading-state/loading-state.component';
+import { StateMessageComponent } from '../state-message/state-message.component';
 import { CommentService } from '../../services/comment.service';
 import { Post } from '../../models/post.model';
 import { Comment } from '../../models/comment.model';
@@ -32,9 +34,11 @@ import { Comment } from '../../models/comment.model';
     MatButton,
     CommentListComponent,
     DatePipe,
+    LoadingStateComponent,
     MatIcon,
     NewCommentComponent,
     RouterLink,
+    StateMessageComponent,
   ],
 })
 export class PostDetailComponent {
@@ -61,18 +65,24 @@ export class PostDetailComponent {
   });
 
   protected readonly sortedComments: Signal<Comment[]> = computed(() => {
-    let comments: Comment[] | undefined = this.comments.value();
-    if (!comments) return [];
-    return comments.toSorted(
-      (a, b) =>
-        new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime(),
-    );
+    if (!this.comments.hasValue()) return [];
+    return this.comments
+      .value()
+      .toSorted(
+        (a, b) =>
+          new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime(),
+      );
   });
 
   protected replyInput = false;
 
   protected onReplyInputDisplayChange() {
     this.replyInput = !this.replyInput;
+  }
+
+  protected reload(): void {
+    this.post.reload();
+    this.comments.reload();
   }
 
   protected handleNewComment(): void {

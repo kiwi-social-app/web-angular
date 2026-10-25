@@ -1,7 +1,7 @@
 import { inject, Injectable } from '@angular/core';
 
 import { HttpClient, HttpHeaders } from '@angular/common/http';
-import { catchError, from, Observable, of, switchMap } from 'rxjs';
+import { from, Observable, of, switchMap } from 'rxjs';
 import { User } from '../models/user.model';
 import { getAuth } from 'firebase/auth';
 import { environment } from '../../environments/environment';
@@ -24,31 +24,16 @@ export class UserService {
 
   public updateUser(userID: string, user: UserUpdate): Observable<any> {
     const url = `${this.usersUrl}/${userID}`;
-    return this.http.put(url, user, httpOptions).pipe(
-      catchError((error) => {
-        console.log(error);
-        return of(error);
-      }),
-    );
+    return this.http.put(url, user, httpOptions);
   }
 
-  public getUserByID(userID: string): Observable<User | any> {
+  public getUserByID(userID: string): Observable<User> {
     const url = `${this.usersUrl}/${userID}`;
-    return this.http.get<User>(url, httpOptions).pipe(
-      catchError((error) => {
-        console.log(error);
-        return of(error);
-      }),
-    );
+    return this.http.get<User>(url, httpOptions);
   }
 
   public getUsers(): Observable<User[]> {
-    return this.http.get<User[]>(this.usersUrl).pipe(
-      catchError((error) => {
-        console.log(error);
-        return of(error);
-      }),
-    );
+    return this.http.get<User[]>(this.usersUrl);
   }
 
   public getCurrentUser(): Observable<User | null> {
@@ -58,10 +43,6 @@ export class UserService {
           ? of(null)
           : this.http.get<User>(`${this.usersUrl}/me`, httpOptions),
       ),
-      catchError((error) => {
-        console.log(error);
-        return of(error);
-      }),
     );
   }
 }

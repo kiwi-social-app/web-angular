@@ -15,6 +15,7 @@ import { MatIcon } from '@angular/material/icon';
 import { MatMenu, MatMenuItem, MatMenuTrigger } from '@angular/material/menu';
 import { MatTooltip } from '@angular/material/tooltip';
 import { Post } from '../../models/post.model';
+import { NotificationService } from '../../services/notification.service';
 import { PostService } from '../../services/post.service';
 import { RelativeTimePipe } from '../../pipes/relative-time.pipe';
 import { AvatarComponent } from '../avatar/avatar.component';
@@ -47,6 +48,7 @@ export class PostCardComponent implements OnInit {
 
   private readonly postService: PostService = inject(PostService);
   private readonly dialog = inject(MatDialog);
+  private readonly notifications = inject(NotificationService);
 
   protected isFavorite: boolean = false;
   protected isLiked: boolean = false;
@@ -70,7 +72,11 @@ export class PostCardComponent implements OnInit {
         filter(Boolean),
         switchMap(() => this.postService.deletePost(this.post.id)),
       )
-      .subscribe(() => this.deleted.emit(this.post.id));
+      .subscribe({
+        next: () => this.deleted.emit(this.post.id),
+        error: () =>
+          this.notifications.show("Couldn't delete the post. Try again."),
+      });
   }
 
   protected addToFavorites(postId: string): void {
@@ -83,9 +89,8 @@ export class PostCardComponent implements OnInit {
             this.isFavorite = true;
           }
         },
-        error: (err) => {
-          console.error('❌ Error favoriting post:', err);
-        },
+        error: () =>
+          this.notifications.show("Couldn't save the post. Try again."),
       });
   }
 
@@ -99,9 +104,10 @@ export class PostCardComponent implements OnInit {
             this.isFavorite = false;
           }
         },
-        error: (err) => {
-          console.error('❌ Error removing post from favorites:', err);
-        },
+        error: () =>
+          this.notifications.show(
+            "Couldn't remove the post from your saved posts. Try again.",
+          ),
       });
   }
 
@@ -116,9 +122,8 @@ export class PostCardComponent implements OnInit {
             this.isDisliked = false;
           }
         },
-        error: (err) => {
-          console.error('❌ Error liking post:', err);
-        },
+        error: () =>
+          this.notifications.show("Couldn't like the post. Try again."),
       });
   }
 
@@ -133,9 +138,8 @@ export class PostCardComponent implements OnInit {
             this.isLiked = false;
           }
         },
-        error: (err) => {
-          console.error('❌ Error disliking post:', err);
-        },
+        error: () =>
+          this.notifications.show("Couldn't dislike the post. Try again."),
       });
   }
 
@@ -149,9 +153,8 @@ export class PostCardComponent implements OnInit {
             this.isLiked = false;
           }
         },
-        error: (err) => {
-          console.error('❌ Error removing post from liked posts:', err);
-        },
+        error: () =>
+          this.notifications.show("Couldn't remove your like. Try again."),
       });
   }
 
@@ -165,9 +168,8 @@ export class PostCardComponent implements OnInit {
             this.isDisliked = false;
           }
         },
-        error: (err) => {
-          console.error('❌ Error removing post from disliked posts:', err);
-        },
+        error: () =>
+          this.notifications.show("Couldn't remove your dislike. Try again."),
       });
   }
 

@@ -1,28 +1,53 @@
-@if (searchResults() && currentUser.hasValue()) {
-  @let user = currentUser.value()!;
+<div class="search-component">
+  <h1>Search</h1>
+  <mat-form-field appearance="outline" class="search-bar">
+    <mat-label>Search</mat-label>
+    <input
+      matInput
+      type="text"
+      [formControl]="searchControl"
+      placeholder="Type to search..."
+    />
+    <button mat-icon-button matSuffix aria-label="Search">
+      <mat-icon>search</mat-icon>
+    </button>
+  </mat-form-field>
 
-  <div class="search-component">
-    <h1>Search</h1>
-    <mat-form-field appearance="outline" class="search-bar">
-      <mat-label>Search</mat-label>
-      <input
-        matInput
-        type="text"
-        [formControl]="searchControl"
-        placeholder="Type to search..."
-      />
-      <button mat-icon-button matSuffix aria-label="Search">
-        <mat-icon>search</mat-icon>
-      </button>
-    </mat-form-field>
-    @for (post of searchResults(); track post.id) {
-      <div class="card-container">
-        <app-post-card
-          [currentUserId]="user.id"
-          [post]="post"
-          (deleted)="removeResult($event)"
-        />
-      </div>
+  @switch (status()) {
+    @case ("loading") {
+      <app-loading-state label="Searching…" />
     }
-  </div>
-}
+    @case ("error") {
+      <app-state-message
+        role="alert"
+        icon="error_outline"
+        heading="Search failed"
+        message="Check your connection and try again."
+      />
+    }
+    @case ("done") {
+      @for (post of searchResults(); track post.id) {
+        <div class="card-container">
+          <app-post-card
+            [currentUserId]="currentUserId()"
+            [post]="post"
+            (deleted)="removeResult($event)"
+          />
+        </div>
+      } @empty {
+        <app-state-message
+          icon="search_off"
+          heading="No matching posts"
+          message="Try different words."
+        />
+      }
+    }
+    @default {
+      <app-state-message
+        icon="search"
+        heading="Search posts"
+        message="Search finds posts by meaning, not just exact words."
+      />
+    }
+  }
+</div>

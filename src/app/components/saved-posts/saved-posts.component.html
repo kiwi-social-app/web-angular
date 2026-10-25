@@ -1,14 +1,33 @@
-@if (currentUser()?.id) {
-  <div class="saved-posts-component">
-    <h1>Saved Posts</h1>
-    @for (post of favoritePosts(); track post.id) {
+<div class="saved-posts-component">
+  <h1>Saved Posts</h1>
+  @if (favorites.error() || currentUser.error()) {
+    <app-state-message
+      role="alert"
+      icon="error_outline"
+      heading="Couldn't load your saved posts"
+      message="Check your connection and try again."
+    >
+      <button mat-stroked-button type="button" (click)="reload()">
+        Try again
+      </button>
+    </app-state-message>
+  } @else if (favorites.hasValue() && currentUser.hasValue()) {
+    @for (post of favorites.value(); track post.id) {
       <div class="card-container">
         <app-post-card
-          [currentUserId]="currentUser()!.id"
+          [currentUserId]="currentUser.value()?.id"
           [post]="post"
           (deleted)="removeFavorite($event)"
         />
       </div>
+    } @empty {
+      <app-state-message
+        icon="bookmark_border"
+        heading="No saved posts yet"
+        message="Select Save on any post to keep it here."
+      />
     }
-  </div>
-}
+  } @else {
+    <app-loading-state label="Loading saved posts…" />
+  }
+</div>

@@ -18,6 +18,9 @@ import { MatDialog, MatDialogRef } from '@angular/material/dialog';
 import { NewPostModalComponent } from '../modals/new-post-modal/new-post-modal.component';
 import { firstValueFrom, take } from 'rxjs';
 import { MatIcon } from '@angular/material/icon';
+import { NotificationService } from '../../services/notification.service';
+import { LoadingStateComponent } from '../loading-state/loading-state.component';
+import { StateMessageComponent } from '../state-message/state-message.component';
 
 @Component({
   selector: 'app-post-list',
@@ -26,7 +29,9 @@ import { MatIcon } from '@angular/material/icon';
   standalone: true,
   changeDetection: ChangeDetectionStrategy.Eager,
   imports: [
+    LoadingStateComponent,
     PostCardComponent,
+    StateMessageComponent,
     FormsModule,
     MatButton,
     MatIcon,
@@ -38,6 +43,7 @@ export class PostListComponent {
   private readonly dialog: MatDialog = inject(MatDialog);
   private readonly postService: PostService = inject(PostService);
   private readonly userService: UserService = inject(UserService);
+  private readonly notifications = inject(NotificationService);
 
   protected readonly posts: ResourceRef<Post[] | undefined> = resource({
     loader: () => firstValueFrom(this.postService.getPosts()),
@@ -49,15 +55,16 @@ export class PostListComponent {
     });
 
   protected readonly sortedPosts: Signal<Post[]> = computed(() => {
-    const posts: Post[] | undefined = this.posts.value();
-    if (!posts) {
+    if (!this.posts.hasValue()) {
       return [];
     }
 
-    return posts.toSorted(
-      (a, b) =>
-        new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime(),
-    );
+    return this.posts
+      .value()
+      .toSorted(
+        (a, b) =>
+          new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime(),
+      );
   });
 
   protected openNewPostModal() {
@@ -75,11 +82,18 @@ export class PostListComponent {
       .pipe(take(1))
       .subscribe((result) => {
         if (result) {
-          this.postService.createPost(result).subscribe(() => {
-            this.posts.reload();
+          this.postService.createPost(result).subscribe({
+            next: () => this.posts.reload(),
+            error: () =>
+              this.notifications.show("Couldn't publish your post. Try again."),
           });
         }
       });
+  }
+
+  protected reload(): void {
+    this.posts.reload();
+    this.currentUser.reload();
   }
 
   protected filterSelect() {}

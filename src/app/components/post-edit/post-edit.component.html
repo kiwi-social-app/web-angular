@@ -37,5 +37,18 @@
       </button>
     </div>
   </form>
+} @else if (loadFailed) {
+  <app-state-message
+    role="alert"
+    icon="error_outline"
+    heading="Couldn't load this post"
+    message="It may have been deleted, or there was a connection problem."
+  >
+    <button mat-stroked-button type="button" (click)="getPost()">
+      Try again
+    </button>
+  </app-state-message>
+} @else {
+  <app-loading-state label="Loading post…" />
 }
 </div>

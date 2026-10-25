@@ -19,6 +19,7 @@ import { CommentService } from '../../services/comment.service';
 import { Comment } from '../../models/comment.model';
 import { MatIconButton } from '@angular/material/button';
 import { MatIcon } from '@angular/material/icon';
+import { NotificationService } from '../../services/notification.service';
 
 @Component({
   selector: 'app-new-comment',
@@ -35,6 +36,7 @@ export class NewCommentComponent implements OnInit {
   private readonly commentService: CommentService = inject(CommentService);
   private readonly fb: FormBuilder = inject(FormBuilder);
   private readonly route: ActivatedRoute = inject(ActivatedRoute);
+  private readonly notifications = inject(NotificationService);
 
   protected newCommentForm!: FormGroup;
   private newComment!: Comment;
@@ -52,10 +54,14 @@ export class NewCommentComponent implements OnInit {
 
   createComment() {
     this.newComment = this.newCommentForm.getRawValue();
-    this.commentService
-      .createComment(this.newComment, this.postID)
-      .subscribe((response) => this.onNewComment.emit(response));
-    this.newCommentForm.reset();
+    this.commentService.createComment(this.newComment, this.postID).subscribe({
+      next: (response) => {
+        this.onNewComment.emit(response);
+        this.newCommentForm.reset();
+      },
+      error: () =>
+        this.notifications.show("Couldn't post your comment. Try again."),
+    });
   }
 
   closeInput() {

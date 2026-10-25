@@ -1,32 +1,49 @@
-@if (posts.hasValue() && currentUser.hasValue()) {
-  @let user = currentUser.value()!;
+<div class="post-list-component">
+  <h1>Home</h1>
+  <div class="controls">
+    <button
+      class="new-post-btn"
+      color="primary"
+      mat-button
+      mat-flat-button
+      type="button"
+      (click)="openNewPostModal()"
+    >
+      New Post
+    </button>
+    <button type="button" mat-icon-button (click)="filterSelect()">
+      <mat-icon>filter_list</mat-icon>
+    </button>
+  </div>
 
-  <div class="post-list-component">
-    <h1>Home</h1>
-    <div class="controls">
-      <button
-        class="new-post-btn"
-        color="primary"
-        mat-button
-        mat-flat-button
-        type="button"
-        (click)="openNewPostModal()"
-      >
-        New Post
+  @if (posts.error() || currentUser.error()) {
+    <app-state-message
+      role="alert"
+      icon="error_outline"
+      heading="Couldn't load posts"
+      message="Check your connection and try again."
+    >
+      <button mat-stroked-button type="button" (click)="reload()">
+        Try again
       </button>
-      <button type="button" mat-icon-button (click)="filterSelect()">
-        <mat-icon>filter_list</mat-icon>
-      </button>
-    </div>
-
+    </app-state-message>
+  } @else if (posts.hasValue() && currentUser.hasValue()) {
     @for (post of sortedPosts(); track post.id) {
       <div class="card-container">
         <app-post-card
-          [currentUserId]="user.id"
+          [currentUserId]="currentUser.value()?.id"
           [post]="post"
           (deleted)="posts.reload()"
         />
       </div>
+    } @empty {
+      <app-state-message
+        icon="dynamic_feed"
+        heading="No posts yet"
+        message="Be the first to share something with New Post."
+      />
     }
-  </div>
-}
+  } @else {
+    <app-loading-state label="Loading posts…" />
+  }
+</div>

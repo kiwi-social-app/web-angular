@@ -1,18 +1,16 @@
 import {
-  Component,
-  effect,
-  inject,
-  Signal,
-  signal,
-  WritableSignal,
   ChangeDetectionStrategy,
+  Component,
+  inject,
+  resource,
 } from '@angular/core';
-import { toSignal } from '@angular/core/rxjs-interop';
+import { firstValueFrom } from 'rxjs';
+import { MatButton } from '@angular/material/button';
 import { PostService } from '../../services/post.service';
 import { UserService } from '../../services/user.service';
 import { PostCardComponent } from '../post-card/post-card.component';
-import { Post } from '../../models/post.model';
-import { User } from '../../models/user.model';
+import { LoadingStateComponent } from '../loading-state/loading-state.component';
+import { StateMessageComponent } from '../state-message/state-message.component';
 
 @Component({
   selector: 'app-saved-posts',
@@ -20,36 +18,33 @@ import { User } from '../../models/user.model';
   styleUrl: './saved-posts.component.scss',
   standalone: true,
   changeDetection: ChangeDetectionStrategy.Eager,
-  imports: [PostCardComponent],
+  imports: [
+    LoadingStateComponent,
+    MatButton,
+    PostCardComponent,
+    StateMessageComponent,
+  ],
 })
 export class SavedPostsComponent {
-  private userService: UserService = inject(UserService);
-  private postService: PostService = inject(PostService);
+  private readonly userService = inject(UserService);
+  private readonly postService = inject(PostService);
 
-  protected currentUser: Signal<User | null> = toSignal(
-    this.userService.getCurrentUser(),
-    {
-      initialValue: null,
-    },
-  );
+  protected readonly currentUser = resource({
+    loader: () => firstValueFrom(this.userService.getCurrentUser()),
+  });
 
-  protected favoritePosts: WritableSignal<Post[]> = signal<Post[]>([]);
+  protected readonly favorites = resource({
+    loader: () => firstValueFrom(this.postService.getUserFavorites()),
+  });
 
-  constructor() {
-    effect(() => {
-      const user = this.currentUser();
-      if (!user) return;
-
-      this.postService.getUserFavorites().subscribe({
-        next: (posts) => this.favoritePosts.set(posts),
-        error: (err) => console.error('Failed to load favorites', err),
-      });
-    });
+  protected reload(): void {
+    this.currentUser.reload();
+    this.favorites.reload();
   }
 
   protected removeFavorite(postId: string): void {
-    this.favoritePosts.update((posts) =>
-      posts.filter((post) => post.id !== postId),
+    this.favorites.update((posts) =>
+      posts?.filter((post) => post.id !== postId),
     );
   }
 }
