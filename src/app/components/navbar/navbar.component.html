@@ -43,13 +43,9 @@
         </button>
       }
     </mat-menu>
-    @if (authService.getCurrentUser()) {
-      <a routerLink="/dashboard" class="nav-link top-bar-button">
-        <mat-icon>person</mat-icon>
-        <span class="sidebar-link-text">Account</span>
-      </a>
-    } @else {
-      <a routerLink="/login" class="nav-link top-bar-button">Log in</a>
-    }
+    <a routerLink="/dashboard" class="nav-link top-bar-button">
+      <mat-icon>person</mat-icon>
+      <span class="sidebar-link-text">Account</span>
+    </a>
   </div>
 </nav>

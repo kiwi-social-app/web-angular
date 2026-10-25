@@ -8,7 +8,6 @@ import { RouterLink } from '@angular/router';
 import { MatIcon } from '@angular/material/icon';
 import { MatIconButton } from '@angular/material/button';
 import { MatMenu, MatMenuItem, MatMenuTrigger } from '@angular/material/menu';
-import { AuthService } from '../../services/auth.service';
 import { ThemeMode, ThemeService } from '../../services/theme.service';
 import { environment } from '../../../environments/environment';
 
@@ -28,7 +27,6 @@ import { environment } from '../../../environments/environment';
   ],
 })
 export class NavbarComponent {
-  public authService: AuthService = inject(AuthService);
   protected readonly searchEnabled = environment.searchEnabled;
   protected readonly themeService = inject(ThemeService);
   protected readonly themeOptions: {

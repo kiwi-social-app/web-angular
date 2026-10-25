@@ -1,6 +1,6 @@
 <div class="comment-list-component">
   <div class="list">
-    @if (comments()) {
+    @if (comments()?.length) {
       <div>
         @for (comment of comments(); track $index) {
           <div class="comment-card">

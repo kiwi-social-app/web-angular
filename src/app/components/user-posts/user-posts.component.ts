@@ -8,9 +8,11 @@ import {
   ChangeDetectionStrategy,
 } from '@angular/core';
 import { Router } from '@angular/router';
-import { Observable } from 'rxjs';
+import { MatDialog } from '@angular/material/dialog';
+import { filter, switchMap } from 'rxjs';
 import { Post } from '../../models/post.model';
 import { PostService } from '../../services/post.service';
+import { confirmPostDeletion } from '../modals/confirm-dialog/confirm-dialog.component';
 
 @Component({
   selector: 'app-user-posts',
@@ -25,12 +27,15 @@ export class UserPostsComponent {
 
   private readonly postService: PostService = inject(PostService);
   private readonly router: Router = inject(Router);
+  private readonly dialog = inject(MatDialog);
 
   protected deletePost(postID: string) {
-    this.postService.deletePost(postID).subscribe((response: any) => {
-      response;
-      this.onPostChange.emit(response);
-    });
+    confirmPostDeletion(this.dialog)
+      .pipe(
+        filter(Boolean),
+        switchMap(() => this.postService.deletePost(postID)),
+      )
+      .subscribe((response) => this.onPostChange.emit(response));
   }
 
   protected editPost(postID: string) {

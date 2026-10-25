@@ -17,6 +17,9 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { PostService } from '../../services/post.service';
 import { Post } from '../../models/post.model';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
+import { MatDialog } from '@angular/material/dialog';
+import { filter, switchMap } from 'rxjs';
+import { confirmPostDeletion } from '../modals/confirm-dialog/confirm-dialog.component';
 
 @Component({
   selector: 'app-post-edit',
@@ -34,6 +37,7 @@ export class PostEditComponent implements OnInit {
   private readonly router: Router = inject(Router);
   private readonly route: ActivatedRoute = inject(ActivatedRoute);
   private readonly destroyRef: DestroyRef = inject(DestroyRef);
+  private readonly dialog = inject(MatDialog);
 
   protected updatePostForm!: FormGroup;
   public post!: Post;
@@ -70,8 +74,11 @@ export class PostEditComponent implements OnInit {
   }
 
   protected deletePost(postID: string) {
-    this.postService.deletePost(postID).subscribe((response: any) => {
-      this.router.navigate(['/']);
-    });
+    confirmPostDeletion(this.dialog)
+      .pipe(
+        filter(Boolean),
+        switchMap(() => this.postService.deletePost(postID)),
+      )
+      .subscribe(() => this.router.navigate(['/']));
   }
 }
