@@ -1,6 +1,5 @@
 import { Component, ChangeDetectionStrategy } from '@angular/core';
 import { RouterOutlet } from '@angular/router';
-import { NavbarComponent } from './components/navbar/navbar.component';
 
 @Component({
   selector: 'app-root',
@@ -8,7 +7,7 @@ import { NavbarComponent } from './components/navbar/navbar.component';
   styleUrls: ['./app.component.scss'],
   standalone: true,
   changeDetection: ChangeDetectionStrategy.Eager,
-  imports: [RouterOutlet, NavbarComponent],
+  imports: [RouterOutlet],
 })
 export class AppComponent {
   title = 'kiwi-social';

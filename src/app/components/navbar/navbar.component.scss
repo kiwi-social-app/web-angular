@@ -1,79 +1,65 @@
-.navbar-component {
+.top-bar {
   display: flex;
-  flex-direction: column;
-  height: 83vh;
+  flex-direction: row;
+  justify-content: space-between;
+  padding: 1rem 1rem;
+  background-color: var(--mat-sys-surface-container);
+  gap: 2rem;
+  width: 97vw;
 
-  .top-bar {
+  .navbar-brand {
+    display: flex;
+    height: auto;
+    gap: 1rem;
+    padding: 1rem 0.5rem;
+    cursor: pointer;
+    color: var(--mat-sys-on-surface);
+
+    svg {
+      height: 100%;
+      width: auto;
+      padding-right: 1rem;
+    }
+
+    span {
+      margin: auto;
+    }
+  }
+
+  .nav-links {
     display: flex;
     flex-direction: row;
-    justify-content: space-between;
-    padding: 1rem 1rem;
-    background-color: var(--mat-sys-surface-container);
-    gap: 2rem;
-    width: 97vw;
+    justify-content: space-around;
+    gap: 1rem;
 
-    .navbar-brand {
+    .nav-link {
       display: flex;
-      height: auto;
-      gap: 1rem;
       padding: 1rem 0.5rem;
       cursor: pointer;
+      align-items: flex-start;
+      gap: 0.5rem;
       color: var(--mat-sys-on-surface);
 
-      svg {
-        height: 100%;
-        width: auto;
-        padding-right: 1rem;
+      mat-icon {
+        font-size: 1.5rem;
       }
 
-      span {
-        margin: auto;
-      }
-    }
-
-    .nav-links {
-      display: flex;
-      flex-direction: row;
-      justify-content: space-around;
-      gap: 1rem;
-
-      .nav-link {
-        display: flex;
-        padding: 1rem 0.5rem;
-        cursor: pointer;
-        align-items: flex-start;
-        gap: 0.5rem;
-        color: var(--mat-sys-on-surface);
-
-        mat-icon {
-          font-size: 1.5rem;
-        }
-
-        &:hover {
-        }
+      &:hover {
       }
     }
   }
+}
 
-  a {
-    vertical-align: middle;
-  }
+a {
+  vertical-align: middle;
+}
 
-  .theme-toggle {
-    align-self: center;
-  }
+.theme-toggle {
+  align-self: center;
+}
 
-  .main-content {
-    padding: 2rem;
-    height: 100%;
-  }
-
-  @media (max-width: 600px) {
-    .sidebar-link-text {
-      display: none;
-    }
-    .side-bar {
-      align-items: center;
-    }
+@media (max-width: 600px) {
+  .sidebar-link-text {
+    display: none;
   }
 }
