@@ -1,8 +1,11 @@
 .post-detail-component {
   display: flex;
   flex-direction: column;
-  width: 45rem;
-  min-height: 100%;
+  width: 100%;
+  max-width: var(--content-max-width);
+  margin-inline: auto;
+  box-sizing: border-box;
+  padding: var(--space-5);
   background-color: var(--mat-sys-surface-container-low);
   border-radius: 1rem;
 
@@ -11,7 +14,8 @@
     flex-direction: column;
     margin: auto;
     gap: 2rem;
-    width: 30rem;
+    width: 100%;
+    max-width: 30rem;
 
     .image {
       margin: auto;
@@ -42,15 +46,5 @@
         cursor: pointer;
       }
     }
-  }
-
-  .scroll-container {
-    overflow-y: scroll;
-    scrollbar-width: none;
-  }
-}
-@media (max-width: 600px) {
-  .dashboard-component {
-    width: calc(100% - 10rem);
   }
 }

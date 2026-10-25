@@ -99,8 +99,4 @@ export class DashboardComponent implements OnInit {
     this.editMode = !this.editMode;
     this.getUser();
   }
-
-  protected signOut(): void {
-    this.authService.signOut();
-  }
 }

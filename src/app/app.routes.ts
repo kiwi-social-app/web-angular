@@ -19,26 +19,58 @@ export const routes: Routes = [
     component: ShellLayoutComponent,
     canActivateChild: [authGuard],
     children: [
-      { path: '', pathMatch: 'full', component: PostListComponent },
-      { path: 'dashboard', component: DashboardComponent },
-      { path: 'post-edit/:id', component: PostEditComponent },
-      { path: 'posts/:id', pathMatch: 'full', component: PostDetailComponent },
+      {
+        path: '',
+        pathMatch: 'full',
+        title: 'Home',
+        component: PostListComponent,
+      },
+      {
+        path: 'dashboard',
+        title: 'Your profile',
+        component: DashboardComponent,
+      },
+      {
+        path: 'post-edit/:id',
+        title: 'Edit post',
+        component: PostEditComponent,
+      },
+      {
+        path: 'posts/:id',
+        title: 'Post',
+        pathMatch: 'full',
+        component: PostDetailComponent,
+      },
       {
         path: 'search',
+        title: 'Search',
         pathMatch: 'full',
         component: SearchComponent,
         canMatch: [() => environment.searchEnabled],
       },
-      { path: 'chat', component: ChatComponent },
-      { path: 'saved-posts', component: SavedPostsComponent },
-      { path: 'profile/:id', component: UserProfileComponent },
+      { path: 'chat', title: 'Chat', component: ChatComponent },
+      {
+        path: 'saved-posts',
+        title: 'Saved posts',
+        component: SavedPostsComponent,
+      },
+      {
+        path: 'profile/:id',
+        title: 'Profile',
+        component: UserProfileComponent,
+      },
     ],
   },
   {
     path: '',
     component: AuthLayoutComponent,
     children: [
-      { path: 'login', component: LoginComponent, canActivate: [guestGuard] },
+      {
+        path: 'login',
+        title: 'Log in',
+        component: LoginComponent,
+        canActivate: [guestGuard],
+      },
     ],
   },
 ];

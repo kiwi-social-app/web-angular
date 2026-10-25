@@ -1,9 +1,9 @@
 .saved-posts-component {
   display: flex;
   flex-direction: column;
-  max-width: 45rem;
-  justify-content: center;
-  overflow: scroll;
-  scrollbar-width: none;
+  width: 100%;
+  max-width: var(--content-max-width);
+  margin-inline: auto;
+  box-sizing: border-box;
   gap: 0.5rem;
 }

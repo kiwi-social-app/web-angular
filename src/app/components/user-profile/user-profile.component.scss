@@ -1,7 +1,10 @@
 .user-profile-component {
   display: flex;
   flex-direction: column;
-  max-width: 45rem;
+  width: 100%;
+  max-width: var(--content-max-width);
+  margin-inline: auto;
+  box-sizing: border-box;
   background-color: var(--mat-sys-surface-container-low);
   border-radius: 1rem;
   padding: 2rem;

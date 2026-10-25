@@ -1,9 +1,10 @@
 .post-edit-component {
   display: flex;
   flex-direction: column;
-  padding: 6rem 2rem;
-  max-width: 30rem;
-  margin: auto;
+  width: 100%;
+  max-width: var(--content-max-width);
+  margin-inline: auto;
+  box-sizing: border-box;
 
   .image {
     margin: auto;
@@ -13,7 +14,7 @@
 
   .text-content {
     margin: auto;
-    width: 40rem;
+    max-width: 100%;
 
     .post-body {
     }

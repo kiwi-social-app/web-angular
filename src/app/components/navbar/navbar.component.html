@@ -1,77 +1,92 @@
-<nav class="top-bar">
-  <a class="navbar-brand" routerLink="/">Kiwi Social</a>
-  <div class="nav-links">
-    <a
-      routerLink=""
-      class="nav-link"
-      routerLinkActive="active"
-      [routerLinkActiveOptions]="{ exact: true }"
-      ariaCurrentWhenActive="page"
-    >
-      <mat-icon>home</mat-icon>
-      <span class="sidebar-link-text">Home</span></a
-    >
-    @if (searchEnabled) {
+<nav class="navbar" aria-label="Main">
+  <a class="brand" routerLink="/">Kiwi Social</a>
+  <ul class="links">
+    <li>
       <a
-        routerLink="search"
+        class="link"
+        routerLink="/"
+        routerLinkActive="active"
+        [routerLinkActiveOptions]="{ exact: true }"
+        ariaCurrentWhenActive="page"
+      >
+        <mat-icon>home</mat-icon>
+        <span class="label">Home</span>
+      </a>
+    </li>
+    @if (searchEnabled) {
+      <li>
+        <a
+          class="link"
+          routerLink="/search"
+          routerLinkActive="active"
+          ariaCurrentWhenActive="page"
+        >
+          <mat-icon>search</mat-icon>
+          <span class="label">Search</span>
+        </a>
+      </li>
+    }
+    <li>
+      <a
+        class="link"
+        routerLink="/chat"
         routerLinkActive="active"
         ariaCurrentWhenActive="page"
-        class="nav-link"
       >
-        <mat-icon>search</mat-icon>
-        <span class="sidebar-link-text">Search</span>
+        <mat-icon>chat_bubble</mat-icon>
+        <span class="label">Chat</span>
       </a>
-    }
-    <a
-      routerLink="chat"
-      routerLinkActive="active"
-      ariaCurrentWhenActive="page"
-      class="nav-link"
-    >
-      <mat-icon>chat_bubble</mat-icon>
-      <span class="sidebar-link-text">Chat</span></a
-    >
-    <a
-      routerLink="/saved-posts"
-      routerLinkActive="active"
-      ariaCurrentWhenActive="page"
-      class="nav-link top-bar-button"
-    >
-      <mat-icon>bookmark</mat-icon>
-      <span class="sidebar-link-text">Saved Posts</span></a
-    >
-    <button
-      mat-icon-button
-      class="theme-toggle"
-      [matMenuTriggerFor]="themeMenu"
-      aria-label="Choose colour theme"
-    >
-      <mat-icon>{{ themeIcon() }}</mat-icon>
-    </button>
-    <mat-menu #themeMenu="matMenu">
-      @for (option of themeOptions; track option.mode) {
-        <button
-          mat-menu-item
-          role="menuitemradio"
-          [attr.aria-checked]="themeService.mode() === option.mode"
-          (click)="themeService.setMode(option.mode)"
-        >
-          <mat-icon>{{ option.icon }}</mat-icon>
-          <span>{{ option.label }}</span>
-          @if (themeService.mode() === option.mode) {
-            <mat-icon class="theme-check" aria-hidden="true">check</mat-icon>
-          }
-        </button>
-      }
-    </mat-menu>
-    <a
-      routerLink="/dashboard"
-      routerLinkActive="active"
-      ariaCurrentWhenActive="page"
-      class="nav-link top-bar-button"
-    >
-      <mat-icon>person</mat-icon>
-      <span class="sidebar-link-text">Account</span>
-    </a>
-  </div>
+    </li>
+    <li>
+      <a
+        class="link"
+        routerLink="/saved-posts"
+        routerLinkActive="active"
+        ariaCurrentWhenActive="page"
+      >
+        <mat-icon>bookmark</mat-icon>
+        <span class="label">Saved</span>
+      </a>
+    </li>
+    <li>
+      <button type="button" class="link" [matMenuTriggerFor]="accountMenu">
+        <mat-icon>account_circle</mat-icon>
+        <span class="label">Account</span>
+      </button>
+    </li>
+  </ul>
 </nav>
+
+<mat-menu #accountMenu="matMenu">
+  <a mat-menu-item routerLink="/dashboard">
+    <mat-icon>person</mat-icon>
+    <span>Your profile</span>
+  </a>
+  <button mat-menu-item type="button" [matMenuTriggerFor]="themeMenu">
+    <mat-icon>{{ themeIcon() }}</mat-icon>
+    <span>Theme</span>
+  </button>
+  <mat-divider />
+  <button mat-menu-item type="button" (click)="signOut()">
+    <mat-icon>logout</mat-icon>
+    <span>Sign out</span>
+  </button>
+</mat-menu>
+
+<mat-menu #themeMenu="matMenu">
+  @for (option of themeOptions; track option.mode) {
+    <button
+      mat-menu-item
+      type="button"
+      role="menuitemradio"
+      [attr.aria-checked]="themeService.mode() === option.mode"
+      (click)="themeService.setMode(option.mode)"
+    >
+      <mat-icon>{{ option.icon }}</mat-icon>
+      <span>{{ option.label }}</span>
+      @if (themeService.mode() === option.mode) {
+        <mat-icon class="theme-check" aria-hidden="true">check</mat-icon>
+      }
+    </button>
+  }
+</mat-menu>

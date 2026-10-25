@@ -6,8 +6,9 @@ import {
 } from '@angular/core';
 import { RouterLink, RouterLinkActive } from '@angular/router';
 import { MatIcon } from '@angular/material/icon';
-import { MatIconButton } from '@angular/material/button';
+import { MatDivider } from '@angular/material/divider';
 import { MatMenu, MatMenuItem, MatMenuTrigger } from '@angular/material/menu';
+import { AuthService } from '../../services/auth.service';
 import { ThemeMode, ThemeService } from '../../services/theme.service';
 import { environment } from '../../../environments/environment';
 
@@ -21,7 +22,7 @@ import { environment } from '../../../environments/environment';
     RouterLink,
     RouterLinkActive,
     MatIcon,
-    MatIconButton,
+    MatDivider,
     MatMenu,
     MatMenuItem,
     MatMenuTrigger,
@@ -29,6 +30,7 @@ import { environment } from '../../../environments/environment';
 })
 export class NavbarComponent {
   protected readonly searchEnabled = environment.searchEnabled;
+  private readonly authService = inject(AuthService);
   protected readonly themeService = inject(ThemeService);
   protected readonly themeOptions: {
     mode: ThemeMode;
@@ -45,4 +47,8 @@ export class NavbarComponent {
         (option) => option.mode === this.themeService.mode(),
       )!.icon,
   );
+
+  protected signOut(): void {
+    this.authService.signOut();
+  }
 }

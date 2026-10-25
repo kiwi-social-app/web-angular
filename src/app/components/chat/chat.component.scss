@@ -1,6 +1,9 @@
 .main-container {
   display: flex;
-  height: 100%;
+  width: 100%;
+  max-width: var(--content-max-width-wide);
+  height: calc(100dvh - var(--shell-offset));
+  margin-inline: auto;
   gap: 2rem;
 
   .chat-component {
