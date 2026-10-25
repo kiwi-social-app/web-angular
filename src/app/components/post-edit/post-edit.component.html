@@ -1,54 +1,44 @@
 <div class="post-edit-component">
   <h1>Edit post</h1>
-@if(updatePostForm){
-  <form
-    class="update-post-form"
-    [formGroup]="updatePostForm"
-    (ngSubmit)="updatePost()"
-  >
-    <div class="form-block">
-      <label for="body">Post</label>
-      <textarea
-        id="body"
-        type="text"
-        rows="5"
-        formControlName="body"
-      ></textarea>
-      @if(updatePostForm.get('body')?.invalid &&
-      (updatePostForm.get('body')?.dirty ||
-        updatePostForm.get('body')?.touched)){
-        <div
-
+  @if (updatePostForm) {
+    <form
+      class="update-post-form"
+      [formGroup]="updatePostForm"
+      (ngSubmit)="updatePost()"
+    >
+      <mat-form-field>
+        <mat-label>Post</mat-label>
+        <textarea matInput rows="8" formControlName="body"></textarea>
+        <mat-error>Write something to post</mat-error>
+      </mat-form-field>
+      <div class="actions">
+        <button
+          mat-button
+          type="button"
+          class="delete-button"
+          (click)="deletePost(post.id)"
         >
-          @if(updatePostForm.controls['body'].invalid){
-            <div>
-              Please enter post body
-            </div>
-          }
-
-        </div>
-
-      }
-    </div>
-    <div class="buttons">
-      <button class="update-btn" type="submit" [disabled]="!updatePostForm.valid">Update post</button>
-      <button class="delete-btn" type="button" (click)="deletePost(post.id)">
-        Delete post
+          Delete post
+        </button>
+        <span class="spacer"></span>
+        <a mat-button [routerLink]="['/posts', post.id]">Cancel</a>
+        <button mat-flat-button type="submit" [disabled]="pending()">
+          {{ pending() ? "Saving…" : "Save changes" }}
+        </button>
+      </div>
+    </form>
+  } @else if (loadFailed) {
+    <app-state-message
+      role="alert"
+      icon="error_outline"
+      heading="Couldn't load this post"
+      message="It may have been deleted, or there was a connection problem."
+    >
+      <button mat-stroked-button type="button" (click)="getPost()">
+        Try again
       </button>
-    </div>
-  </form>
-} @else if (loadFailed) {
-  <app-state-message
-    role="alert"
-    icon="error_outline"
-    heading="Couldn't load this post"
-    message="It may have been deleted, or there was a connection problem."
-  >
-    <button mat-stroked-button type="button" (click)="getPost()">
-      Try again
-    </button>
-  </app-state-message>
-} @else {
-  <app-loading-state label="Loading post…" />
-}
+    </app-state-message>
+  } @else {
+    <app-loading-state label="Loading post…" />
+  }
 </div>

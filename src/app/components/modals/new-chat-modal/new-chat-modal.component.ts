@@ -1,30 +1,38 @@
-import { Component, inject, ChangeDetectionStrategy } from '@angular/core';
+import {
+  Component,
+  computed,
+  inject,
+  resource,
+  signal,
+  ChangeDetectionStrategy,
+} from '@angular/core';
 import {
   MAT_DIALOG_DATA,
   MatDialogActions,
   MatDialogClose,
   MatDialogContent,
   MatDialogRef,
+  MatDialogTitle,
 } from '@angular/material/dialog';
 import { MatButton } from '@angular/material/button';
-import { UserService } from '../../../services/user.service';
-import { map, Observable } from 'rxjs';
-import { User } from '../../../models/user.model';
-import { AsyncPipe } from '@angular/common';
 import { MatListOption, MatSelectionList } from '@angular/material/list';
-import { FormsModule } from '@angular/forms';
+import { firstValueFrom } from 'rxjs';
+import { UserService } from '../../../services/user.service';
+import { LoadingStateComponent } from '../../loading-state/loading-state.component';
+import { StateMessageComponent } from '../../state-message/state-message.component';
 
 @Component({
   selector: 'app-new-chat-modal',
   imports: [
-    MatDialogContent,
-    MatDialogActions,
+    LoadingStateComponent,
     MatButton,
+    MatDialogActions,
     MatDialogClose,
-    AsyncPipe,
-    MatSelectionList,
+    MatDialogContent,
+    MatDialogTitle,
     MatListOption,
-    FormsModule,
+    MatSelectionList,
+    StateMessageComponent,
   ],
   templateUrl: './new-chat-modal.component.html',
   styleUrl: './new-chat-modal.component.scss',
@@ -32,23 +40,23 @@ import { FormsModule } from '@angular/forms';
   standalone: true,
 })
 export class NewChatModalComponent {
-  protected readonly data: { userId: string } = inject(MAT_DIALOG_DATA);
-  protected readonly userService: UserService = inject(UserService);
-  private readonly dialogRef: MatDialogRef<NewChatModalComponent> = inject(
-    MatDialogRef<NewChatModalComponent>,
+  private readonly data: { userId: string } = inject(MAT_DIALOG_DATA);
+  private readonly userService: UserService = inject(UserService);
+  private readonly dialogRef = inject(MatDialogRef<NewChatModalComponent>);
+
+  protected readonly users = resource({
+    loader: () => firstValueFrom(this.userService.getUsers()),
+  });
+
+  protected readonly otherUsers = computed(() =>
+    this.users.hasValue()
+      ? this.users.value().filter((user) => user.id !== this.data.userId)
+      : [],
   );
 
-  protected users$: Observable<User[]>;
+  protected readonly selected = signal<readonly MatListOption[]>([]);
 
-  constructor() {
-    this.users$ = this.userService
-      .getUsers()
-      .pipe(
-        map((users) => users.filter((user) => user.id !== this.data.userId)),
-      );
-  }
-
-  protected confirm(selectedUsers: any) {
-    this.dialogRef.close(selectedUsers.map((opt: any) => opt.value));
+  protected confirm(): void {
+    this.dialogRef.close(this.selected().map((option) => option.value));
   }
 }

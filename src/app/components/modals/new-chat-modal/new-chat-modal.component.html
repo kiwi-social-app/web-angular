@@ -1,30 +1,41 @@
-<div class="new-chat-modal">
-  <h2>New Chat</h2>
-  <mat-dialog-content>
-    Start a new chat
-
-    <div class="user-list">
-      <mat-selection-list #usersList>
-        @for (user of users$ | async; track user.id) {
-          <mat-list-option [value]="user.id">
-            {{ user.username }}
-          </mat-list-option>
-        }
-      </mat-selection-list>
-    </div>
-  </mat-dialog-content>
-  <mat-dialog-actions>
-    <button
-      type="button"
-      color="primary"
-      mat-flat-button
-      (click)="confirm(usersList.selectedOptions.selected)"
-      [disabled]="!usersList.selectedOptions.selected.length"
+<h2 mat-dialog-title>New chat</h2>
+<mat-dialog-content>
+  @if (users.error()) {
+    <app-state-message
+      role="alert"
+      icon="error_outline"
+      heading="Couldn't load people"
     >
-      Confirm
-    </button>
-    <button type="button" color="primary" mat-stroked-button mat-dialog-close>
-      Cancel
-    </button></mat-dialog-actions
+      <button mat-stroked-button type="button" (click)="users.reload()">
+        Try again
+      </button>
+    </app-state-message>
+  } @else if (users.hasValue()) {
+    <mat-selection-list
+      #usersList
+      aria-label="People"
+      (selectionChange)="selected.set(usersList.selectedOptions.selected)"
+    >
+      @for (user of otherUsers(); track user.id) {
+        <mat-list-option [value]="user.id">
+          {{ user.username ?? user.email }}
+        </mat-list-option>
+      } @empty {
+        <p class="empty">There's no one else to chat with yet.</p>
+      }
+    </mat-selection-list>
+  } @else {
+    <app-loading-state label="Loading people…" />
+  }
+</mat-dialog-content>
+<mat-dialog-actions align="end">
+  <button mat-button type="button" mat-dialog-close>Cancel</button>
+  <button
+    mat-flat-button
+    type="button"
+    [disabled]="selected().length === 0"
+    (click)="confirm()"
   >
-</div>
+    Start chat
+  </button>
+</mat-dialog-actions>

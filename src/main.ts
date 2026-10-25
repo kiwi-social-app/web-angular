@@ -12,6 +12,7 @@ import {
   withInterceptors,
   withXhr,
 } from '@angular/common/http';
+import { MAT_FORM_FIELD_DEFAULT_OPTIONS } from '@angular/material/form-field';
 import { initializeApp } from 'firebase/app';
 import { routes } from './app/app.routes';
 import { AppTitleStrategy } from './app/app-title.strategy';
@@ -32,6 +33,10 @@ bootstrapApplication(AppComponent, {
       withInMemoryScrolling({ scrollPositionRestoration: 'enabled' }),
     ),
     { provide: TitleStrategy, useClass: AppTitleStrategy },
+    {
+      provide: MAT_FORM_FIELD_DEFAULT_OPTIONS,
+      useValue: { appearance: 'outline', hideRequiredMarker: true },
+    },
     provideHttpClient(withXhr(), withInterceptors([authInterceptor])),
     provideRxStomp(),
   ],

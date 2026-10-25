@@ -1,76 +1,73 @@
 <div class="dashboard-component">
   <div class="dashboard-header">
     <h1>Your profile</h1>
-    <div class="buttons">
-      <button mat-button mat-flat-button color="primary" (click)="editBtn()">
-        Edit Profile
+    @if (currentUser && !editMode) {
+      <button mat-flat-button type="button" (click)="startEditing(currentUser)">
+        Edit profile
       </button>
-    </div>
+    }
   </div>
   @if (currentUser) {
     <div class="profile-data-block">
       @if (!editMode) {
-        <div class="profile-read">
-          <p>{{ currentUser.username }}</p>
-          <p>{{ currentUser.email }}</p>
-          <p>{{ currentUser.firstname }}</p>
-          <p>{{ currentUser.lastname }}</p>
-        </div>
+        <dl class="profile-read">
+          <dt>Username</dt>
+          <dd>{{ currentUser.username || "Not set" }}</dd>
+          <dt>Email</dt>
+          <dd>{{ currentUser.email }}</dd>
+          <dt>First name</dt>
+          <dd>{{ currentUser.firstname || "Not set" }}</dd>
+          <dt>Last name</dt>
+          <dd>{{ currentUser.lastname || "Not set" }}</dd>
+        </dl>
       } @else {
         <form
           class="edit-profile-form"
           [formGroup]="editProfileForm"
-          (ngSubmit)="updateProfile()"
+          (ngSubmit)="updateProfile(currentUser)"
         >
-          <div class="form-block">
-            <label for="username">Username</label>
+          <mat-form-field>
+            <mat-label>Username</mat-label>
             <input
-              class="edit-input"
-              id="username"
-              type="text"
+              matInput
               formControlName="username"
-              required
+              autocomplete="username"
             />
-          </div>
+            <mat-error>Enter a username</mat-error>
+          </mat-form-field>
 
-          <div class="form-block">
-            <label for="email">Email</label>
-            <input
-              class="edit-input"
-              id="email"
-              type="text"
-              formControlName="email"
-            />
-          </div>
+          <mat-form-field>
+            <mat-label>Email</mat-label>
+            <input matInput type="email" formControlName="email" readonly />
+            <mat-hint>Your sign-in email can't be changed here</mat-hint>
+          </mat-form-field>
 
-          <div class="form-block">
-            <label for="firstname">First name</label>
+          <mat-form-field>
+            <mat-label>First name (optional)</mat-label>
             <input
-              class="edit-input"
-              id="firstname"
-              type="text"
+              matInput
               formControlName="firstname"
+              autocomplete="given-name"
             />
-          </div>
+          </mat-form-field>
 
-          <div class="form-block">
-            <label for="lastname">Last name</label>
+          <mat-form-field>
+            <mat-label>Last name (optional)</mat-label>
             <input
-              class="edit-input"
-              id="lastname"
-              type="text"
+              matInput
               formControlName="lastname"
+              autocomplete="family-name"
             />
-          </div>
+          </mat-form-field>
 
-          <button
-            class="publish-btn"
-            mat-button
-            mat-stroked-button
-            type="submit"
-          >
-            Update Profile
-          </button>
+          <div class="actions">
+            <button mat-button type="button" (click)="cancelEditing()">
+              Cancel
+            </button>
+            <button mat-flat-button type="submit" [disabled]="pending()">
+              {{ pending() ? "Saving…" : "Save changes" }}
+            </button>
+          </div>
         </form>
       }
     </div>

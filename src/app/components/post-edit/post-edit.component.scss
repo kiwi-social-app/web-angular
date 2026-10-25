@@ -5,75 +5,29 @@
   max-width: var(--content-max-width);
   margin-inline: auto;
   box-sizing: border-box;
+}
 
-  .image {
-    margin: auto;
-    height: 5rem;
-    width: 10rem;
+.update-post-form {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2);
+
+  textarea {
+    resize: vertical;
   }
+}
 
-  .text-content {
-    margin: auto;
-    max-width: 100%;
+.actions {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--space-2);
+}
 
-    .post-body {
-    }
-  }
-  .update-post-form {
-    display: flex;
-    flex-direction: column;
-    gap: 1rem;
-    padding: 2rem;
-    .form-block {
-      display: flex;
-      flex-direction: column;
-      gap: 1rem;
+.spacer {
+  flex: 1;
+}
 
-      input {
-        width: 15rem;
-        height: 2rem;
-        border: 1px solid var(--mat-sys-outline);
-        border-radius: 0.5rem;
-      }
-      textarea {
-        width: 100%;
-        border: 1px solid var(--mat-sys-outline);
-        border-radius: 0.5rem;
-        resize: none;
-      }
-    }
-    .buttons {
-      display: flex;
-      flex-direction: row;
-      gap: 2rem;
-      padding-top: 2rem;
-      .update-btn {
-        height: 2rem;
-        width: 6rem;
-        border: none;
-        color: var(--mat-sys-on-primary);
-        border-radius: 0.5rem;
-        justify-content: flex-end;
-        margin: auto 0 auto 0;
-        background-color: var(--mat-sys-primary);
-        cursor: pointer;
-
-        &:disabled {
-          opacity: 50%;
-          cursor: default;
-        }
-      }
-      .delete-btn {
-        height: 2rem;
-        width: 6rem;
-        border: none;
-        color: var(--mat-sys-on-error);
-        border-radius: 0.5rem;
-        justify-content: flex-end;
-        margin: auto 0 auto 0;
-        background-color: var(--mat-sys-error);
-        cursor: pointer;
-      }
-    }
-  }
+.delete-button {
+  color: var(--mat-sys-error);
 }

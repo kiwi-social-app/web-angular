@@ -1,18 +1,5 @@
-.new-chat-modal {
-  display: flex;
-  flex-direction: column;
-  justify-content: space-between;
-  height: 100%;
-  padding: 1rem;
-
-  .user-list {
-    display: flex;
-    flex-direction: column;
-    gap: 0.5rem;
-
-    .user {
-      display: flex;
-      gap: 1rem;
-    }
-  }
+.empty {
+  margin: 0;
+  padding: var(--space-3);
+  color: var(--mat-sys-on-surface-variant);
 }

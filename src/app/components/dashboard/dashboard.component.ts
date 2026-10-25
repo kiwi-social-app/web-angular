@@ -1,30 +1,28 @@
 import {
   Component,
-  DestroyRef,
-  EventEmitter,
   inject,
   OnInit,
-  Output,
+  signal,
   ChangeDetectionStrategy,
 } from '@angular/core';
-import {
-  FormBuilder,
-  FormGroup,
-  ReactiveFormsModule,
-  Validators,
-} from '@angular/forms';
+import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
 import { Post } from '../../models/post.model';
 import { UserService } from '../../services/user.service';
 import { User } from '../../models/user.model';
-import { AuthService } from '../../services/auth.service';
 import { PostService } from '../../services/post.service';
-import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { PostCardComponent } from '../post-card/post-card.component';
 import { MatButton } from '@angular/material/button';
-import { UserUpdate } from '../../models/userUpdate.model';
+import {
+  MatError,
+  MatFormField,
+  MatHint,
+  MatLabel,
+} from '@angular/material/form-field';
+import { MatInput } from '@angular/material/input';
 import { LoadingStateComponent } from '../loading-state/loading-state.component';
 import { StateMessageComponent } from '../state-message/state-message.component';
 import { NotificationService } from '../../services/notification.service';
+import { notBlank } from '../../validators/not-blank.validator';
 
 @Component({
   selector: 'app-dashboard',
@@ -35,65 +33,47 @@ import { NotificationService } from '../../services/notification.service';
   imports: [
     LoadingStateComponent,
     MatButton,
+    MatError,
+    MatFormField,
+    MatHint,
+    MatInput,
+    MatLabel,
     PostCardComponent,
     ReactiveFormsModule,
     StateMessageComponent,
   ],
 })
 export class DashboardComponent implements OnInit {
-  @Output() onUpdateProfile: EventEmitter<User> = new EventEmitter();
-
   private readonly userService: UserService = inject(UserService);
-  private readonly authService: AuthService = inject(AuthService);
   private readonly postService: PostService = inject(PostService);
-  private readonly fb: FormBuilder = inject(FormBuilder);
-  private readonly destroyRef: DestroyRef = inject(DestroyRef);
   private readonly notifications = inject(NotificationService);
 
-  protected editProfileForm!: FormGroup;
+  protected readonly editProfileForm = inject(FormBuilder).nonNullable.group({
+    username: ['', [Validators.required, notBlank]],
+    email: '',
+    firstname: '',
+    lastname: '',
+  });
   protected posts: Post[] = [];
 
-  protected currentUser!: any;
-  protected updatedUser!: UserUpdate;
-  protected editMode: boolean = false;
+  protected currentUser: User | null = null;
+  protected editMode = false;
   protected loadFailed = false;
+  protected readonly pending = signal(false);
 
   ngOnInit(): void {
     this.getUser();
   }
 
-  protected initialiseForm(): void {
-    this.editProfileForm = this.fb.group({
-      username: [null, [Validators.required]],
-      email: [null, [Validators.required]],
-      firstname: null,
-      lastname: null,
-    });
-  }
-
   protected getUser(): void {
     this.loadFailed = false;
-    this.authService
-      .authState()
-      .pipe(takeUntilDestroyed(this.destroyRef))
-      .subscribe((user) => {
-        if (user) {
-          this.userService.getUserByID(user.uid).subscribe({
-            next: (userData: User) => {
-              this.currentUser = userData;
-              this.initialiseForm();
-              this.editProfileForm.patchValue({
-                username: userData.username,
-                email: userData.email,
-                firstname: userData.firstname,
-                lastname: userData.lastname,
-              });
-            },
-            error: () => (this.loadFailed = true),
-          });
-          this.fetchPosts();
-        }
-      });
+    this.userService.getCurrentUser().subscribe({
+      next: (user) => {
+        this.currentUser = user;
+        this.fetchPosts();
+      },
+      error: () => (this.loadFailed = true),
+    });
   }
 
   protected fetchPosts(): void {
@@ -104,23 +84,39 @@ export class DashboardComponent implements OnInit {
     });
   }
 
-  protected updateProfile(): void {
-    this.updatedUser = this.editProfileForm.getRawValue();
-    this.userService
-      .updateUser(this.currentUser.id, this.updatedUser)
-      .subscribe({
-        next: () => {
-          this.currentUser = { ...this.currentUser, ...this.updatedUser };
-          this.editMode = false;
-          this.notifications.show('Profile updated');
-        },
-        error: () =>
-          this.notifications.show("Couldn't update your profile. Try again."),
-      });
+  protected startEditing(user: User): void {
+    this.editProfileForm.reset({
+      username: user.username ?? '',
+      email: user.email,
+      firstname: user.firstname ?? '',
+      lastname: user.lastname ?? '',
+    });
+    this.editMode = true;
   }
 
-  protected editBtn(): void {
-    this.editMode = !this.editMode;
-    this.getUser();
+  protected cancelEditing(): void {
+    this.editMode = false;
+  }
+
+  protected updateProfile(user: User): void {
+    if (this.editProfileForm.invalid) {
+      this.editProfileForm.markAllAsTouched();
+      return;
+    }
+
+    const update = { ...this.editProfileForm.getRawValue(), id: user.id };
+    this.pending.set(true);
+    this.userService.updateUser(user.id, update).subscribe({
+      next: () => {
+        this.pending.set(false);
+        this.currentUser = { ...user, ...update };
+        this.editMode = false;
+        this.notifications.show('Profile updated');
+      },
+      error: () => {
+        this.pending.set(false);
+        this.notifications.show("Couldn't update your profile. Try again.");
+      },
+    });
   }
 }

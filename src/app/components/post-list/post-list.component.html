@@ -3,15 +3,18 @@
   <div class="controls">
     <button
       class="new-post-btn"
-      color="primary"
-      mat-button
       mat-flat-button
       type="button"
       (click)="openNewPostModal()"
     >
-      New Post
+      New post
     </button>
-    <button type="button" mat-icon-button (click)="filterSelect()">
+    <button
+      type="button"
+      mat-icon-button
+      aria-label="Filter posts"
+      (click)="filterSelect()"
+    >
       <mat-icon>filter_list</mat-icon>
     </button>
   </div>
@@ -40,7 +43,7 @@
       <app-state-message
         icon="dynamic_feed"
         heading="No posts yet"
-        message="Be the first to share something with New Post."
+        message="Be the first to share something with New post."
       />
     }
   } @else {

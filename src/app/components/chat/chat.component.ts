@@ -25,6 +25,7 @@ import { ChatService } from '../../services/chat.service';
 import { Chat } from '../../models/chat.model';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { MatDialog } from '@angular/material/dialog';
+import { formDialogConfig } from '../modals/dialog-config';
 import { NewChatModalComponent } from '../modals/new-chat-modal/new-chat-modal.component';
 import { MatCard, MatCardContent } from '@angular/material/card';
 import { Message } from '../../models/message.model';
@@ -101,16 +102,15 @@ export class ChatComponent implements OnInit, AfterViewChecked {
 
   protected startNewChat(userId: string): void {
     const dialogRef = this.dialog.open(NewChatModalComponent, {
+      ...formDialogConfig,
       data: { userId },
-      height: '40rem',
-      width: '30rem',
     });
 
     dialogRef
       .afterClosed()
       .pipe(take(1))
       .subscribe((result) => {
-        if (result.length > 0) {
+        if (result?.length > 0) {
           this.chatService.startChat(result).subscribe(() => {
             this.chats$ = this.chatService
               .getChatsByUser()

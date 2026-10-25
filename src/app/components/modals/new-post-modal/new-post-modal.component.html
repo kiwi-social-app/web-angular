@@ -1,35 +1,16 @@
-<div class="new-post-modal">
-  <h2>New Post</h2>
+<h2 mat-dialog-title>New post</h2>
+<form [formGroup]="newPostForm" (ngSubmit)="publish()">
   <mat-dialog-content>
-    <form class="new-post-form" [formGroup]="newPostForm">
-      <textarea
-        class="body-input"
-        id="body"
-        aria-label="Post text"
-        formControlName="body"
-      ></textarea>
-      @if (
-        newPostForm.get("body")?.invalid &&
-        (newPostForm.get("body")?.dirty || newPostForm.get("body")?.touched)
-      ) {
-        @if (newPostForm.controls["body"].invalid) {
-          <div>Please enter post body</div>
-        }
-      }
-    </form>
+    <mat-form-field class="body-field">
+      <mat-label>What's on your mind?</mat-label>
+      <textarea matInput rows="8" formControlName="body"></textarea>
+      <mat-error>Write something to post</mat-error>
+    </mat-form-field>
   </mat-dialog-content>
-  <mat-dialog-actions>
-    <button
-      type="button"
-      color="primary"
-      mat-flat-button
-      (click)="confirm()"
-      [disabled]="newPostForm.invalid"
-    >
-      Confirm
-    </button>
-    <button type="button" color="primary" mat-stroked-button mat-dialog-close>
-      Cancel
+  <mat-dialog-actions align="end">
+    <button mat-button type="button" mat-dialog-close>Cancel</button>
+    <button mat-flat-button type="submit" [disabled]="pending()">
+      {{ pending() ? "Posting…" : "Post" }}
     </button>
   </mat-dialog-actions>
-</div>
+</form>
